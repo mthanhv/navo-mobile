@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Navo",
+    "slug": "navo",
+    "scheme": "navo",
+    "version": "0.1.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "bundleIdentifier": "com.tinybeex.navo"
+    },
+    "android": {
+      "predictiveBackGestureEnabled": false,
+      "package": "com.tinybeex.navo"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-localization"
+    ],
+    "experiments": {
+      "typedRoutes": false
+    },
+    "owner": "tinybeex",
+    "extra": {
+      "eas": {
+        "projectId": "61c1bad1-b896-41fe-ae7d-ac9b376cb014"
+      }
+    }
+  }
+}
