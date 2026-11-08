@@ -61,7 +61,7 @@ function ScopedOverview({ first, lang }: { first: string; lang: "vi" | "en" }) {
           </View>
           <Title>{t("overview.needsAction")}</Title>
           {data.attention.length === 0 && <Card><Body muted>{t("overview.introClear")}</Body></Card>}
-          {data.attention.map((row) => (
+          {data.attention.slice(0, 5).map((row) => (
             <Pressable key={row.contract_line_id} accessibilityRole="button" onPress={() => router.push(`/(app)/contract/${row.contract_id}`)}>
               <Card>
                 <FlagPill flag={row.flags[0]} />
