@@ -355,6 +355,114 @@
     "owner": "Owner: {{name}}",
     "signedInAs": "Signed in as",
     "apiServer": "Server",
-    "webOnly": "Creating and confirming documents is done on the web."
+    "webOnly": "Creating and confirming documents is done on the web.",
+    "hello": "Hello, {{name}}",
+    "today": "Today",
+    "bell": "Needs attention: {{count}}",
+    "wholeCompany": "Whole company",
+    "seeAll": "See all",
+    "kpi": {
+      "overdue": "Lines overdue",
+      "inContracts_one": "in {{count}} contract",
+      "inContracts_other": "in {{count}} contracts",
+      "noPlan": "Lines with no plan",
+      "toDeliver": "still to deliver",
+      "deliveries": "Deliveries next 7 days",
+      "firmTentative": "{{firm}} firm · {{tentative}} tentative",
+      "poWaiting": "POs awaiting goods",
+      "lateLines_one": "{{count}} line late",
+      "lateLines_other": "{{count}} lines late"
+    },
+    "attn": {
+      "delivery_overdue": "{{remaining}} {{unit}} left, {{days}} days late.",
+      "over_delivered": "Delivered {{over}} {{unit}} over.",
+      "stock_short": "Next delivery needs {{needed}}, only {{available}} {{unit}}.",
+      "no_plan": "{{remaining}} {{unit}} left, {{available}} ready.",
+      "receipt_overdue": "Goods have not arrived by the expected date.",
+      "over_ordered": "Ordered {{over}} {{unit}} over."
+    },
+    "weekday": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fri",
+      "6": "Sat"
+    },
+    "weekdayLong": {
+      "0": "Sunday",
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday"
+    },
+    "unsent_one": "{{count}} note not sent",
+    "unsent_other": "{{count}} notes not sent",
+    "open": "Open",
+    "tasks": "To do ({{count}})",
+    "noTasks": "Nothing to do. Follow-ups from your notes show here.",
+    "markDone": "Mark done: {{text}}",
+    "done": "Done",
+    "lateSince": "Late since {{date}}",
+    "deliveriesWeek": "Deliveries this week",
+    "lineCount_one": "{{count}} line",
+    "lineCount_other": "{{count}} lines",
+    "arriving": "Goods arriving",
+    "noArriving": "No goods due in the next 7 days.",
+    "forContract": "for {{contract}} · {{customer}}",
+    "expected": "Expected {{date}}",
+    "quickNote": "Quick note",
+    "fact": {
+      "value": "Value",
+      "finalDue": "Final due date",
+      "owner": "Owner"
+    }
+  },
+  "note": {
+    "title": "Customer meeting note",
+    "prefilled": "Filled in · tap to change",
+    "customer": "Customer",
+    "contract": "Contract",
+    "choose": "Choose",
+    "noContract": "No contract",
+    "body": "Note",
+    "bodyPlaceholder": "What the customer said, needs, promised…",
+    "voice": "Speak to type",
+    "voiceHint": "Tap \"Speak\", then the microphone on the keyboard. Say something like \"Huy needs a quote for 6 DN80 valves before 20/11, remind me Friday\".",
+    "speak": "Speak",
+    "readWithAI": "Let Navo read it",
+    "photos": "Photos ({{count}})",
+    "photo": "Photo {{n}}",
+    "removePhoto": "Photo {{n}}. Long-press to remove",
+    "addPhoto": "Add photo",
+    "camera": "Take photo",
+    "library": "Choose from library",
+    "next": "Next step",
+    "taskTitle": "What to do",
+    "remind": "Remind me on",
+    "saveDraft": "Save draft",
+    "send": "Send",
+    "sendNow": "Online again — send now",
+    "needCustomer": "Choose a customer.",
+    "needBody": "Write the note.",
+    "needTask": "Enter what to do for the reminder date.",
+    "badDate": "Use day/month/year, e.g. 14/11/2026.",
+    "banner": {
+      "saved": {
+        "title": "Saved on this phone",
+        "text": "The note is on the phone and not sent yet."
+      },
+      "offline": {
+        "title": "No connection — saved on this phone",
+        "text": "Navo sends it when you are online. You can close this screen."
+      },
+      "sent": {
+        "title": "Sent",
+        "text": "The note and next step are in Navo."
+      }
+    }
   }
 }

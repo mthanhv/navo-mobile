@@ -355,6 +355,110 @@
     "owner": "Phụ trách: {{name}}",
     "signedInAs": "Đăng nhập với",
     "apiServer": "Máy chủ",
-    "webOnly": "Tạo và xác nhận chứng từ làm trên web."
+    "webOnly": "Tạo và xác nhận chứng từ làm trên web.",
+    "hello": "Xin chào, {{name}}",
+    "today": "Hôm nay",
+    "bell": "Việc cần xử lý: {{count}}",
+    "wholeCompany": "Toàn doanh nghiệp",
+    "seeAll": "Xem tất cả",
+    "kpi": {
+      "overdue": "Dòng quá hạn giao",
+      "inContracts": "ở {{count}} hợp đồng",
+      "noPlan": "Dòng chưa có kế hoạch",
+      "toDeliver": "còn phải giao",
+      "deliveries": "Đợt giao 7 ngày tới",
+      "firmTentative": "{{firm}} chắc chắn · {{tentative}} dự kiến",
+      "poWaiting": "Đơn mua chờ hàng",
+      "lateLines": "{{count}} dòng về trễ"
+    },
+    "attn": {
+      "delivery_overdue": "Còn {{remaining}} {{unit}}, trễ {{days}} ngày.",
+      "over_delivered": "Đã giao vượt {{over}} {{unit}}.",
+      "stock_short": "Đợt tới cần {{needed}}, mới có {{available}} {{unit}}.",
+      "no_plan": "Còn {{remaining}} {{unit}}, đang có sẵn {{available}}.",
+      "receipt_overdue": "Hàng chưa về theo ngày dự kiến.",
+      "over_ordered": "Đặt mua vượt {{over}} {{unit}}."
+    },
+    "weekday": {
+      "0": "CN",
+      "1": "T2",
+      "2": "T3",
+      "3": "T4",
+      "4": "T5",
+      "5": "T6",
+      "6": "T7"
+    },
+    "weekdayLong": {
+      "0": "Chủ nhật",
+      "1": "Thứ Hai",
+      "2": "Thứ Ba",
+      "3": "Thứ Tư",
+      "4": "Thứ Năm",
+      "5": "Thứ Sáu",
+      "6": "Thứ Bảy"
+    },
+    "unsent": "{{count}} ghi chú chưa gửi",
+    "open": "Mở",
+    "tasks": "Việc cần làm ({{count}})",
+    "noTasks": "Không có việc nào. Việc tiếp theo từ ghi chú sẽ hiện ở đây.",
+    "markDone": "Đánh dấu xong: {{text}}",
+    "done": "Đã xong",
+    "lateSince": "Trễ từ {{date}}",
+    "deliveriesWeek": "Giao hàng tuần này",
+    "lineCount": "{{count}} dòng",
+    "arriving": "Hàng sắp về",
+    "noArriving": "Không có hàng về trong 7 ngày tới.",
+    "forContract": "cho {{contract}} · {{customer}}",
+    "expected": "Dự kiến về {{date}}",
+    "quickNote": "Ghi nhanh",
+    "fact": {
+      "value": "Giá trị",
+      "finalDue": "Hạn giao cuối",
+      "owner": "Phụ trách"
+    }
+  },
+  "note": {
+    "title": "Ghi chú gặp khách",
+    "prefilled": "Điền sẵn · bấm để đổi",
+    "customer": "Khách hàng",
+    "contract": "Hợp đồng",
+    "choose": "Chọn",
+    "noContract": "Không gắn hợp đồng",
+    "body": "Nội dung",
+    "bodyPlaceholder": "Khách nói gì, cần gì, hẹn gì…",
+    "voice": "Nói để nhập",
+    "voiceHint": "Bấm \"Nói\" rồi bấm biểu tượng micro trên bàn phím. Nói một câu như \"Anh Huy cần báo giá 6 van DN80 trước 20/11, nhắc tôi thứ Sáu\".",
+    "speak": "Nói",
+    "readWithAI": "Navo đọc ghi chú",
+    "photos": "Ảnh ({{count}})",
+    "photo": "Ảnh {{n}}",
+    "removePhoto": "Ảnh {{n}}. Nhấn giữ để bỏ",
+    "addPhoto": "Thêm ảnh",
+    "camera": "Chụp ảnh",
+    "library": "Chọn từ thư viện",
+    "next": "Việc tiếp theo",
+    "taskTitle": "Cần làm gì",
+    "remind": "Nhắc tôi ngày",
+    "saveDraft": "Lưu nháp",
+    "send": "Gửi",
+    "sendNow": "Có mạng rồi — gửi ngay",
+    "needCustomer": "Chọn khách hàng.",
+    "needBody": "Nhập nội dung ghi chú.",
+    "needTask": "Nhập việc cần làm cho ngày nhắc.",
+    "badDate": "Ngày nhắc dạng ngày/tháng/năm, ví dụ 14/11/2026.",
+    "banner": {
+      "saved": {
+        "title": "Đã lưu trên máy",
+        "text": "Ghi chú nằm trên điện thoại, chưa gửi lên Navo."
+      },
+      "offline": {
+        "title": "Chưa có mạng — đã lưu trên máy",
+        "text": "Navo sẽ gửi khi có mạng. Bạn có thể đóng màn hình này."
+      },
+      "sent": {
+        "title": "Đã gửi",
+        "text": "Ghi chú và việc tiếp theo đã lưu vào Navo."
+      }
+    }
   }
 }

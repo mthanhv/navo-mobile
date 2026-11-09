@@ -37,5 +37,7 @@ export function useApi<T>(path: string) {
   useEffect(() => fetchData(), [fetchData]);
   useEffect(() => NetInfo.addEventListener((s) => setOffline(s.isConnected === false)), []);
 
-  return { data, fetchedAt, error, loading, refreshing, offline, reload: () => { setRefreshing(true); fetchData(); } };
+  // Stable, so screens can call it from focus effects without refetching in a loop.
+  const reload = useCallback(() => { setRefreshing(true); fetchData(); }, [fetchData]);
+  return { data, fetchedAt, error, loading, refreshing, offline, reload };
 }

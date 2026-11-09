@@ -48,16 +48,26 @@ export function setUnauthorizedHandler(fn: () => void) {
 
 const rid = () => `mobile-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 
-export async function api<T>(path: string, { method = "GET", body }: { method?: string; body?: unknown } = {}): Promise<T> {
+/** A file picked on the phone (photo), sent as multipart. */
+export type LocalFile = { uri: string; name: string; type: string };
+
+export async function upload<T>(path: string, fields: Record<string, string>, file: LocalFile): Promise<T> {
+  const form = new FormData();
+  for (const [k, v] of Object.entries(fields)) form.append(k, v);
+  form.append("file", file as unknown as Blob); // React Native's FormData takes { uri, name, type }
+  return api<T>(path, { method: "POST", form, timeoutMs: 120_000 });
+}
+
+export async function api<T>(path: string, { method = "GET", body, form, timeoutMs = TIMEOUT_MS }: { method?: string; body?: unknown; form?: FormData; timeoutMs?: number } = {}): Promise<T> {
   const requestId = rid();
   const headers: Record<string, string> = { "X-Request-ID": requestId };
   if (token) headers.Authorization = `Bearer ${token}`;
   if (body !== undefined) headers["Content-Type"] = "application/json";
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
   let res: Response;
   try {
-    res = await fetch(`${API_URL}/api/v1${path}`, { method, headers, body: body === undefined ? undefined : JSON.stringify(body), signal: controller.signal });
+    res = await fetch(`${API_URL}/api/v1${path}`, { method, headers, body: form ?? (body === undefined ? undefined : JSON.stringify(body)), signal: controller.signal });
   } catch (e) {
     throw new ApiError(0, (e as Error).name === "AbortError" ? "network.timeout" : "network.offline", (e as Error).message, undefined, undefined, [], requestId);
   } finally {
@@ -67,7 +77,8 @@ export async function api<T>(path: string, { method = "GET", body }: { method?: 
     data?: T; error_code?: string; error?: string; reason?: string; params?: Record<string, unknown>; errors?: FieldError[]; request_id?: string;
   } | null;
   if (!res.ok) {
-    if (res.status === 401 && path !== "/auth/login") onUnauthorized?.();
+    // Only a request that carried a session can find it expired.
+    if (res.status === 401 && path !== "/auth/login" && headers.Authorization) onUnauthorized?.();
     throw new ApiError(res.status, json?.error_code ?? "server.internal", json?.error ?? "", json?.reason, json?.params, json?.errors ?? [], json?.request_id ?? requestId);
   }
   return json?.data as T;

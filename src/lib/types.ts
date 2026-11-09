@@ -25,6 +25,10 @@ export type LineRow = {
   last_business_change_at: string;
 };
 
+export type Task = { id: string; title: string; due_on: string | null; customer_id: string | null; customer_name: string | null; contract_id: string | null; contract_number: string | null; done_at: string | null };
+export type Note = { id: string; client_id: string; customer_id: string; customer_name: string; contract_id: string | null; contract_number: string | null; body: string; written_at: string; author: string; tasks: Task[] };
+export type POSummary = { id: string; number: string; status: string; contract_id: string; contract_number: string; customer_name: string; supplier_name: string; lines: number; lines_fully_received: number; next_expected_on: string | null; late: boolean };
+
 export type Contract = {
   id: string;
   number: string | null;
@@ -40,6 +44,8 @@ export type Contract = {
   owner_id: string;
   owner_name: string;
   version: number;
+  value?: string;
+  final_due_on?: string | null;
   lines?: LineRow[];
   summary?: { lines: number; fully_ordered: number; fully_received: number; fully_delivered: number };
 };
@@ -99,7 +105,10 @@ export type Overview = {
   flag_counts: Record<string, number>;
   needs_action: number;
   attention: LineRow[];
-  upcoming: { id: string; number: string; contract_id: string; contract_number: string; customer_name: string; planned_on: string; firmness: "tentative" | "firm"; lines: number }[];
+  upcoming: {
+    id: string; number: string; contract_id: string; contract_number: string; customer_name: string; planned_on: string; firmness: "tentative" | "firm"; lines: number;
+    item_name: string | null; quantity: string | null; unit: string | null;
+  }[];
 };
 
 export type Organization = { id: string; code: string; name: string; is_customer: boolean; is_supplier: boolean; tax_code: string | null };

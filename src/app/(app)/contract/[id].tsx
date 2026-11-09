@@ -4,9 +4,9 @@ import { router, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useT } from "../../../lib/i18n";
 import { useApi } from "../../../lib/useApi";
-import { compareDecimal, formatDate, formatDecimal } from "../../../lib/format";
+import { compareDecimal, formatDate, formatDecimal, formatMoney } from "../../../lib/format";
 import type { Contract, Documents } from "../../../lib/types";
-import { Banner, Body, Card, ErrorBox, FlagPill, Loading, Pill, Progress, Screen, colors } from "../../../components/ui";
+import { Banner, Body, Button, Card, ErrorBox, FlagPill, Loading, Pill, Progress, Screen, colors } from "../../../components/ui";
 
 type Seg = "lines" | "pos" | "dos";
 
@@ -32,6 +32,16 @@ export default function ContractScreen() {
           <Text numberOfLines={1} style={{ fontSize: 13.5, color: colors.textSecondary }}>{c ? `${c.customer_name} · ${t(`status.${c.status}`)}` : ""}</Text>
         </View>
       </View>
+      {c && (
+        <View style={{ flexDirection: "row", gap: 6 }}>
+          {[[t("mobile.fact.value"), c.value ? formatMoney(c.value, c.currency, lang) : "—"], [t("mobile.fact.finalDue"), formatDate(c.final_due_on) || "—"], [t("mobile.fact.owner"), c.owner_name]].map(([label, value]) => (
+            <View key={label} style={{ flex: 1 }}>
+              <Text style={{ fontSize: 12, color: colors.muted }}>{label}</Text>
+              <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: "700", color: colors.text }}>{value}</Text>
+            </View>
+          ))}
+        </View>
+      )}
       {c?.summary && (
         <View style={{ flexDirection: "row", gap: 6 }}>
           {[[t("contract.stepOrder"), c.summary.fully_ordered], [t("contract.stepReceive"), c.summary.fully_received], [t("contract.stepDeliver"), c.summary.fully_delivered]].map(([label, done]) => (
@@ -115,6 +125,7 @@ export default function ContractScreen() {
           ))}
         </>
       )}
+      {c && <Button label={t("mobile.quickNote")} tone="outline" onPress={() => router.push({ pathname: "/(app)/note", params: { customer: c.customer_id, contract: c.id } })} testID="contract-note" />}
       {c && <Body muted size={12.5}>{t("mobile.webOnly")}</Body>}
     </Screen>
   );
