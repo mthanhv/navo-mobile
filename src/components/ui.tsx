@@ -72,6 +72,17 @@ export function Banner({ tone, children }: { tone: "amber" | "red"; children: Re
   );
 }
 
+/** Timestamp/error state shared by all report screens, including retained data. */
+export function DataFreshness({ data, error, fetchedAt, offline, onRetry }: { data: unknown; error: unknown; fetchedAt: Date | null; offline: boolean; onRetry: () => void }) {
+  const { t, lang } = useT();
+  const time = fetchedAt?.toLocaleString(lang === "vi" ? "vi-VN" : "en-GB") ?? "";
+  return <>
+    {data != null && fetchedAt && <Body muted size={13}>{t("common.asOf", { time })}</Body>}
+    {offline && <Banner tone="amber">{data != null ? t("mobile.offline", { time }) : t("mobile.offlineNoData")}</Banner>}
+    {error != null && <ErrorBox error={error} onRetry={onRetry} />}
+  </>;
+}
+
 export function Loading() {
   return <View style={{ padding: 32 }}><ActivityIndicator color={colors.primary} /></View>;
 }

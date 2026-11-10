@@ -83,3 +83,13 @@ export async function api<T>(path: string, { method = "GET", body, form, timeout
   }
   return json?.data as T;
 }
+
+/** Complete small selector lists; never silently drop entries after the first page. */
+export async function allPages<T>(path: string): Promise<T[]> {
+  const out: T[] = [];
+  for (let page = 1; ; page++) {
+    const result = await api<Page<T>>(`${path}${path.includes("?") ? "&" : "?"}page_size=100&page=${page}`);
+    out.push(...result.items);
+    if (page >= result.pagination.totalPages) return out;
+  }
+}

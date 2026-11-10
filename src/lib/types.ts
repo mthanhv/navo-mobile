@@ -58,6 +58,7 @@ export type POLine = {
   supplier_item_name: string | null;
   unit: string;
   quantity: string;
+  cancelled_quantity?: string;
   unit_price?: string;
   expected_on: string | null;
   received: string;
@@ -79,7 +80,7 @@ export type GoodsReceipt = {
   id: string;
   number: string;
   purchase_order_id: string;
-  status: "draft" | "confirmed";
+  status: "draft" | "confirmed" | "cancelled" | "reversed";
   received_on: string;
   lines: { purchase_order_line_id: string; contract_line_no: number; accepted_quantity: string; rejected_quantity: string }[];
 };
@@ -87,7 +88,7 @@ export type GoodsReceipt = {
 export type DeliveryOrder = {
   id: string;
   number: string;
-  status: "draft" | "confirmed";
+  status: "draft" | "confirmed" | "cancelled" | "reversed";
   planned_on: string | null;
   firmness: "tentative" | "firm";
   route: "via_company" | "direct";

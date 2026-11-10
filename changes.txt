@@ -1,0 +1,5 @@
+2026-11-11 — Field work recovery and freshness
+- Scope drafts to installation/user, quarantine unowned legacy drafts, serialize saves and retain photos in durable storage with stable upload identities/checkpoints.
+- Autosave incomplete work on edit/background/back/unmount; keep successful note immutable and resume photos without overwriting checkpoints or double-sending.
+- Label retained data stale on API failure even with internet; show independent documents errors/retry/timestamps; paginate contracts and complete selectors. Mirror new correction translations/types.
+- Add draft owner, concurrent save, upload response-loss, double-send and durable-photo Jest regressions; typecheck/lint/tests/iOS export. Native device/release E2E and remaining SDK advisory paths are explicitly unverified/outstanding.

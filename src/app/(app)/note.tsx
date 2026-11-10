@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Alert, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { Alert, AppState, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import NetInfo from "@react-native-community/netinfo";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { api, type Page } from "../../lib/api";
+import { api, allPages } from "../../lib/api";
 import { useT } from "../../lib/i18n";
 import { errorMessage } from "../../lib/errors";
 import { formatDate } from "../../lib/format";
-import { listDrafts, newDraftId, saveDraft, sendDraft, type Draft } from "../../lib/drafts";
+import { draftOwner, listDrafts, newDraftId, retainPhoto, saveDraft, sendDraft, type Draft } from "../../lib/drafts";
 import type { Contract, Organization } from "../../lib/types";
 import { Body, Button, Card, colors } from "../../components/ui";
 
@@ -26,7 +26,7 @@ export default function QuickNoteScreen() {
   const { t } = useT();
   const params = useLocalSearchParams<{ customer?: string; contract?: string; draft?: string }>();
   const [draft, setDraft] = useState<Draft>(() => ({
-    id: newDraftId(), customerId: params.customer ?? "", customerName: "", contractId: params.contract ?? null, contractNumber: null,
+    id: newDraftId(), ownerKey: draftOwner(), customerId: params.customer ?? "", customerName: "", contractId: params.contract ?? null, contractNumber: null,
     body: "", taskTitle: "", taskDue: "", photos: [], writtenAt: new Date().toISOString(),
   }));
   const [due, setDue] = useState("");
@@ -38,27 +38,54 @@ export default function QuickNoteScreen() {
   const [aiOn, setAiOn] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const bodyRef = useRef<TextInput>(null);
-  const set = (patch: Partial<Draft>) => setDraft((d) => ({ ...d, ...patch }));
+  const [restored, setRestored] = useState(!params.draft);
+  const sent = useRef(false);
+  const set = (patch: Partial<Draft>) => setDraft((d) => d.noteId ? d : ({ ...d, ...patch }));
+  // Autosave unvalidated work too: validation belongs to Send, not persistence.
+  useEffect(() => {
+    if (!restored || sent.current || busy || (!draft.body && !draft.photos.length && !draft.taskTitle)) return;
+    const timer = setTimeout(() => { void saveDraft({ ...draft, taskDue: parseDay(due) ?? due }).catch((e) => setError(errorMessage(t, e))); }, 400);
+    return () => clearTimeout(timer);
+  }, [draft, due, restored, busy, t]);
+  const latestWork = useRef({ draft, due, restored });
+  useEffect(() => { latestWork.current = { draft, due, restored }; }, [draft, due, restored]);
+  useEffect(() => {
+    const persist = () => {
+      const work = latestWork.current;
+      if (work.restored && !sent.current && (work.draft.body || work.draft.photos.length || work.draft.taskTitle)) {
+        void saveDraft({ ...work.draft, taskDue: parseDay(work.due) ?? work.due }).catch(() => undefined);
+      }
+    };
+    const subscription = AppState.addEventListener("change", (state) => { if (state !== "active") persist(); });
+    return () => { subscription.remove(); persist(); };
+  }, []);
+  const close = async () => {
+    if (!sent.current && (draft.body || draft.photos.length || draft.taskTitle)) {
+      try { await saveDraft({ ...draft, taskDue: parseDay(due) ?? due }); } catch (e) { setError(errorMessage(t, e)); return; }
+    }
+    router.back();
+  };
 
   useEffect(() => {
     void (async () => {
       if (params.draft) {
         const d = (await listDrafts()).find((x) => x.id === params.draft);
         if (d) { setDraft(d); setDue(d.taskDue ? formatDate(d.taskDue) : ""); setBanner("saved"); }
+        setRestored(true);
       }
       try {
         const [cs, ks, ai] = await Promise.all([
-          api<Page<Organization>>("/organizations?role=customer&page_size=200"),
-          api<Page<Contract>>("/contracts?tab=all&page_size=100"),
+          allPages<Organization>("/organizations?role=customer"),
+          allPages<Contract>("/contracts?tab=all"),
           api<{ enabled: boolean }>("/ai/status"),
         ]);
-        setCustomers(cs.items);
-        setContracts(ks.items);
+        setCustomers(cs);
+        setContracts(ks);
         setAiOn(ai.enabled);
         setDraft((d) => {
-          const k = ks.items.find((x) => x.id === d.contractId);
+          const k = ks.find((x) => x.id === d.contractId);
           const custId = d.customerId || k?.customer_id || "";
-          return { ...d, customerId: custId, customerName: cs.items.find((c) => c.id === custId)?.name ?? d.customerName, contractNumber: k?.number ?? d.contractNumber };
+          return { ...d, customerId: custId, customerName: cs.find((c) => c.id === custId)?.name ?? d.customerName, contractNumber: k?.number ?? d.contractNumber };
         });
       } catch {
         // Offline: the note can still be written and saved on the phone.
@@ -74,7 +101,10 @@ export default function QuickNoteScreen() {
     const res = camera ? await ImagePicker.launchCameraAsync({ quality: 0.6 }) : await ImagePicker.launchImageLibraryAsync({ quality: 0.6, mediaTypes: ["images"] });
     if (res.canceled) return;
     const a = res.assets[0];
-    set({ photos: [...draft.photos, { uri: a.uri, name: a.fileName ?? `anh-${draft.photos.length + 1}.jpg`, type: a.mimeType ?? "image/jpeg" }] });
+    try {
+      const photo = await retainPhoto(draft, { uri: a.uri, name: a.fileName ?? `anh-${draft.photos.length + 1}.jpg`, type: a.mimeType ?? "image/jpeg" });
+      set({ photos: [...draft.photos, photo] });
+    } catch (e) { setError(errorMessage(t, e)); }
   };
 
   const readWithAI = async () => {
@@ -104,27 +134,30 @@ export default function QuickNoteScreen() {
   const saveLocal = async () => {
     const d = complete();
     if (!d) return;
-    await saveDraft(d);
-    setDraft(d);
-    setBanner("saved");
+    try { await saveDraft(d); setDraft(d); setBanner("saved"); }
+    catch (e) { setError(errorMessage(t, e)); }
   };
 
   const send = async () => {
     const d = complete();
     if (!d) return;
-    await saveDraft(d); // safe on the phone before anything else
-    setDraft(d);
-    const net = await NetInfo.fetch();
-    if (net.isConnected === false) { setBanner("offline"); return; }
+    if (busy) return;
     setBusy(true);
     try {
+      await saveDraft(d); // safe on the phone before anything else
+      setDraft(d);
+      const net = await NetInfo.fetch();
+      if (net.isConnected === false) { setBanner("offline"); return; }
       await sendDraft(d);
+      sent.current = true;
       setBanner("sent");
       setTimeout(() => router.back(), 900);
     } catch (e) {
       const code = (e as { code?: string }).code ?? "";
       if (code.startsWith("network.")) setBanner("offline");
       else setError(errorMessage(t, e));
+      const current = (await listDrafts()).find((x) => x.id === d.id);
+      if (current) setDraft(current);
     } finally {
       setBusy(false);
     }
@@ -134,7 +167,7 @@ export default function QuickNoteScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={["top", "bottom"]}>
       <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 8, paddingVertical: 6, backgroundColor: colors.card, borderBottomWidth: 1, borderBottomColor: colors.divider }}>
-        <Pressable accessibilityRole="button" accessibilityLabel={t("common.close")} onPress={() => router.back()} style={{ width: 44, height: 44, alignItems: "center", justifyContent: "center" }}>
+        <Pressable accessibilityRole="button" accessibilityLabel={t("common.close")} onPress={() => void close()} style={{ width: 44, height: 44, alignItems: "center", justifyContent: "center" }}>
           <Ionicons name="chevron-back" size={26} color={colors.primary} />
         </Pressable>
         <Text accessibilityRole="header" style={{ fontSize: 18, fontWeight: "800", color: colors.text }}>{t("note.title")}</Text>
@@ -174,7 +207,7 @@ export default function QuickNoteScreen() {
 
           <View style={{ gap: 6 }}>
             <Text nativeID="note-body-label" style={{ fontSize: 15, fontWeight: "700", color: colors.text }}>{t("note.body")}</Text>
-            <TextInput ref={bodyRef} testID="note-body" accessibilityLabelledBy="note-body-label" multiline value={draft.body} onChangeText={(v) => set({ body: v })}
+            <TextInput ref={bodyRef} testID="note-body" accessibilityLabelledBy="note-body-label" editable={!draft.noteId} multiline value={draft.body} onChangeText={(v) => set({ body: v })}
               placeholder={t("note.bodyPlaceholder")} style={[input, { minHeight: 130, textAlignVertical: "top" }]} />
           </View>
 
@@ -210,9 +243,9 @@ export default function QuickNoteScreen() {
           <Card>
             <Body bold>{t("note.next")}</Body>
             <Text nativeID="note-task-label" style={{ fontSize: 14, fontWeight: "600", color: colors.text }}>{t("note.taskTitle")}</Text>
-            <TextInput testID="note-task" accessibilityLabelledBy="note-task-label" value={draft.taskTitle} onChangeText={(v) => set({ taskTitle: v })} style={input} />
+            <TextInput testID="note-task" editable={!draft.noteId} accessibilityLabelledBy="note-task-label" value={draft.taskTitle} onChangeText={(v) => set({ taskTitle: v })} style={input} />
             <Text nativeID="note-due-label" style={{ fontSize: 14, fontWeight: "600", color: colors.text }}>{t("note.remind")}</Text>
-            <TextInput testID="note-due" accessibilityLabelledBy="note-due-label" value={due} onChangeText={setDue} placeholder="dd/mm/yyyy" keyboardType="numbers-and-punctuation" style={input} />
+            <TextInput testID="note-due" editable={!draft.noteId} accessibilityLabelledBy="note-due-label" value={due} onChangeText={setDue} placeholder="dd/mm/yyyy" keyboardType="numbers-and-punctuation" style={input} />
           </Card>
         </ScrollView>
         <View style={{ flexDirection: "row", gap: 10, padding: 12, borderTopWidth: 1, borderTopColor: colors.divider, backgroundColor: colors.card }}>

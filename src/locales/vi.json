@@ -20,7 +20,8 @@
     "closeMenu": "Đóng menu",
     "moreInfo": "Xem thêm thông tin",
     "lessInfo": "Ẩn bớt",
-    "saved": "Đã lưu."
+    "saved": "Đã lưu.",
+    "confirm": "Xác nhận"
   },
   "nav": {
     "work": "Công việc",
@@ -153,7 +154,9 @@
     "cancelled": "Đã hủy",
     "confirmed": "Đã xác nhận",
     "tentative": "Dự kiến",
-    "firm": "Chắc chắn"
+    "firm": "Chắc chắn",
+    "reversed": "Đã đảo",
+    "posted": "Đã ghi sổ"
   },
   "docs": {
     "purchaseOrders": "Đơn mua (PO)",
@@ -266,13 +269,50 @@
     "grants": "Quyền đặc biệt",
     "active": "Đang hoạt động",
     "inactive": "Đã khóa",
-    "adminNote": "Quản trị tài khoản không tự có quyền xem giá mua, công nợ hay báo cáo kinh doanh.",
+    "adminNote": "Quản trị viên có mọi quyền và xem được toàn bộ dữ liệu doanh nghiệp.",
     "grant": {
       "purchase_cost_read": "Xem giá mua",
       "finance_read": "Xem công nợ",
       "quantity_override": "Duyệt vượt số lượng",
       "fulfillment_confirm": "Xác nhận nhận/giao"
-    }
+    },
+    "status": "Trạng thái",
+    "resetPassword": "Đặt lại mật khẩu",
+    "resetHint": "Đặt mật khẩu tạm, báo trực tiếp cho người dùng rồi nhắc họ đổi sau khi đăng nhập. Mọi phiên đăng nhập hiện tại của họ sẽ kết thúc.",
+    "tempPassword": "Mật khẩu tạm",
+    "resetDone": "Đã đặt lại mật khẩu cho {{name}}. Hãy báo mật khẩu tạm cho họ.",
+    "canSignIn": "Được đăng nhập",
+    "deactivateHint": "Bỏ chọn khi người này nghỉ việc: họ bị đăng xuất ngay, dữ liệu họ tạo vẫn giữ nguyên.",
+    "selfHint": "Bạn không thể tự khóa mình hoặc bỏ vai trò Quản trị của chính mình.",
+    "listTitle": "Người dùng",
+    "activeCount": "{{count}} đang hoạt động",
+    "search": "Tìm người dùng",
+    "searchPlaceholder": "Tìm theo tên hoặc email…",
+    "none": "Không có người dùng phù hợp.",
+    "lastSignIn": "đăng nhập gần nhất {{when}}",
+    "neverSignedIn": "chưa đăng nhập lần nào",
+    "rolesHint": "Một người có thể giữ nhiều vai trò. Vai trò quyết định menu và dữ liệu được thấy.",
+    "scope": "Phạm vi dữ liệu",
+    "scopeHint": "Người này thấy khách hàng, hợp đồng, đơn mua của ai (theo vai trò).",
+    "scopeOwn": "Chỉ của mình",
+    "scopeAll": "Toàn doanh nghiệp",
+    "scopeNone": "Không xem dữ liệu kinh doanh",
+    "grantsHint": "Quyền bổ sung ngoài các vai trò đã chọn. Quyền có sẵn trong vai trò luôn được bật.",
+    "sensitive": "Nhạy cảm",
+    "on": "Bật",
+    "off": "Tắt",
+    "grantNotYours": "Chỉ người đang có quyền này mới bật được cho người khác.",
+    "grantDesc": {
+      "purchase_cost_read": "Thấy đơn giá mua của nhà cung cấp trên đơn mua và file xuất.",
+      "finance_read": "Thấy phải thu, phải trả, tiền đã nhận và chưa phân bổ.",
+      "fulfillment_confirm": "Chuyển phiếu nhận/giao từ nháp sang đã xác nhận (tính vào số liệu).",
+      "quantity_override": "Duyệt đặt mua hoặc giao vượt hợp đồng. Người duyệt thấy số lượng và lý do, không thấy giá mua."
+    },
+    "account": "Tài khoản",
+    "unsaved": "Có thay đổi chưa lưu. Người dùng sẽ thấy menu mới ở lần tải trang kế tiếp.",
+    "undo": "Hoàn tác",
+    "saveChanges": "Lưu thay đổi",
+    "inheritedGrant": "Có sẵn trong các vai trò đã chọn."
   },
   "errors": {
     "generic": "Đã có lỗi. Vui lòng thử lại.",
@@ -302,7 +342,24 @@
       "purchase_order_not_confirmed": "Xác nhận đơn mua trước khi ghi hàng về.",
       "idempotency_payload_mismatch": "Thao tác này đã được gửi với nội dung khác. Đóng lại và mở lại để làm mới.",
       "assign_owner": "Bạn chỉ có thể tạo hợp đồng cho chính mình.",
-      "duplicate": "Giá trị này đã tồn tại."
+      "duplicate": "Giá trị này đã tồn tại.",
+      "idempotency_authorization_changed": "Quyền hoặc phân công đã thay đổi. Tải lại chứng từ để kiểm tra kết quả đã lưu.",
+      "version_conflict": "Dữ liệu đã thay đổi. Tải lại trước khi lưu chỉnh sửa.",
+      "reversal_has_dependents": "Đảo chứng từ hoặc phân bổ liên quan trước.",
+      "document_not_confirmed": "Chỉ đảo được chứng từ đã xác nhận.",
+      "document_not_posted": "Chỉ đảo được phiếu tiền đã ghi sổ.",
+      "invoice_has_payments": "Đảo phân bổ thanh toán trước khi hủy hóa đơn.",
+      "invoice_not_recorded": "Không thể phân bổ tiền vào hóa đơn này.",
+      "payment_not_posted": "Không thể phân bổ phiếu chi này.",
+      "acceptance_requires_delivery": "Phải giao đủ trước hoặc trong ngày nghiệm thu.",
+      "milestone_already_triggered": "Đã ghi nhận sự kiện. Điều chỉnh sự kiện cũ trước khi ghi sự kiện mới.",
+      "milestone_not_triggered": "Chưa ghi nhận sự kiện.",
+      "nothing_to_close": "Không còn lượng chờ nhận để hủy.",
+      "legacy_export_unavailable": "Lô cũ chưa lưu tệp cố định. Dùng tệp đã tải ban đầu.",
+      "export_amount_precision": "Số tiền quá lớn để xuất Excel chính xác.",
+      "archive_too_large": "Tệp ZIP vượt 500 MB. Tải từng chứng từ.",
+      "ai_daily_limit": "Đã đạt giới hạn đọc tài liệu trong ngày.",
+      "files.write": "Bạn không có quyền sửa hồ sơ chứng từ."
     }
   },
   "validation": {
@@ -460,5 +517,26 @@
         "text": "Ghi chú và việc tiếp theo đã lưu vào Navo."
       }
     }
+  },
+  "recovery": {
+    "attachmentPending": "Đã lưu nháp và mốc thanh toán. Thử lại để đính kèm tệp gốc.",
+    "finishPending": "Hoàn tất phiếu nhận đang gửi trước khi thay đổi nội dung.",
+    "discardChanges": "Bỏ các thay đổi chưa lưu?",
+    "closeOrder": "Hủy lượng còn chờ nhận",
+    "allReceipts": "Hiện tất cả phiếu thu và lịch sử",
+    "cancelInvoice": "Hủy hóa đơn",
+    "unallocated": "Chưa phân bổ: {{amount}}",
+    "accountingCorrection": "Cần điều chỉnh bên MISA",
+    "handover": "Bàn giao phụ trách",
+    "newOwner": "Người phụ trách mới",
+    "handoverHint": "Chọn hợp đồng và việc mở cần bàn giao. Giữ nguyên tác giả lịch sử.",
+    "cancelledQuantity": "Đã hủy: {{amount}}",
+    "cancelContract": "Hủy hợp đồng",
+    "closeContract": "Đóng hợp đồng",
+    "editDraft": "Sửa bản nháp"
+  },
+  "emails": {
+    "sending": "Đang gửi",
+    "unknown": "Chưa rõ đã gửi — kiểm tra trước khi gửi lại"
   }
 }

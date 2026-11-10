@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Linking, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useT } from "../../../lib/i18n";
 import { useApi } from "../../../lib/useApi";
 import { compareDecimal, formatDate, formatDecimal, formatMoney } from "../../../lib/format";
 import type { Contract, Documents } from "../../../lib/types";
-import { Banner, Body, Button, Card, ErrorBox, FlagPill, Loading, Pill, Progress, Screen, colors } from "../../../components/ui";
+import { Body, Button, Card, DataFreshness, FlagPill, Loading, Pill, Progress, Screen, colors } from "../../../components/ui";
 
 type Seg = "lines" | "pos" | "dos";
 
@@ -65,9 +65,8 @@ export default function ContractScreen() {
 
   return (
     <Screen header={header} refreshing={contract.refreshing} onRefresh={reload}>
-      {contract.offline && <Banner tone="amber">{t("mobile.offlineNoData")}</Banner>}
+      <DataFreshness {...contract} onRetry={reload} />
       {contract.loading && !c && <Loading />}
-      {contract.error != null && !c && <ErrorBox error={contract.error} onRetry={reload} />}
       {c && seg === "lines" && c.lines?.map((l) => (
         <Card key={l.contract_line_id}>
           <View style={{ flexDirection: "row", gap: 8, alignItems: "flex-start" }}>
@@ -89,15 +88,14 @@ export default function ContractScreen() {
                 : l.remaining === "0" ? <Body>—</Body> : <Pill tone="amber">{t("contract.noPlan")}</Pill>}
               <Body muted size={13}>{t("mobile.owner", { name: l.owner_name })}</Body>
             </View>
-            <Pressable accessibilityRole="button" accessibilityLabel={`${t("mobile.owner", { name: l.owner_name })}`} onPress={() => void Linking.openURL("tel:")}
-              style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: colors.primaryLight, alignItems: "center", justifyContent: "center" }}>
-              <Ionicons name="call-outline" size={20} color={colors.primary} />
-            </Pressable>
+
           </View>
         </Card>
       ))}
       {c && seg === "pos" && (
         <>
+          <DataFreshness {...docs} onRetry={docs.reload} />
+          {docs.loading && !docs.data && <Loading />}
           <Body muted size={13.5}>{t("mobile.poMeaning")}</Body>
           {docs.data?.purchase_orders.length === 0 && <Card><Body muted>{t("docs.none")}</Body></Card>}
           {docs.data?.purchase_orders.map((po) => (
@@ -113,6 +111,8 @@ export default function ContractScreen() {
       {c && seg === "dos" && (
         <>
           <Body muted size={13.5}>{t("mobile.doMeaning")}</Body>
+          <DataFreshness {...docs} onRetry={docs.reload} />
+          {docs.loading && !docs.data && <Loading />}
           {docs.data?.delivery_orders.length === 0 && <Card><Body muted>{t("docs.none")}</Body></Card>}
           {docs.data?.delivery_orders.map((d) => (
             <Card key={d.id}>

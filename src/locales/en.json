@@ -20,7 +20,8 @@
     "closeMenu": "Close menu",
     "moreInfo": "More details",
     "lessInfo": "Fewer details",
-    "saved": "Saved."
+    "saved": "Saved.",
+    "confirm": "Confirm"
   },
   "nav": {
     "work": "Work",
@@ -153,7 +154,9 @@
     "cancelled": "Cancelled",
     "confirmed": "Confirmed",
     "tentative": "Tentative",
-    "firm": "Firm"
+    "firm": "Firm",
+    "reversed": "Reversed",
+    "posted": "Posted"
   },
   "docs": {
     "purchaseOrders": "Purchase orders (PO)",
@@ -266,13 +269,50 @@
     "grants": "Special permissions",
     "active": "Active",
     "inactive": "Locked",
-    "adminNote": "Account administration does not include purchase prices, receivables or business reports.",
+    "adminNote": "Administrators have all permissions and can view all company records.",
     "grant": {
       "purchase_cost_read": "See purchase prices",
       "finance_read": "See receivables",
       "quantity_override": "Approve over-quantities",
       "fulfillment_confirm": "Confirm receipts/deliveries"
-    }
+    },
+    "status": "Status",
+    "resetPassword": "Reset password",
+    "resetHint": "Set a temporary password, tell the person directly, and remind them to change it after signing in. All their current sessions end.",
+    "tempPassword": "Temporary password",
+    "resetDone": "Password reset for {{name}}. Tell them the temporary password.",
+    "canSignIn": "Can sign in",
+    "deactivateHint": "Untick when someone leaves: they are signed out at once and the data they created stays.",
+    "selfHint": "You cannot deactivate yourself or remove your own Admin role.",
+    "listTitle": "Users",
+    "activeCount": "{{count}} active",
+    "search": "Search users",
+    "searchPlaceholder": "Search by name or email…",
+    "none": "No matching users.",
+    "lastSignIn": "last signed in {{when}}",
+    "neverSignedIn": "never signed in",
+    "rolesHint": "A person can hold several roles. Roles decide the menu and the data they see.",
+    "scope": "Data scope",
+    "scopeHint": "Whose customers, contracts and orders this person sees (from their roles).",
+    "scopeOwn": "Only their own",
+    "scopeAll": "The whole company",
+    "scopeNone": "No business data",
+    "grantsHint": "Additional permissions supplement the selected roles. Permissions included in a role remain enabled.",
+    "sensitive": "Sensitive",
+    "on": "On",
+    "off": "Off",
+    "grantNotYours": "Only someone who holds this permission can give it to others.",
+    "grantDesc": {
+      "purchase_cost_read": "Sees supplier unit prices on purchase orders and exports.",
+      "finance_read": "Sees receivables, payables, money received and unallocated.",
+      "fulfillment_confirm": "Moves receipts and deliveries from draft to confirmed (counted in figures).",
+      "quantity_override": "Approves ordering or delivering over the contract. Sees quantities and reasons, never purchase prices."
+    },
+    "account": "Account",
+    "unsaved": "Unsaved changes. The person sees the new menu the next time a page loads.",
+    "undo": "Undo",
+    "saveChanges": "Save changes",
+    "inheritedGrant": "Included in the selected roles."
   },
   "errors": {
     "generic": "Something went wrong. Please try again.",
@@ -302,7 +342,24 @@
       "purchase_order_not_confirmed": "Confirm the purchase order before recording goods.",
       "idempotency_payload_mismatch": "This action was already sent with different details. Close and reopen to refresh.",
       "assign_owner": "You can only create contracts for yourself.",
-      "duplicate": "This value already exists."
+      "duplicate": "This value already exists.",
+      "idempotency_authorization_changed": "Your permissions or assignments changed. Reload the document to check the saved outcome.",
+      "version_conflict": "This record changed. Reload it before saving your changes.",
+      "reversal_has_dependents": "Correct the dependent documents or allocations first.",
+      "document_not_confirmed": "Only confirmed documents can be reversed.",
+      "document_not_posted": "Only posted cash documents can be reversed.",
+      "invoice_has_payments": "Reverse the linked payment allocations before cancelling this invoice.",
+      "invoice_not_recorded": "This invoice cannot receive payments.",
+      "payment_not_posted": "This payment cannot be allocated.",
+      "acceptance_requires_delivery": "Acceptance requires full delivery on or before the acceptance date.",
+      "milestone_already_triggered": "An event is already recorded. Correct it before entering a new event.",
+      "milestone_not_triggered": "No event has been recorded.",
+      "nothing_to_close": "There is no outstanding quantity to cancel.",
+      "legacy_export_unavailable": "This older batch has no frozen file. Use the originally downloaded workbook.",
+      "export_amount_precision": "An amount is too large for a reliable Excel currency export.",
+      "archive_too_large": "This archive exceeds 500 MB. Download individual documents.",
+      "ai_daily_limit": "You reached your daily document-reading limit.",
+      "files.write": "You do not have permission to change document files."
     }
   },
   "validation": {
@@ -464,5 +521,26 @@
         "text": "The note and next step are in Navo."
       }
     }
+  },
+  "recovery": {
+    "attachmentPending": "The draft and payment terms are saved. Retry to attach the source file.",
+    "finishPending": "Finish the pending receipt before changing its contents.",
+    "discardChanges": "Discard your unsaved changes?",
+    "closeOrder": "Cancel outstanding quantity",
+    "allReceipts": "Show all receipts and history",
+    "cancelInvoice": "Cancel invoice",
+    "unallocated": "Unallocated: {{amount}}",
+    "accountingCorrection": "Correction required in MISA",
+    "handover": "Hand over assignments",
+    "newOwner": "New responsible person",
+    "handoverHint": "Select the contracts and open tasks to transfer. Historical authors remain unchanged.",
+    "cancelledQuantity": "Cancelled: {{amount}}",
+    "cancelContract": "Cancel contract",
+    "closeContract": "Close contract",
+    "editDraft": "Edit draft"
+  },
+  "emails": {
+    "sending": "Sending",
+    "unknown": "Delivery uncertain — check before resending"
   }
 }
