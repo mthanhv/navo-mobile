@@ -10,7 +10,7 @@ import { useApi } from "../../../lib/useApi";
 import { formatDate, formatDecimal, todayISO } from "../../../lib/format";
 import { listDrafts, sendDraft, type Draft } from "../../../lib/drafts";
 import type { LineRow, Overview, POSummary, Task } from "../../../lib/types";
-import { Banner, Body, Button, Card, ErrorBox, Loading, Pill, Screen, Title, colors } from "../../../components/ui";
+import { Body, Button, Card, DataFreshness, ErrorBox, Loading, Pill, Screen, Title, colors } from "../../../components/ui";
 
 const ACTION = ["delivery_overdue", "over_delivered", "stock_short", "no_plan", "receipt_overdue", "over_ordered"];
 
@@ -26,7 +26,7 @@ export default function HomeScreen() {
       </Screen>
     );
   }
-  const wide = !!me?.user.roles.some((r) => r === "leader" || r === "accounting");
+  const wide = !!me?.user.roles.some((r) => r === "leader" || r === "accounting" || r === "admin");
   return wide ? <LeaderHome first={first} /> : <SalesToday />;
 }
 
@@ -80,7 +80,7 @@ function LeaderHome({ first }: { first: string }) {
   return (
     <Screen refreshing={refreshing} onRefresh={reload}
       header={<Hero top={t("mobile.hello", { name: first })} title={t("mobile.tabs.overview")} bell={attention.length} sub={`${t("mobile.wholeCompany")} · ${time ? t("common.asOf", { time }) : t("mobile.pullHint")}`} />}>
-      {offline && <Banner tone="amber">{data ? t("mobile.offline", { time }) : t("mobile.offlineNoData")}</Banner>}
+      <DataFreshness data={data} error={error} fetchedAt={fetchedAt} offline={offline} onRetry={reload} />
       {offline && <Button label={t("common.retry")} tone="outline" onPress={reload} />}
       {loading && !data && <Loading />}
       {error != null && !data && <ErrorBox error={error} onRetry={reload} />}
@@ -164,7 +164,9 @@ function SalesToday() {
   return (
     <View style={{ flex: 1 }}>
       <Screen refreshing={overview.refreshing} onRefresh={reload} header={<Hero top={dateLabel} title={t("mobile.today")} bell={overview.data?.needs_action ?? 0} />}>
-        {overview.offline && <Banner tone="amber">{t("mobile.offlineNoData")}</Banner>}
+        <DataFreshness {...overview} onRetry={reload} />
+        <DataFreshness {...tasks} onRetry={tasks.reload} />
+        <DataFreshness {...pos} onRetry={pos.reload} />
         {drafts.length > 0 && (
           <Card style={{ backgroundColor: "#FFF4E0" }}>
             <Body bold>{t("mobile.unsent", { count: drafts.length })}</Body>

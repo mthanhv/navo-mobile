@@ -1,21 +1,22 @@
+import { useState } from "react";
 import { Pressable } from "react-native";
 import { router } from "expo-router";
 import { useT } from "../../../lib/i18n";
 import { useApi } from "../../../lib/useApi";
 import type { Page } from "../../../lib/api";
 import type { Contract } from "../../../lib/types";
-import { Banner, Body, Card, ErrorBox, Loading, Pill, Screen, Title } from "../../../components/ui";
+import { Body, Button, Card, DataFreshness, Loading, Pill, Screen, Title } from "../../../components/ui";
 
 /** Active contracts in the user's scope; the API decides the scope. */
 export default function ContractsScreen() {
   const { t } = useT();
-  const { data, error, loading, refreshing, offline, reload } = useApi<Page<Contract>>("/contracts?status=active&page_size=50");
+  const [page, setPage] = useState(1);
+  const { data, error, fetchedAt, loading, refreshing, offline, reload } = useApi<Page<Contract>>(`/contracts?status=active&page_size=50&page=${page}`);
   return (
     <Screen refreshing={refreshing} onRefresh={reload}>
       <Title>{t("contracts.title")}</Title>
-      {offline && <Banner tone="amber">{t("mobile.offlineNoData")}</Banner>}
+      <DataFreshness data={data} error={error} fetchedAt={fetchedAt} offline={offline} onRetry={reload} />
       {loading && !data && <Loading />}
-      {error != null && !data && <ErrorBox error={error} onRetry={reload} />}
       {data?.items.length === 0 && <Card><Body muted>{t("contracts.empty")}</Body></Card>}
       {data?.items.map((c) => (
         <Pressable key={c.id} accessibilityRole="button" onPress={() => router.push(`/(app)/contract/${c.id}`)}>
@@ -27,6 +28,8 @@ export default function ContractsScreen() {
           </Card>
         </Pressable>
       ))}
+      {page > 1 && <Button label={t("common.prev")} tone="outline" onPress={() => setPage(page - 1)} />}
+      {data && page < data.pagination.totalPages && <Button label={t("common.next")} onPress={() => setPage(page + 1)} />}
     </Screen>
   );
 }

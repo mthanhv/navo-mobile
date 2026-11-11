@@ -27,7 +27,10 @@ navo-api must be running (`make run` in ../navo-api). Demo sign-in: `lan@congty.
 - Numbers come from the API as decimal strings and are formatted without floats (same rules and
   tests as the web app).
 
-## Next
+## Field notes and verification limits
 
-Quick notes, tasks and photos with drafts kept on the phone (needs the notes/tasks API), voice input,
-push notifications.
+Quick notes, follow-up tasks and photos are implemented. Drafts are isolated by installation and user; old unowned drafts are quarantined. Photos are copied to durable app storage, and stable note/photo identities allow resumed sends. Successful note content stays immutable while remaining photos resume. Incomplete work autosaves on edits, backgrounding and leaving the screen.
+
+Contract lists paginate, and note selectors fetch all pages. An API failure marks retained values stale even if internet is connected; documents have independent loading/error/retry states. These behaviors have unit/build coverage, not current release-device acceptance. Test kill/relaunch, camera permissions, account switching and radio loss on the supported iOS/Android devices before rollout.
+
+See [review/fix status](../navo-api/docs/REMEDIATION.md). Push notifications and dedicated voice capture remain future work; dictation currently uses the device keyboard.

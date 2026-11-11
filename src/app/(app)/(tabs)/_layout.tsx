@@ -20,6 +20,7 @@ export default function TabLayout() {
     }}>
       <Tabs.Screen name="index" options={{ title: sales ? t("mobile.today") : t("mobile.tabs.overview"), tabBarButtonTestID: "tab-overview", tabBarIcon: ({ color, focused }: { color: ColorValue; focused: boolean }) => <Ionicons name={focused ? "home" : "home-outline"} size={24} color={color} /> }} />
       <Tabs.Screen name="contracts" options={{ title: t("mobile.tabs.contracts"), tabBarButtonTestID: "tab-contracts", tabBarIcon: ({ color, focused }: { color: ColorValue; focused: boolean }) => <Ionicons name={focused ? "document-text" : "document-text-outline"} size={24} color={color} />, href: can("contracts.read") ? undefined : null }} />
+      <Tabs.Screen name="orders" options={{ title: t("mobile.tabs.orders"), tabBarButtonTestID: "tab-orders", tabBarIcon: ({ color, focused }: { color: ColorValue; focused: boolean }) => <Ionicons name={focused ? "cube" : "cube-outline"} size={24} color={color} />, href: !sales && can("contracts.read") ? undefined : null }} />
       <Tabs.Screen name="account" options={{ title: t("mobile.tabs.account"), tabBarButtonTestID: "tab-account", tabBarIcon: ({ color, focused }: { color: ColorValue; focused: boolean }) => <Ionicons name={focused ? "person-circle" : "person-circle-outline"} size={24} color={color} /> }} />
     </Tabs>
   );
