@@ -399,7 +399,8 @@
     "tabs": {
       "overview": "Tổng quan",
       "contracts": "Hợp đồng",
-      "account": "Tài khoản"
+      "account": "Tài khoản",
+      "orders": "Đơn hàng"
     },
     "offline": "Không có kết nối. Đang hiện số liệu lúc {{time}}, có thể đã cũ.",
     "offlineNoData": "Không có kết nối. Kéo xuống để thử lại khi có mạng.",
@@ -476,6 +477,21 @@
       "value": "Giá trị",
       "finalDue": "Hạn giao cuối",
       "owner": "Phụ trách"
+    },
+    "orders": {
+      "title": "Đơn mua và đợt giao",
+      "awaiting": "Chờ hàng về",
+      "planned": "Đợt giao dự kiến",
+      "noneAwaiting": "Không có đơn mua nào đang chờ hàng.",
+      "nonePlanned": "Chưa có đợt giao nào được lên lịch.",
+      "received": "Đã nhận {{done}}/{{total}} dòng",
+      "late": "Hàng về trễ · dự kiến {{date}}",
+      "eta": "Dự kiến {{date}}",
+      "noEta": "Chưa có ngày hàng về",
+      "lines_one": "{{count}} dòng",
+      "lines_other": "{{count}} dòng",
+      "overdue": "quá hạn",
+      "noDate": "Chưa có ngày"
     }
   },
   "note": {

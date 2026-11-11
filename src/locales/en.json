@@ -399,7 +399,8 @@
     "tabs": {
       "overview": "Overview",
       "contracts": "Contracts",
-      "account": "Account"
+      "account": "Account",
+      "orders": "Orders"
     },
     "offline": "No connection. Showing figures from {{time}}; they may be out of date.",
     "offlineNoData": "No connection. Pull down to retry when online.",
@@ -480,6 +481,21 @@
       "value": "Value",
       "finalDue": "Final due date",
       "owner": "Owner"
+    },
+    "orders": {
+      "title": "Orders and deliveries",
+      "awaiting": "Awaiting goods",
+      "planned": "Planned deliveries",
+      "noneAwaiting": "No purchase order is waiting for goods.",
+      "nonePlanned": "No delivery is planned.",
+      "received": "{{done}}/{{total}} lines received",
+      "late": "Goods late · expected {{date}}",
+      "eta": "Expected {{date}}",
+      "noEta": "No expected date yet",
+      "lines_one": "{{count}} line",
+      "lines_other": "{{count}} lines",
+      "overdue": "overdue",
+      "noDate": "No date yet"
     }
   },
   "note": {

@@ -27,6 +27,10 @@ export type LineRow = {
 
 export type Task = { id: string; title: string; due_on: string | null; customer_id: string | null; customer_name: string | null; contract_id: string | null; contract_number: string | null; done_at: string | null };
 export type Note = { id: string; client_id: string; customer_id: string; customer_name: string; contract_id: string | null; contract_number: string | null; body: string; written_at: string; author: string; tasks: Task[] };
+export type DOSummary = {
+  id: string; number: string; status: string; contract_id: string; contract_number: string; customer_name: string;
+  planned_on: string | null; firmness: "tentative" | "firm"; delivered_on: string | null; lines: number; overdue: boolean;
+};
 export type POSummary = { id: string; number: string; status: string; contract_id: string; contract_number: string; customer_name: string; supplier_name: string; lines: number; lines_fully_received: number; next_expected_on: string | null; late: boolean };
 
 export type Contract = {
