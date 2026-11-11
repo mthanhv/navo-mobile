@@ -7,7 +7,8 @@ type Session = {
   me: Me | null;
   ready: boolean;
   can: (permission: string) => boolean;
-  login: (email: string, password: string) => Promise<void>;
+  /** `code` is the authenticator or recovery code when the account uses two-step sign-in. */
+  login: (email: string, password: string, code?: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -31,8 +32,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       .finally(() => setReady(true));
   }, [clear]);
 
-  const login = useCallback(async (email: string, password: string) => {
-    const res = await api<{ token: string }>("/auth/login", { method: "POST", body: { email, password, client: "mobile" } });
+  const login = useCallback(async (email: string, password: string, code?: string) => {
+    // Six digits is an authenticator code; anything else is a one-time recovery code.
+    const second = !code ? {} : /^\d{6}$/.test(code.replace(/\s/g, "")) ? { code } : { recovery_code: code };
+    const res = await api<{ token: string }>("/auth/login", { method: "POST", body: { email, password, client: "mobile", ...second } });
     await saveToken(res.token);
     const m = await api<Me>("/me");
     setDraftOwner(m.user.id);

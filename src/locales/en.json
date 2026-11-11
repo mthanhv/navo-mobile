@@ -45,7 +45,9 @@
     "subtitle": "Track contracts, purchase orders and deliveries.",
     "email": "Email",
     "password": "Password",
-    "submit": "Sign in"
+    "submit": "Sign in",
+    "code": "Two-step code",
+    "codeHint": "The 6-digit code from your authenticator app, or a recovery code."
   },
   "overview": {
     "greeting": "Hello {{name}}",
@@ -359,7 +361,9 @@
       "export_amount_precision": "An amount is too large for a reliable Excel currency export.",
       "archive_too_large": "This archive exceeds 500 MB. Download individual documents.",
       "ai_daily_limit": "You reached your daily document-reading limit.",
-      "files.write": "You do not have permission to change document files."
+      "files.write": "You do not have permission to change document files.",
+      "invalid_mfa_code": "The code is wrong or has expired. Try the next code.",
+      "mfa_enrollment_required": "Turn on two-step sign-in on the web first."
     }
   },
   "validation": {

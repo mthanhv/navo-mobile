@@ -45,7 +45,9 @@
     "subtitle": "Theo dõi hợp đồng, đơn mua và giao hàng.",
     "email": "Email",
     "password": "Mật khẩu",
-    "submit": "Đăng nhập"
+    "submit": "Đăng nhập",
+    "code": "Mã hai bước",
+    "codeHint": "Mã 6 số từ ứng dụng xác thực, hoặc một mã khôi phục."
   },
   "overview": {
     "greeting": "Chào {{name}}",
@@ -359,7 +361,9 @@
       "export_amount_precision": "Số tiền quá lớn để xuất Excel chính xác.",
       "archive_too_large": "Tệp ZIP vượt 500 MB. Tải từng chứng từ.",
       "ai_daily_limit": "Đã đạt giới hạn đọc tài liệu trong ngày.",
-      "files.write": "Bạn không có quyền sửa hồ sơ chứng từ."
+      "files.write": "Bạn không có quyền sửa hồ sơ chứng từ.",
+      "invalid_mfa_code": "Mã sai hoặc đã hết hạn. Hãy thử mã kế tiếp.",
+      "mfa_enrollment_required": "Hãy bật đăng nhập hai bước trên web trước."
     }
   },
   "validation": {
