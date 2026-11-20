@@ -1,7 +1,7 @@
 # navo-mobile
 
 Expo (SDK 57, expo-router) app for Navo, one app with content by role (REQUIREMENTS 9.3):
-leadership and sales see the overview, contracts and each contract down to its lines, purchase
+admin, accounting, delivery and sales see the overview, contracts and each contract down to its lines, purchase
 orders and deliveries (three separate tabs, AC-21). Creating and confirming documents is on the web.
 
 ## Run
@@ -12,7 +12,7 @@ npm install
 npx expo start            # press i for the iOS simulator, a for Android, or scan with Expo Go
 ```
 
-navo-api must be running (`make run` in ../navo-api). Demo sign-in: `lan@congty.vn` (leader) or
+navo-api must be running (`make run` in ../navo-api). Demo sign-in: `tuan@congty.vn` (delivery) or
 `khoa@congty.vn` (sales), password from `make seed`.
 
 ## Check

@@ -36,7 +36,7 @@
   },
   "roles": {
     "sales": "Sales",
-    "leader": "Lãnh đạo",
+    "delivery": "Giao nhận",
     "accounting": "Kế toán",
     "admin": "Quản trị"
   },

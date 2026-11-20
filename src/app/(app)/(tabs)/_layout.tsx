@@ -9,7 +9,7 @@ import { colors } from "../../../components/ui";
 export default function TabLayout() {
   const { t } = useT();
   const { can, me } = useSession();
-  const sales = !me?.user.roles.some((r) => r === "leader" || r === "accounting") && can("contracts.read");
+  const sales = !me?.user.roles.some((r) => r === "accounting") && can("contracts.read");
   return (
     <Tabs screenOptions={{
       headerShown: false,

@@ -14,7 +14,7 @@ import { Body, Button, Card, DataFreshness, ErrorBox, Loading, Pill, Screen, Tit
 
 const ACTION = ["delivery_overdue", "over_delivered", "stock_short", "no_plan", "receipt_overdue", "over_ordered"];
 
-/** Home: Sales see "Hôm nay" (tasks, deliveries, goods arriving); leaders the company overview (mockups MSalesToday / MLeader). */
+/** Home: Sales and Delivery see "Hôm nay" (tasks, deliveries, goods arriving); accounting and admin the company overview (mockups MSalesToday / MLeader). */
 export default function HomeScreen() {
   const { t } = useT();
   const { me, can } = useSession();
@@ -26,7 +26,7 @@ export default function HomeScreen() {
       </Screen>
     );
   }
-  const wide = !!me?.user.roles.some((r) => r === "leader" || r === "accounting" || r === "admin");
+  const wide = !!me?.user.roles.some((r) => r === "accounting" || r === "admin");
   return wide ? <LeaderHome first={first} /> : <SalesToday />;
 }
 

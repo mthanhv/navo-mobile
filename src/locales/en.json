@@ -36,7 +36,7 @@
   },
   "roles": {
     "sales": "Sales",
-    "leader": "Leadership",
+    "delivery": "Delivery",
     "accounting": "Accounting",
     "admin": "Admin"
   },
