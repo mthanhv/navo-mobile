@@ -7,3 +7,4 @@ android/
 .env
 .env.local
 *.log
+/changes.txt
