@@ -423,7 +423,10 @@
       "nothing_to_schedule": "Every visit of this line is already done or planned.",
       "receipt_cancelled": "This payment was cancelled.",
       "try_again": "Please try again.",
-      "visit_not_planned": "Only a visit not done yet can be changed."
+      "visit_not_planned": "Only a visit not done yet can be changed.",
+      "tax_lookup_off": "Looking up tax codes is turned off.",
+      "tax_code_not_found": "No company is registered with tax code {{tax_code}}.",
+      "tax_lookup_unavailable": "The tax code register cannot be reached right now. Fill in the details by hand."
     }
   },
   "validation": {

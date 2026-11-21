@@ -423,7 +423,10 @@
       "nothing_to_schedule": "Mọi lần dịch vụ của dòng này đã làm hoặc đã lên lịch.",
       "receipt_cancelled": "Phiếu thu này đã hủy.",
       "try_again": "Vui lòng thử lại.",
-      "visit_not_planned": "Chỉ sửa được lần dịch vụ chưa làm."
+      "visit_not_planned": "Chỉ sửa được lần dịch vụ chưa làm.",
+      "tax_lookup_off": "Chức năng tra cứu mã số thuế đang tắt.",
+      "tax_code_not_found": "Không có doanh nghiệp nào đăng ký mã số thuế {{tax_code}}.",
+      "tax_lookup_unavailable": "Hiện không kết nối được cơ sở dữ liệu mã số thuế. Vui lòng tự điền thông tin."
     }
   },
   "validation": {
