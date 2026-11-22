@@ -12,6 +12,7 @@ import { formatDate } from "../../lib/format";
 import { draftOwner, listDrafts, newDraftId, retainPhoto, saveDraft, sendDraft, type Draft } from "../../lib/drafts";
 import type { Contract, Organization } from "../../lib/types";
 import { Body, Button, Card, colors } from "../../components/ui";
+import { EarlierNotes } from "../../components/EarlierNotes";
 
 /** dd/mm/yyyy (or yyyy-mm-dd) typed by a person → yyyy-mm-dd, or null. */
 function parseDay(s: string): string | null {
@@ -247,6 +248,7 @@ export default function QuickNoteScreen() {
             <Text nativeID="note-due-label" style={{ fontSize: 14, fontWeight: "600", color: colors.text }}>{t("note.remind")}</Text>
             <TextInput testID="note-due" editable={!draft.noteId} accessibilityLabelledBy="note-due-label" value={due} onChangeText={setDue} placeholder="dd/mm/yyyy" keyboardType="numbers-and-punctuation" style={input} />
           </Card>
+          {!!draft.customerId && <EarlierNotes key={draft.customerId} customerId={draft.customerId} />}
         </ScrollView>
         <View style={{ flexDirection: "row", gap: 10, padding: 12, borderTopWidth: 1, borderTopColor: colors.divider, backgroundColor: colors.card }}>
           <View style={{ flex: 1 }}><Button label={t("note.saveDraft")} tone="outline" onPress={() => void saveLocal()} testID="note-save" /></View>

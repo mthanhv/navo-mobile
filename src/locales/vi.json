@@ -658,5 +658,14 @@
   "emails": {
     "sending": "Đang gửi",
     "unknown": "Chưa rõ đã gửi — kiểm tra trước khi gửi lại"
+  },
+  "fieldNotes": {
+    "title": "Ghi chú gặp khách",
+    "empty": "Chưa có ghi chú.",
+    "all": "Xem cả {{count}}",
+    "fewer": "Thu gọn",
+    "next": "Việc tiếp theo",
+    "done": "đã xong",
+    "draftContract": "Hợp đồng nháp"
   }
 }
