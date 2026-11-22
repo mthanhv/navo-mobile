@@ -10,3 +10,7 @@ Expo app. Check: `npm run typecheck && npm run lint && npm test && npm run bundl
   together. Never compute KPIs or flags on the phone: they come from the API.
 - UI primitives in `src/components/ui.tsx` (Lova Driver tokens: ≥16 px body text, ≥44 px targets,
   icon + text for status).
+
+## Change summaries
+
+After each completed task, append one short sentence summarizing the changes to this repository’s `changes.txt` for a later Git commit; preserve existing entries.
