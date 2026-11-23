@@ -38,7 +38,8 @@
     "sales": "Sales",
     "delivery": "Giao nhận",
     "accounting": "Kế toán",
-    "admin": "Quản trị"
+    "admin": "Quản trị",
+    "sales_manager": "Quản lý kinh doanh"
   },
   "login": {
     "title": "Đăng nhập Navo",
@@ -335,7 +336,7 @@
     "reasons": {
       "invalid_credentials": "Email hoặc mật khẩu không đúng.",
       "contract_not_draft": "Chỉ hợp đồng nháp mới kích hoạt được.",
-      "contract_not_active": "Kích hoạt hợp đồng trước khi đặt mua hoặc giao hàng.",
+      "contract_not_active": "Hợp đồng không ở trạng thái đang thực hiện. Hãy kích hoạt hoặc mở lại trước khi đặt hàng, nhận, giao hoặc điều chỉnh.",
       "document_not_draft": "Chứng từ này đã được xác nhận.",
       "quantity_exceeds_contract": "Dòng {{line_no}}: đặt vượt hợp đồng (hợp đồng {{contract_quantity}}, đã đặt {{already_ordered}}, đặt thêm {{requested}}). Đơn được giữ ở dạng nháp; cần Admin duyệt.",
       "receipt_exceeds_ordered": "Dòng {{line_no}}: hàng đạt vượt số đã đặt (đặt {{ordered}}, đã nhận {{already_received}}).",
@@ -426,7 +427,13 @@
       "visit_not_planned": "Chỉ sửa được lần dịch vụ chưa làm.",
       "tax_lookup_off": "Chức năng tra cứu mã số thuế đang tắt.",
       "tax_code_not_found": "Không có doanh nghiệp nào đăng ký mã số thuế {{tax_code}}.",
-      "tax_lookup_unavailable": "Hiện không kết nối được cơ sở dữ liệu mã số thuế. Vui lòng tự điền thông tin."
+      "tax_lookup_unavailable": "Hiện không kết nối được cơ sở dữ liệu mã số thuế. Vui lòng tự điền thông tin.",
+      "purchase_order_open": "Vẫn còn hàng đang đặt với nhà cung cấp. Hãy đóng phần còn lại của đơn mua trước.",
+      "amendment_empties_contract": "Phụ lục không thể đưa mọi dòng về 0. Hãy huỷ hợp đồng thay vào đó.",
+      "before_cutover": "Ngày này từ ngày chốt số dư trở về trước nên đã nằm trong số dư đầu kỳ. Hãy dùng ngày sau đó.",
+      "opening_debt": "Đây là hóa đơn cũ từ số dư đầu kỳ, không phải hợp đồng đang làm.",
+      "opening_already_imported": "Số dư đầu kỳ đã được nhập.",
+      "purchase_order_not_open": "Đơn mua này không còn chờ hàng về."
     }
   },
   "validation": {
@@ -493,7 +500,8 @@
     "edit_contacts_separately": "Sửa người liên hệ trong danh sách liên hệ.",
     "edit_terms_separately": "Sửa mốc thanh toán ở trang hợp đồng.",
     "service_line": "Dòng dịch vụ được thực hiện bằng lần dịch vụ, không giao hàng.",
-    "whole_amount": "Số tiền {{currency}} là số nguyên (không có phần lẻ)."
+    "whole_amount": "Số tiền {{currency}} là số nguyên (không có phần lẻ).",
+    "paid_term_trigger": "Đợt này đã thu tiền ({{paid}}). Hãy huỷ phân bổ trước khi đổi điều kiện đến hạn."
   },
   "mobile": {
     "tabs": {
@@ -592,7 +600,8 @@
       "lines_other": "{{count}} dòng",
       "overdue": "quá hạn",
       "noDate": "Chưa có ngày"
-    }
+    },
+    "twoStepRequired": "Tài khoản của bạn cần bật đăng nhập hai bước trước khi dùng Navo. Hãy cài đặt trên bản web (Tài khoản → Đăng nhập hai bước), rồi đăng nhập lại tại đây."
   },
   "note": {
     "title": "Ghi chú gặp khách",

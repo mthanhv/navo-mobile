@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import NetInfo from "@react-native-community/netinfo";
 import { api, type Page } from "../../../lib/api";
 import { useSession } from "../../../lib/session";
+import { homeIsToday } from "../../../lib/roles";
 import { useT } from "../../../lib/i18n";
 import { useApi } from "../../../lib/useApi";
 import { formatDate, formatDecimal, todayISO } from "../../../lib/format";
@@ -26,8 +27,7 @@ export default function HomeScreen() {
       </Screen>
     );
   }
-  const wide = !!me?.user.roles.some((r) => r === "accounting" || r === "admin");
-  return wide ? <LeaderHome first={first} /> : <SalesToday />;
+  return me && homeIsToday(me.user.roles) ? <SalesToday /> : <LeaderHome first={first} />;
 }
 
 function Hero({ top, title, sub, bell }: { top: string; title: string; sub?: string; bell?: number }) {

@@ -3,6 +3,7 @@ import { Pressable, Text, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useT } from "../../../lib/i18n";
+import { useSession } from "../../../lib/session";
 import { useApi } from "../../../lib/useApi";
 import { compareDecimal, formatDate, formatDecimal, formatMoney } from "../../../lib/format";
 import type { Contract, Documents } from "../../../lib/types";
@@ -14,6 +15,7 @@ type Seg = "lines" | "pos" | "dos";
 export default function ContractScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t, lang } = useT();
+  const { can } = useSession();
   const contract = useApi<Contract>(`/contracts/${id}`);
   const docs = useApi<Documents>(`/contracts/${id}/documents`);
   const [seg, setSeg] = useState<Seg>("lines");
@@ -125,7 +127,7 @@ export default function ContractScreen() {
           ))}
         </>
       )}
-      {c && <Button label={t("mobile.quickNote")} tone="outline" onPress={() => router.push({ pathname: "/(app)/note", params: { customer: c.customer_id, contract: c.id } })} testID="contract-note" />}
+      {c && can("contracts.write") && <Button label={t("mobile.quickNote")} tone="outline" onPress={() => router.push({ pathname: "/(app)/note", params: { customer: c.customer_id, contract: c.id } })} testID="contract-note" />}
       {c && <Body muted size={12.5}>{t("mobile.webOnly")}</Body>}
     </Screen>
   );

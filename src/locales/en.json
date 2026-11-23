@@ -38,7 +38,8 @@
     "sales": "Sales",
     "delivery": "Delivery",
     "accounting": "Accounting",
-    "admin": "Admin"
+    "admin": "Admin",
+    "sales_manager": "Sales manager"
   },
   "login": {
     "title": "Sign in to Navo",
@@ -335,7 +336,7 @@
     "reasons": {
       "invalid_credentials": "Email or password is incorrect.",
       "contract_not_draft": "Only a draft contract can be activated.",
-      "contract_not_active": "Activate the contract before ordering or delivering.",
+      "contract_not_active": "This contract is not active. Activate or reopen it before ordering, receiving, delivering or correcting.",
       "document_not_draft": "This document is already confirmed.",
       "quantity_exceeds_contract": "Line {{line_no}}: over the contract (contract {{contract_quantity}}, ordered {{already_ordered}}, adding {{requested}}). The PO stays a draft; Admin approval is needed.",
       "receipt_exceeds_ordered": "Line {{line_no}}: accepted goods exceed the quantity ordered (ordered {{ordered}}, already received {{already_received}}).",
@@ -426,7 +427,13 @@
       "visit_not_planned": "Only a visit not done yet can be changed.",
       "tax_lookup_off": "Looking up tax codes is turned off.",
       "tax_code_not_found": "No company is registered with tax code {{tax_code}}.",
-      "tax_lookup_unavailable": "The tax code register cannot be reached right now. Fill in the details by hand."
+      "tax_lookup_unavailable": "The tax code register cannot be reached right now. Fill in the details by hand.",
+      "purchase_order_open": "Goods are still on order. Close the outstanding purchase-order quantities first.",
+      "amendment_empties_contract": "An amendment cannot set every line to zero. Cancel the contract instead.",
+      "before_cutover": "This date is on or before the opening cut-over, so it is already in the opening balances. Use a later date.",
+      "opening_debt": "This is an old invoice from the opening balances, not a working contract.",
+      "opening_already_imported": "Opening balances were already imported.",
+      "purchase_order_not_open": "This purchase order is no longer waiting for goods."
     }
   },
   "validation": {
@@ -493,7 +500,8 @@
     "edit_contacts_separately": "Edit contacts in the contacts list.",
     "edit_terms_separately": "Edit payment milestones on the contract page.",
     "service_line": "Service lines are done by service visits, not deliveries.",
-    "whole_amount": "{{currency}} amounts are whole numbers (no decimals)."
+    "whole_amount": "{{currency}} amounts are whole numbers (no decimals).",
+    "paid_term_trigger": "Money was already collected on this term ({{paid}}). Reverse those allocations before changing what makes it due."
   },
   "mobile": {
     "tabs": {
@@ -596,7 +604,8 @@
       "lines_other": "{{count}} lines",
       "overdue": "overdue",
       "noDate": "No date yet"
-    }
+    },
+    "twoStepRequired": "Your account must turn on two-step sign-in before using Navo. Set it up on the web (Account → Two-step sign-in), then sign in here again."
   },
   "note": {
     "title": "Customer meeting note",

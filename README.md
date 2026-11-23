@@ -1,8 +1,11 @@
 # navo-mobile
 
-Expo (SDK 57, expo-router) app for Navo, one app with content by role (REQUIREMENTS 9.3):
-admin, accounting, delivery and sales see the overview, contracts and each contract down to its lines, purchase
-orders and deliveries (three separate tabs, AC-21). Creating and confirming documents is on the web.
+Expo (SDK 57, expo-router) app for Navo, one app with content by role: sellers (sales, sales
+manager) start on "Today" (tasks, note drafts, goods awaited); delivery, accounting and admin start on
+the company overview and get the Orders tab (sales managers too). Everyone who reads contracts sees
+each contract down to its lines, purchase orders and deliveries. On the phone you write field notes,
+tasks and photos; creating and confirming documents and money is on the web. Details:
+[docs/BUSINESS_LOGIC.md](docs/BUSINESS_LOGIC.md); rules: `../navo-api/docs/BUSINESS_RULES.md`.
 
 ## Run
 
