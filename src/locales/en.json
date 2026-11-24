@@ -148,7 +148,8 @@
     "over_ordered": "Over-ordered",
     "under_ordered": "Not fully ordered",
     "completed": "Fully delivered",
-    "on_track": "On track"
+    "on_track": "On track",
+    "plan_overdue": "Plan date passed"
   },
   "status": {
     "draft": "Draft",
@@ -433,7 +434,21 @@
       "before_cutover": "This date is on or before the opening cut-over, so it is already in the opening balances. Use a later date.",
       "opening_debt": "This is an old invoice from the opening balances, not a working contract.",
       "opening_already_imported": "Opening balances were already imported.",
-      "purchase_order_not_open": "This purchase order is no longer waiting for goods."
+      "purchase_order_not_open": "This purchase order is no longer waiting for goods.",
+      "approval_required": "This change needs approval from a sales manager or admin.",
+      "change_already_pending": "A request of this kind is already waiting for approval.",
+      "change_self_decision": "Another sales manager or admin must decide your own request.",
+      "change_already_decided": "This request has already been decided.",
+      "quotation_in_contract": "A draft contract was made from this quotation. Change or delete the draft first.",
+      "quotation_expired": "This quotation is past its validity date. Change the date before sending it.",
+      "lead_lost": "This lead was marked lost. Reopen it before quoting.",
+      "opening_document": "This document is part of the opening balances reconciled with MISA. Correct it in MISA instead.",
+      "acceptance_invoiced": "An invoice was issued for a term due on acceptance. Cancel it first.",
+      "amendment_below_invoiced": "The contract would be worth less than what was already invoiced.",
+      "delivered_before_received": "On that date not enough goods had been received. Check the delivery and receipt dates.",
+      "deduction_reversed": "This penalty was already reversed.",
+      "confirmed_line_immutable": "A confirmed document's lines do not change; correct it with a reversal.",
+      "change_not_applied": "The change could not be applied."
     }
   },
   "validation": {
@@ -501,7 +516,11 @@
     "edit_terms_separately": "Edit payment milestones on the contract page.",
     "service_line": "Service lines are done by service visits, not deliveries.",
     "whole_amount": "{{currency}} amounts are whole numbers (no decimals).",
-    "paid_term_trigger": "Money was already collected on this term ({{paid}}). Reverse those allocations before changing what makes it due."
+    "paid_term_trigger": "Money was already collected on this term ({{paid}}). Reverse those allocations before changing what makes it due.",
+    "exceeds_term": "More than the term leaves to invoice ({{left}}).",
+    "exceeds_contract": "More than the contract leaves ({{left}}).",
+    "before_issued": "Cannot be before the issue date.",
+    "acceptance_only": "Only an acceptance can carry a penalty."
   },
   "mobile": {
     "tabs": {
@@ -680,5 +699,13 @@
     "next": "Next",
     "done": "done",
     "draftContract": "Draft contract"
+  },
+  "money": {
+    "termStatus": {
+      "wait": "Waiting for its event",
+      "to_invoice": "To invoice",
+      "invoiced": "Invoiced",
+      "paid": "Paid"
+    }
   }
 }

@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useT } from "../../../lib/i18n";
 import { useSession } from "../../../lib/session";
 import { useApi } from "../../../lib/useApi";
-import { compareDecimal, formatDate, formatDecimal, formatMoney } from "../../../lib/format";
+import { formatDate, formatDecimal, formatMoney } from "../../../lib/format";
 import type { Contract, Documents } from "../../../lib/types";
 import { Body, Button, Card, DataFreshness, FlagPill, Loading, Pill, Progress, Screen, colors } from "../../../components/ui";
 
@@ -105,7 +105,7 @@ export default function ContractScreen() {
               <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}><Pill tone="blue">{t("mobile.poLabel")}</Pill><Body bold>{po.number}</Body></View>
               <Body>{po.supplier_name}</Body>
               {po.lines.map((pl) => <Body key={pl.id} muted size={13.5}>{t("contracts.colLine")} {pl.contract_line_no} · {t("docs.receivedOf", { received: n(pl.received), ordered: n(pl.quantity) })} {pl.unit}{pl.expected_on ? ` · ETA ${formatDate(pl.expected_on)}` : ""}</Body>)}
-              <Pill tone={po.status === "confirmed" ? (po.lines.every((pl) => compareDecimal(pl.received, pl.quantity) >= 0) ? "green" : "blue") : "gray"}>{t(`status.${po.status}`)}</Pill>
+              <Pill tone={po.status === "confirmed" ? (po.fully_received ? "green" : "blue") : "gray"}>{t(`status.${po.status}`)}</Pill>
             </Card>
           ))}
         </>

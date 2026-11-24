@@ -148,7 +148,8 @@
     "over_ordered": "Đặt mua vượt",
     "under_ordered": "Chưa đặt mua đủ",
     "completed": "Đã giao đủ",
-    "on_track": "Đúng tiến độ"
+    "on_track": "Đúng tiến độ",
+    "plan_overdue": "Quá ngày dự kiến giao"
   },
   "status": {
     "draft": "Nháp",
@@ -433,7 +434,21 @@
       "before_cutover": "Ngày này từ ngày chốt số dư trở về trước nên đã nằm trong số dư đầu kỳ. Hãy dùng ngày sau đó.",
       "opening_debt": "Đây là hóa đơn cũ từ số dư đầu kỳ, không phải hợp đồng đang làm.",
       "opening_already_imported": "Số dư đầu kỳ đã được nhập.",
-      "purchase_order_not_open": "Đơn mua này không còn chờ hàng về."
+      "purchase_order_not_open": "Đơn mua này không còn chờ hàng về.",
+      "approval_required": "Thay đổi này cần trưởng phòng kinh doanh hoặc quản trị viên duyệt.",
+      "change_already_pending": "Đã có một đề nghị loại này đang chờ duyệt.",
+      "change_self_decision": "Đề nghị của chính bạn phải do người khác duyệt.",
+      "change_already_decided": "Đề nghị này đã được quyết định.",
+      "quotation_in_contract": "Báo giá này đã được lập hợp đồng nháp. Sửa hoặc xoá hợp đồng nháp trước.",
+      "quotation_expired": "Báo giá đã hết hiệu lực. Đổi ngày hiệu lực trước khi gửi.",
+      "lead_lost": "Khách tiềm năng này đã đánh dấu mất. Mở lại trước khi báo giá.",
+      "opening_document": "Chứng từ thuộc số dư đầu kỳ đã đối chiếu với MISA. Hãy điều chỉnh trên MISA.",
+      "acceptance_invoiced": "Đã xuất hoá đơn cho đợt thanh toán sau nghiệm thu. Huỷ hoá đơn trước.",
+      "amendment_below_invoiced": "Giá trị hợp đồng sẽ thấp hơn số đã xuất hoá đơn.",
+      "delivered_before_received": "Đến ngày đó chưa nhận đủ hàng. Kiểm tra lại ngày giao và ngày nhận.",
+      "deduction_reversed": "Khoản phạt này đã được huỷ.",
+      "confirmed_line_immutable": "Dòng của chứng từ đã xác nhận không sửa được; hãy đảo chứng từ.",
+      "change_not_applied": "Không áp dụng được thay đổi."
     }
   },
   "validation": {
@@ -501,7 +516,11 @@
     "edit_terms_separately": "Sửa mốc thanh toán ở trang hợp đồng.",
     "service_line": "Dòng dịch vụ được thực hiện bằng lần dịch vụ, không giao hàng.",
     "whole_amount": "Số tiền {{currency}} là số nguyên (không có phần lẻ).",
-    "paid_term_trigger": "Đợt này đã thu tiền ({{paid}}). Hãy huỷ phân bổ trước khi đổi điều kiện đến hạn."
+    "paid_term_trigger": "Đợt này đã thu tiền ({{paid}}). Hãy huỷ phân bổ trước khi đổi điều kiện đến hạn.",
+    "exceeds_term": "Vượt phần đợt còn lại chưa xuất hoá đơn ({{left}}).",
+    "exceeds_contract": "Vượt phần hợp đồng còn lại ({{left}}).",
+    "before_issued": "Không được trước ngày xuất hoá đơn.",
+    "acceptance_only": "Chỉ biên bản nghiệm thu mới có khoản phạt."
   },
   "mobile": {
     "tabs": {
@@ -676,5 +695,13 @@
     "next": "Việc tiếp theo",
     "done": "đã xong",
     "draftContract": "Hợp đồng nháp"
+  },
+  "money": {
+    "termStatus": {
+      "wait": "Chờ sự kiện",
+      "to_invoice": "Cần xuất hoá đơn",
+      "invoiced": "Đã xuất hoá đơn",
+      "paid": "Đã thu đủ"
+    }
   }
 }

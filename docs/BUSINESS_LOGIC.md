@@ -36,6 +36,7 @@ pull to refresh. Contract details and documents load and fail independently.
 ## Shared with the web
 
 `src/lib/format.ts`, `types.ts`, `contractText.ts` are ports of the web files and the locale keys
-are shared (`src/locales`, both languages). Known drift (review 2026-11-24, item 20): mobile types
-lack several contract fields and acceptance/return/amendment documents; the home screen still counts
-overdue contracts and "fully received" POs itself (item 19) — to be moved to the API.
+are shared (`src/locales`, both languages). Since 24 November the shared types and
+helpers match the web, and the home screen's figures (contracts with late deliveries, firm/tentative
+deliveries, goods arriving this week, a PO fully received) come from the API. Delivery sees no prices
+(the API omits them).

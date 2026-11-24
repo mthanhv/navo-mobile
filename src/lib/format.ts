@@ -67,3 +67,73 @@ export function parseDecimalInput(input: string, lang: Lang): string | null {
   const normalized = s.split(group).join("").replace(decimal, ".");
   return /^\d{1,18}(\.\d{1,6})?$/.test(normalized) ? normalized : null;
 }
+
+/** a − b for non-negative API decimals (up to 6 decimals, the database scale); never below 0. Display/remaining only. */
+export function subDecimal(a: string, b: string): string {
+  const scale = 1_000_000n;
+  const toBig = (s: string) => {
+    const [i, f = ""] = s.split(".");
+    return BigInt(i) * scale + BigInt((f + "000000").slice(0, 6));
+  };
+  const r = toBig(a) - toBig(b);
+  if (r <= 0n) return "0";
+  const i = r / scale;
+  const f = (r % scale).toString().padStart(6, "0").replace(/0+$/, "");
+  return f ? `${i}.${f}` : `${i}`;
+}
+
+const SCALE = 6;
+const toScaled = (s: string): bigint => {
+  const neg = s.startsWith("-");
+  const [i, f = ""] = (neg ? s.slice(1) : s).split(".");
+  const v = BigInt(i || "0") * 10n ** BigInt(SCALE) + BigInt((f + "0".repeat(SCALE)).slice(0, SCALE) || "0");
+  return neg ? -v : v;
+};
+const fromScaled = (v: bigint, decimals: number): string => {
+  const neg = v < 0n;
+  let a = neg ? -v : v;
+  const drop = 10n ** BigInt(SCALE - decimals);
+  a = (a + drop / 2n) / drop; // round half up
+  const f = 10n ** BigInt(decimals);
+  const frac = decimals ? (a % f).toString().padStart(decimals, "0").replace(/0+$/, "") : "";
+  const out = frac ? `${a / f}.${frac}` : `${a / f}`;
+  return neg && out !== "0" ? `-${out}` : out;
+};
+
+/** Exact a × b of API decimals, rounded to `decimals` (money amounts for display). */
+export function mulDecimal(a: string, b: string, decimals = 2): string {
+  return fromScaled((toScaled(a) * toScaled(b)) / 10n ** BigInt(SCALE), decimals);
+}
+
+/** Exact sum of API decimals. */
+export function sumDecimal(values: string[], decimals = SCALE): string {
+  return fromScaled(values.reduce((s, v) => s + toScaled(v), 0n), decimals);
+}
+
+/** "30" (percent) → "0.30": the fraction to multiply by, exactly. */
+export function percentToFraction(p: string): string {
+  const [i, f = ""] = p.split(".");
+  const padded = i.padStart(3, "0");
+  return `${padded.slice(0, -2).replace(/^0+(?=\d)/, "")}.${padded.slice(-2)}${f}`;
+}
+
+/** Decimals money is kept to: whole đồng for VND, cents otherwise (as the API rounds). */
+export function moneyDecimals(currency: string): number {
+  return CURRENCY_DECIMALS[currency] ?? 2;
+}
+
+/** pct % of total, rounded to the currency's unit: what a payment term's amount must be. */
+export function percentOf(total: string, pct: string, currency: string): string {
+  return mulDecimal(total, percentToFraction(pct), moneyDecimals(currency));
+}
+
+/** Whole percentages of counts that add up to exactly 100 (largest remainder); all zero when empty. */
+export function wholePercents(counts: number[]): number[] {
+  const total = counts.reduce((a, b) => a + b, 0);
+  if (!total) return counts.map(() => 0);
+  const exact = counts.map((n) => (n / total) * 100);
+  const out = exact.map(Math.floor);
+  const order = exact.map((x, i) => ({ i, r: x - Math.floor(x) })).sort((a, b) => b.r - a.r);
+  for (let k = 0; k < 100 - out.reduce((a, b) => a + b, 0); k++) out[order[k].i]++;
+  return out;
+}

@@ -69,12 +69,11 @@ function LeaderHome({ first }: { first: string }) {
     const f = r.flags.find((x) => ACTION.includes(x.code));
     return f ? [{ r, code: f.code, sev: f.severity }] : [];
   });
-  const overdueContracts = new Set(attention.filter((a) => a.code === "delivery_overdue").map((a) => a.r.contract_id)).size;
-  const firm = data?.upcoming.filter((u) => u.firmness === "firm").length ?? 0;
+  // Every figure comes from the API (the phone only shows them).
   const kpis = data ? [
-    { title: t("mobile.kpi.overdue"), value: data.flag_counts.delivery_overdue ?? 0, sub: t("mobile.kpi.inContracts", { count: overdueContracts }), color: colors.danger },
+    { title: t("mobile.kpi.overdue"), value: data.flag_counts.delivery_overdue ?? 0, sub: t("mobile.kpi.inContracts", { count: data.overdue_contracts ?? 0 }), color: colors.danger },
     { title: t("mobile.kpi.noPlan"), value: data.flag_counts.no_plan ?? 0, sub: t("mobile.kpi.toDeliver"), color: "#B45309" },
-    { title: t("mobile.kpi.deliveries"), value: data.upcoming.length, sub: t("mobile.kpi.firmTentative", { firm, tentative: data.upcoming.length - firm }), color: colors.text },
+    { title: t("mobile.kpi.deliveries"), value: data.upcoming.length, sub: t("mobile.kpi.firmTentative", { firm: data.upcoming_firm ?? 0, tentative: data.upcoming_tentative ?? 0 }), color: colors.text },
     { title: t("mobile.kpi.poWaiting"), value: data.purchase_orders_awaiting_goods, sub: t("mobile.kpi.lateLines", { count: data.flag_counts.receipt_overdue ?? 0 }), color: colors.text },
   ] : [];
   return (
@@ -118,12 +117,6 @@ function LeaderHome({ first }: { first: string }) {
   );
 }
 
-function plusDays(iso: string, days: number) {
-  const d = new Date(`${iso}T00:00:00`);
-  d.setDate(d.getDate() + days);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-}
-
 function SalesToday() {
   const { t, lang } = useT();
   const overview = useApi<Overview>("/reports/overview");
@@ -139,8 +132,7 @@ function SalesToday() {
   }, [reloadTasks]));
   const reload = () => { overview.reload(); tasks.reload(); pos.reload(); void listDrafts().then(setDrafts); };
   const today = todayISO();
-  const weekEnd = plusDays(today, 7);
-  const arriving = (pos.data?.items ?? []).filter((p) => p.next_expected_on && p.next_expected_on <= weekEnd);
+  const arriving = (pos.data?.items ?? []).filter((p) => p.due_this_week);
   const open = (tasks.data ?? []).filter((x) => !x.done_at).length;
   const toggle = async (task: Task) => {
     setChanging(task.id);
