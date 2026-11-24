@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
     "test": "jest",
-    "bundle-check": "expo export --platform ios --output-dir dist-check"
+    "bundle-check": "expo export --platform ios --output-dir dist-check",
+    "api:types": "openapi-typescript ../navo-api/api/openapi.json -o src/lib/api-schema.d.ts"
   },
   "jest": {
     "preset": "jest-expo"
@@ -44,6 +45,7 @@
     "eslint-config-expo": "~57.0.2",
     "jest": "~29.7.0",
     "jest-expo": "~57.0.6",
+    "openapi-typescript": "7.4.4",
     "typescript": "~6.0.3"
   }
 }

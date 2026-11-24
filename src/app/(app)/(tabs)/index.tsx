@@ -5,13 +5,14 @@ import { Ionicons } from "@expo/vector-icons";
 import NetInfo from "@react-native-community/netinfo";
 import { api, type Page } from "../../../lib/api";
 import { useSession } from "../../../lib/session";
-import { homeIsToday } from "../../../lib/roles";
+import { homeIsToday, homeIsVisits } from "../../../lib/roles";
 import { useT } from "../../../lib/i18n";
 import { useApi } from "../../../lib/useApi";
 import { formatDate, formatDecimal, todayISO } from "../../../lib/format";
 import { listDrafts, sendDraft, type Draft } from "../../../lib/drafts";
 import type { LineRow, Overview, POSummary, Task } from "../../../lib/types";
 import { Body, Button, Card, DataFreshness, ErrorBox, Loading, Pill, Screen, Title, colors } from "../../../components/ui";
+import { VisitList } from "../../../components/Visits";
 
 const ACTION = ["delivery_overdue", "over_delivered", "stock_short", "no_plan", "receipt_overdue", "over_ordered"];
 
@@ -20,6 +21,10 @@ export default function HomeScreen() {
   const { t } = useT();
   const { me, can } = useSession();
   const first = me?.user.full_name.split(" ").pop() ?? "";
+  // Technicians read no contracts: their home is the visits assigned to them.
+  if (homeIsVisits(can)) {
+    return <VisitList mine header={<Hero top={t("mobile.hello", { name: first })} title={t("service.title")} />} />;
+  }
   if (!can("contracts.read")) {
     return (
       <Screen header={<Hero top={t("mobile.hello", { name: first })} title={t("mobile.tabs.overview")} />}>
@@ -63,6 +68,7 @@ function shortDetail(t: ReturnType<typeof useT>["t"], lang: "vi" | "en", r: Line
 
 function LeaderHome({ first }: { first: string }) {
   const { t, lang } = useT();
+  const { can } = useSession();
   const { data, fetchedAt, error, loading, refreshing, offline, reload } = useApi<Overview>("/reports/overview");
   const time = fetchedAt ? fetchedAt.toLocaleTimeString(lang === "vi" ? "vi-VN" : "en-GB", { hour: "2-digit", minute: "2-digit" }) : "";
   const attention = (data?.attention ?? []).flatMap((r) => {
@@ -94,6 +100,15 @@ function LeaderHome({ first }: { first: string }) {
               </Card>
             ))}
           </View>
+          {can("service.plan") && (
+            <Pressable testID="home-visits" accessibilityRole="link" onPress={() => router.push("/(app)/visits")}>
+              <Card style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+                <Ionicons name="construct-outline" size={22} color={colors.primary} />
+                <View style={{ flex: 1 }}><Body bold>{t("service.title")}</Body><Body muted size={13}>{t("service.allHint")}</Body></View>
+                <Ionicons name="chevron-forward" size={20} color={colors.muted} />
+              </Card>
+            </Pressable>
+          )}
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={{ flex: 1 }}><Title>{t("overview.needsAction")}</Title></View>
             <Pressable accessibilityRole="link" onPress={() => router.push("/(app)/(tabs)/contracts")} style={{ minHeight: 44, justifyContent: "center" }}>

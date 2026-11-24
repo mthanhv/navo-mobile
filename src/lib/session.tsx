@@ -10,6 +10,8 @@ type Session = {
   /** `code` is the authenticator or recovery code when the account uses two-step sign-in. */
   login: (email: string, password: string, code?: string) => Promise<void>;
   logout: () => Promise<void>;
+  /** Reloads who is signed in (after changing the password). */
+  refresh: () => Promise<void>;
 };
 
 const Ctx = createContext<Session | null>(null);
@@ -42,6 +44,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setMe(m);
   }, []);
 
+  const refresh = useCallback(async () => { setMe(await api<Me>("/me")); }, []);
+
   const logout = useCallback(async () => {
     await api("/auth/logout", { method: "POST" }).catch(() => undefined);
     await clear();
@@ -49,8 +53,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<Session>(() => {
     const perms = new Set(me?.permissions ?? []);
-    return { me, ready, can: (p) => perms.has(p), login, logout };
-  }, [me, ready, login, logout]);
+    return { me, ready, can: (p) => perms.has(p), login, logout, refresh };
+  }, [me, ready, login, logout, refresh]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 

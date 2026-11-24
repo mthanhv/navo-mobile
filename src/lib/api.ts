@@ -58,9 +58,11 @@ export async function upload<T>(path: string, fields: Record<string, string>, fi
   return api<T>(path, { method: "POST", form, timeoutMs: 120_000 });
 }
 
-export async function api<T>(path: string, { method = "GET", body, form, timeoutMs = TIMEOUT_MS }: { method?: string; body?: unknown; form?: FormData; timeoutMs?: number } = {}): Promise<T> {
+/** idempotencyKey: one per user action, reused when retrying it, so a lost answer never acts twice. */
+export async function api<T>(path: string, { method = "GET", body, form, timeoutMs = TIMEOUT_MS, idempotencyKey }: { method?: string; body?: unknown; form?: FormData; timeoutMs?: number; idempotencyKey?: string } = {}): Promise<T> {
   const requestId = rid();
   const headers: Record<string, string> = { "X-Request-ID": requestId };
+  if (idempotencyKey) headers["Idempotency-Key"] = idempotencyKey;
   if (token) headers.Authorization = `Bearer ${token}`;
   if (body !== undefined) headers["Content-Type"] = "application/json";
   const controller = new AbortController();

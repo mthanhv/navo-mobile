@@ -21,7 +21,8 @@
     "moreInfo": "Xem thêm thông tin",
     "lessInfo": "Ẩn bớt",
     "saved": "Đã lưu.",
-    "confirm": "Xác nhận"
+    "confirm": "Xác nhận",
+    "back": "Quay lại"
   },
   "nav": {
     "work": "Công việc",
@@ -39,7 +40,8 @@
     "delivery": "Giao nhận",
     "accounting": "Kế toán",
     "admin": "Quản trị",
-    "sales_manager": "Quản lý kinh doanh"
+    "sales_manager": "Quản lý kinh doanh",
+    "technician": "Kỹ thuật viên"
   },
   "login": {
     "title": "Đăng nhập Navo",
@@ -448,7 +450,9 @@
       "delivered_before_received": "Đến ngày đó chưa nhận đủ hàng. Kiểm tra lại ngày giao và ngày nhận.",
       "deduction_reversed": "Khoản phạt này đã được huỷ.",
       "confirmed_line_immutable": "Dòng của chứng từ đã xác nhận không sửa được; hãy đảo chứng từ.",
-      "change_not_applied": "Không áp dụng được thay đổi."
+      "change_not_applied": "Không áp dụng được thay đổi.",
+      "password_change_required": "Hãy đặt mật khẩu của riêng bạn trước.",
+      "invite_invalid": "Liên kết đã hết hạn hoặc đã được dùng. Hãy nhờ quản trị viên gửi liên kết mới."
     }
   },
   "validation": {
@@ -520,7 +524,8 @@
     "exceeds_term": "Vượt phần đợt còn lại chưa xuất hoá đơn ({{left}}).",
     "exceeds_contract": "Vượt phần hợp đồng còn lại ({{left}}).",
     "before_issued": "Không được trước ngày xuất hoá đơn.",
-    "acceptance_only": "Chỉ biên bản nghiệm thu mới có khoản phạt."
+    "acceptance_only": "Chỉ biên bản nghiệm thu mới có khoản phạt.",
+    "whole_number": "Nhập số lần là số nguyên."
   },
   "mobile": {
     "tabs": {
@@ -620,7 +625,8 @@
       "overdue": "quá hạn",
       "noDate": "Chưa có ngày"
     },
-    "twoStepRequired": "Tài khoản của bạn cần bật đăng nhập hai bước trước khi dùng Navo. Hãy cài đặt trên bản web (Tài khoản → Đăng nhập hai bước), rồi đăng nhập lại tại đây."
+    "twoStepRequired": "Tài khoản của bạn cần bật đăng nhập hai bước trước khi dùng Navo. Hãy cài đặt trên bản web (Tài khoản → Đăng nhập hai bước), rồi đăng nhập lại tại đây.",
+    "mustChange": "Mật khẩu của bạn do quản trị viên đặt. Hãy đặt mật khẩu của riêng bạn trước khi tiếp tục."
   },
   "note": {
     "title": "Ghi chú gặp khách",
@@ -703,5 +709,51 @@
       "invoiced": "Đã xuất hoá đơn",
       "paid": "Đã thu đủ"
     }
+  },
+  "service": {
+    "overdue": "Quá hạn",
+    "urgent": "Khẩn",
+    "unassigned": "Chưa giao",
+    "noDate": "Chưa có ngày",
+    "status": {
+      "planned": "Đã lên lịch",
+      "done": "Đã làm",
+      "cancelled": "Đã hủy",
+      "reversed": "Đã đảo"
+    },
+    "kinds": {
+      "scheduled": "Bảo trì định kỳ",
+      "repair": "Sửa chữa"
+    },
+    "workDone": "Công việc đã làm",
+    "findings": "Phát hiện",
+    "doneOn": "Ngày làm",
+    "record": "Ghi nhận đã làm",
+    "recordSave": "Lưu là đã làm",
+    "noneMine": "Chưa có lần nào được giao cho bạn.",
+    "title": "Bảo trì & sửa chữa",
+    "mineHint": "Các lần được giao cho bạn. Mở để xem nơi cần đến và ghi nhận khi làm xong.",
+    "allHint": "Mọi lần bảo trì, sửa chữa đã lên lịch.",
+    "none": "Không có lần nào đã lên lịch.",
+    "dateFormat": "Nhập ngày dạng dd/mm/yyyy.",
+    "workRequired": "Ghi công việc đã làm.",
+    "recorded": "Đã ghi nhận.",
+    "addReport": "Chụp biên bản đã ký",
+    "addPhoto": "Chụp ảnh",
+    "fromLibrary": "Chọn từ thư viện ảnh",
+    "reportPhoto": "Biên bản",
+    "photo": "Ảnh",
+    "sendPhotos": "Gửi lại ảnh"
+  },
+  "invite": {
+    "mustChangeTitle": "Đặt mật khẩu của riêng bạn",
+    "temporary": "Mật khẩu tạm",
+    "save": "Lưu mật khẩu"
+  },
+  "account": {
+    "new": "Mật khẩu mới",
+    "repeat": "Nhập lại mật khẩu mới",
+    "hint": "10–72 ký tự.",
+    "mismatch": "Hai mật khẩu mới không giống nhau."
   }
 }

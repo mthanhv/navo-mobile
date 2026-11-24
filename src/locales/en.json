@@ -21,7 +21,8 @@
     "moreInfo": "More details",
     "lessInfo": "Fewer details",
     "saved": "Saved.",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "back": "Back"
   },
   "nav": {
     "work": "Work",
@@ -39,7 +40,8 @@
     "delivery": "Delivery",
     "accounting": "Accounting",
     "admin": "Admin",
-    "sales_manager": "Sales manager"
+    "sales_manager": "Sales manager",
+    "technician": "Technician"
   },
   "login": {
     "title": "Sign in to Navo",
@@ -448,7 +450,9 @@
       "delivered_before_received": "On that date not enough goods had been received. Check the delivery and receipt dates.",
       "deduction_reversed": "This penalty was already reversed.",
       "confirmed_line_immutable": "A confirmed document's lines do not change; correct it with a reversal.",
-      "change_not_applied": "The change could not be applied."
+      "change_not_applied": "The change could not be applied.",
+      "password_change_required": "Choose your own password first.",
+      "invite_invalid": "This link has expired or was already used. Ask your administrator for a new one."
     }
   },
   "validation": {
@@ -520,7 +524,8 @@
     "exceeds_term": "More than the term leaves to invoice ({{left}}).",
     "exceeds_contract": "More than the contract leaves ({{left}}).",
     "before_issued": "Cannot be before the issue date.",
-    "acceptance_only": "Only an acceptance can carry a penalty."
+    "acceptance_only": "Only an acceptance can carry a penalty.",
+    "whole_number": "Enter a whole number of visits."
   },
   "mobile": {
     "tabs": {
@@ -624,7 +629,8 @@
       "overdue": "overdue",
       "noDate": "No date yet"
     },
-    "twoStepRequired": "Your account must turn on two-step sign-in before using Navo. Set it up on the web (Account → Two-step sign-in), then sign in here again."
+    "twoStepRequired": "Your account must turn on two-step sign-in before using Navo. Set it up on the web (Account → Two-step sign-in), then sign in here again.",
+    "mustChange": "Your password was set by an administrator. Choose your own before you continue."
   },
   "note": {
     "title": "Customer meeting note",
@@ -707,5 +713,51 @@
       "invoiced": "Invoiced",
       "paid": "Paid"
     }
+  },
+  "service": {
+    "overdue": "Overdue",
+    "urgent": "Urgent",
+    "unassigned": "Not assigned",
+    "noDate": "No date yet",
+    "status": {
+      "planned": "Planned",
+      "done": "Done",
+      "cancelled": "Cancelled",
+      "reversed": "Reversed"
+    },
+    "kinds": {
+      "scheduled": "Maintenance",
+      "repair": "Repair"
+    },
+    "workDone": "Work done",
+    "findings": "Findings",
+    "doneOn": "Done on",
+    "record": "Record visit",
+    "recordSave": "Save as done",
+    "noneMine": "No visits assigned to you.",
+    "title": "Service visits",
+    "mineHint": "Visits assigned to you. Open one to see where to go and record it when done.",
+    "allHint": "Every planned maintenance and repair visit.",
+    "none": "No planned visits.",
+    "dateFormat": "Enter the date as dd/mm/yyyy.",
+    "workRequired": "Write what was done.",
+    "recorded": "Visit recorded.",
+    "addReport": "Photo of signed report",
+    "addPhoto": "Photo",
+    "fromLibrary": "Choose from photos",
+    "reportPhoto": "Report",
+    "photo": "Photo",
+    "sendPhotos": "Send the photos again"
+  },
+  "invite": {
+    "mustChangeTitle": "Choose your own password",
+    "temporary": "Temporary password",
+    "save": "Save password"
+  },
+  "account": {
+    "new": "New password",
+    "repeat": "Repeat new password",
+    "hint": "10–72 characters.",
+    "mismatch": "The two new passwords do not match."
   }
 }

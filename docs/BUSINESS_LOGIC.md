@@ -13,12 +13,24 @@ Role choices are in `src/lib/roles.ts`; permissions still decide every action (t
 | sales | "Today": own tasks, unsent note drafts, goods awaited this week | no (awaited goods are on Today) | notes, photos, tasks |
 | sales_manager | "Today" | yes | notes, photos, tasks |
 | delivery, accounting, admin | company overview | yes | no notes/tasks (needs contracts.write) |
-| no contracts.read | "use the web" | no | — |
+| technician | "Service visits": the visits assigned to them | no | records their visits (work, findings, photos of the signed report) |
+| no contracts.read (other) | "use the web" | no | — |
 
 - Contracts tab: active contracts in the user's scope; a contract shows lines (remaining, delivered,
   available, ordered, received), its POs and deliveries, and earlier field notes of the customer.
 - Admins who must turn on two-step sign-in (production) see a screen asking them to set it up on the
   web, with sign-out.
+- A password an admin typed is temporary: the phone shows only a change-password screen until the
+  person chooses their own (new people normally set theirs from the web invitation link).
+- Planners (delivery, sales manager, admin) reach "Service visits" from the overview; a visit opens
+  with where to go and what to do.
+
+## Recording a visit
+
+`src/app/(app)/visit/[id].tsx`: date (dd/mm/yyyy, not in the future), work done, findings, photos
+(signed report or machine; camera or library). The record carries one Idempotency-Key per screen
+and each photo its own client id, so retrying after a lost answer never records or uploads twice;
+photos not yet sent stay on screen with "send the photos again".
 
 ## Field notes
 
@@ -35,7 +47,9 @@ pull to refresh. Contract details and documents load and fail independently.
 
 ## Shared with the web
 
-`src/lib/format.ts`, `types.ts`, `contractText.ts` are ports of the web files and the locale keys
+`src/lib/api-schema.d.ts` is generated from navo-api's OpenAPI description (`npm run api:types`) and
+`src/lib/api-types.ts` names the shapes (same file as the web's). `src/lib/format.ts`, `types.ts`,
+`contractText.ts` are ports of the web files and the locale keys
 are shared (`src/locales`, both languages). Since 24 November the shared types and
 helpers match the web, and the home screen's figures (contracts with late deliveries, firm/tentative
 deliveries, goods arriving this week, a PO fully received) come from the API. Delivery sees no prices

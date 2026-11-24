@@ -158,7 +158,7 @@ export type Overview = {
 export type Organization = { id: string; code: string; name: string; is_customer: boolean; is_supplier: boolean; tax_code: string | null };
 export type Product = { id: string; name: string; manufacturer: string | null; manufacturer_code: string | null; unit: string };
 export type User = { id: string; email: string; full_name: string; is_active: boolean; roles: string[]; grants: string[] };
-export type Me = { user: { id: string; full_name: string; email: string; roles: string[]; grants: string[]; mfa_enrollment_required?: boolean }; permissions: string[] };
+export type Me = { user: { id: string; full_name: string; email: string; roles: string[]; grants: string[]; mfa_enrollment_required?: boolean; password_change_required?: boolean }; permissions: string[] };
 export type OverrideInfo = { id: string; status: "pending" | "approved" | "rejected" | "withdrawn"; reason: string; decision_note: string | null };
 export type EventDoc = {
   id: string; kind: "acceptance" | "customer_return" | "supplier_return"; number: string; on: string; note: string; status: "confirmed" | "reversed";

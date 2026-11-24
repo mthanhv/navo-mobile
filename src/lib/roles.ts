@@ -11,3 +11,8 @@ export function homeIsToday(roles: string[]) {
 export function showsOrdersTab(roles: string[]) {
   return !roles.every((r) => r === "sales");
 }
+
+/** Technicians read no contracts: their home is the visits assigned to them. */
+export function homeIsVisits(can: (permission: string) => boolean) {
+  return !can("contracts.read") && can("service.perform");
+}

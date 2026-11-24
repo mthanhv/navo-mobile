@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-import { homeIsToday, showsOrdersTab } from "./roles";
+import { homeIsToday, homeIsVisits, showsOrdersTab } from "./roles";
 
 describe("role screens", () => {
   it("sellers start on Today, desk roles on the overview", () => {
@@ -11,5 +11,11 @@ describe("role screens", () => {
   it("only a plain salesperson goes without the Orders tab", () => {
     expect(showsOrdersTab(["sales"])).toBe(false);
     for (const r of ["sales_manager", "delivery", "accounting", "admin"]) expect(showsOrdersTab([r])).toBe(true);
+  });
+  it("technicians start on their visits; planners keep their home", () => {
+    const perms = (list: string[]) => (p: string) => list.includes(p);
+    expect(homeIsVisits(perms(["service.perform"]))).toBe(true);
+    expect(homeIsVisits(perms(["contracts.read", "service.plan", "service.perform"]))).toBe(false);
+    expect(homeIsVisits(perms(["contracts.read"]))).toBe(false);
   });
 });
