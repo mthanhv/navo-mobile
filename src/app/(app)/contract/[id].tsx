@@ -103,7 +103,7 @@ export default function ContractScreen() {
           {docs.data?.purchase_orders.map((po) => (
             <Card key={po.id}>
               <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}><Pill tone="blue">{t("mobile.poLabel")}</Pill><Body bold>{po.number}</Body></View>
-              <Body>{po.supplier_name}</Body>
+              <Body>{po.supplier_name}{po.pic_name ? ` · ${t("po.picIs", { name: po.pic_name })}` : ""}</Body>
               {po.lines.map((pl) => <Body key={pl.id} muted size={13.5}>{t("contracts.colLine")} {pl.contract_line_no} · {t("docs.receivedOf", { received: n(pl.received), ordered: n(pl.quantity) })} {pl.unit}{pl.expected_on ? ` · ETA ${formatDate(pl.expected_on)}` : ""}</Body>)}
               <Pill tone={po.status === "confirmed" ? (po.fully_received ? "green" : "blue") : "gray"}>{t(`status.${po.status}`)}</Pill>
             </Card>

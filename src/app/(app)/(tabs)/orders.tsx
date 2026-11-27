@@ -49,6 +49,7 @@ export default function OrdersScreen() {
               <Body bold size={16}>{x.customer_name}</Body>
               {po && <>
                 <Body>{po.supplier_name} · {t("mobile.orders.received", { done: po.lines_fully_received, total: po.lines })}</Body>
+                {po.pic_name && <Body muted size={13.5}>{t("po.picIs", { name: po.pic_name })}</Body>}
                 {po.late ? <Pill tone="red">{t("mobile.orders.late", { date: formatDate(po.next_expected_on) })}</Pill>
                   : po.next_expected_on ? <Body muted size={13.5}>{t("mobile.orders.eta", { date: formatDate(po.next_expected_on) })}</Body>
                   : <Body muted size={13.5}>{t("mobile.orders.noEta")}</Body>}

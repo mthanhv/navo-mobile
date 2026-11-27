@@ -198,7 +198,8 @@
     "saveDraft": "Save draft",
     "saveConfirm": "Save and confirm",
     "noLines": "Choose at least one line.",
-    "after": "Once confirmed, the lines' ordered quantities increase and the PO can no longer be edited directly."
+    "after": "Once confirmed, the lines' ordered quantities increase and the PO can no longer be edited directly.",
+    "picIs": "PIC: {{name}}"
   },
   "gr": {
     "title": "Record goods received · {{number}}",
@@ -349,7 +350,7 @@
       "insufficient_stock": "Line {{line_no}}: not enough goods (available {{available}}, needed {{requested}}). Record goods received first.",
       "purchase_order_not_confirmed": "Confirm the purchase order before recording goods.",
       "idempotency_payload_mismatch": "This action was already sent with different details. Close and reopen to refresh.",
-      "assign_owner": "You can only create contracts for yourself.",
+      "assign_owner": "You can only choose yourself as the person in charge.",
       "duplicate": "This value already exists.",
       "idempotency_authorization_changed": "Your permissions or assignments changed. Reload the document to check the saved outcome.",
       "version_conflict": "This record changed. Reload it before saving your changes.",
@@ -544,7 +545,9 @@
     "above_approved": "Above the approved advance.",
     "above_balance": "Above the balance.",
     "above_requested": "Not more than requested.",
-    "before_start": "Must be on or after the start date."
+    "before_start": "Must be on or after the start date.",
+    "not_po_pic": "Choose an active salesperson, sales manager, delivery person or admin.",
+    "not_owner_candidate": "Choose an active salesperson, sales manager or admin."
   },
   "mobile": {
     "tabs": {

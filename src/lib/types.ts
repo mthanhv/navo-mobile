@@ -45,6 +45,7 @@ export type POSummary = {
   id: string; number: string; status: "draft" | "confirmed" | "cancelled" | "reversed"; contract_id: string; contract_number: string; customer_name: string;
   supplier_name: string; lines: number; lines_fully_received: number; next_expected_on: string | null; late: boolean; override_status: OverrideInfo["status"] | null;
   due_this_week?: boolean;
+  pic_id?: string | null; pic_name?: string | null;
 };
 
 export type Contract = {
@@ -109,6 +110,8 @@ export type PurchaseOrder = {
   lines: POLine[];
   override: OverrideInfo | null;
   fully_received: boolean; late: boolean; days_late?: number; latest_expected_on: string | null;
+  /** The person in charge, who follows the order with the supplier. */
+  pic_id?: string | null; pic_name?: string | null;
 };
 
 export type GoodsReceipt = {
