@@ -1,4 +1,5 @@
 import { View } from "react-native";
+import { router } from "expo-router";
 import { useSession } from "../../../lib/session";
 import { useT } from "../../../lib/i18n";
 import { API_URL } from "../../../lib/api";
@@ -6,7 +7,7 @@ import { Body, Button, Card, Screen, Title } from "../../../components/ui";
 
 export default function AccountScreen() {
   const { t, lang, setLang } = useT();
-  const { me, logout } = useSession();
+  const { me, logout, can } = useSession();
   return (
     <Screen>
       <Title>{t("mobile.tabs.account")}</Title>
@@ -16,6 +17,7 @@ export default function AccountScreen() {
         <Body muted>{me?.user.email}</Body>
         <Body muted>{me?.user.roles.map((r) => t(`roles.${r}`)).join(", ")}</Body>
       </Card>
+      {can("trips.write") && <Button testID="account-trips" label={t("nav.trips")} tone="outline" onPress={() => router.push("/(app)/trips")} />}
       <Card>
         <Body bold>{t("common.language")}</Body>
         <View style={{ flexDirection: "row", gap: 8 }}>

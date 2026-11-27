@@ -2938,6 +2938,246 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/trips": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Business trips the caller may see: view=mine|to_decide|to_settle|all, status, traveller_id, contract_id, from, to; with derived money and settlement status. */
+        get: operations["listTrips"];
+        put?: never;
+        /** Create a trip (CT-yy-nnnn) for oneself; approvers and accounting may record one for someone else. */
+        post: operations["createTrip"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/trips/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** A trip with its expense lines, cash entries, balance and settlement status. */
+        get: operations["getTrip"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Edit a draft or in-progress trip (traveller; version required). */
+        patch: operations["updateTrip"];
+        trace?: never;
+    };
+    "/api/v1/trips/{id}/request-advance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** A draft trip asks for a cash advance (amount). */
+        post: operations["requestTripAdvance"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/trips/{id}/submit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** The traveller hands in the expenses for settlement. */
+        post: operations["submitTrip"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/trips/{id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel a trip before money moved and before settlement. */
+        post: operations["cancelTrip"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/trips/{id}/decide": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Approve or reject (note required) the advance or the settlement of someone else's trip. */
+        post: operations["decideTrip"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/trips/{id}/close": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Close an approved trip whose balance is zero. */
+        post: operations["closeTrip"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/trips/{id}/expenses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add an expense line (traveller, while the trip is open); client_id makes a retry return the saved line. */
+        post: operations["addTripExpense"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/trip-expenses/{id}/void": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** The traveller takes back an expense line (reason) while the trip is open. */
+        post: operations["voidTripExpense"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/trip-expenses/{id}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Accept or reject (note required) one line of a settlement waiting for decision. */
+        post: operations["reviewTripExpense"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/trips/{id}/cash": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Pay the approved advance (TU-), take back what is left (HU-) or reimburse the difference (TT-). */
+        post: operations["addTripCash"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/trip-cash/{id}/reverse": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reverse a cash entry with a reason on an open trip. */
+        post: operations["reverseTripCash"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contracts/{id}/trips": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Trips on a contract and their accepted cost before VAT. */
+        get: operations["contractTrips"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ai/receipt-read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** (multipart "file", a JPEG, PNG or WebP photo of a trip receipt up to 10 MB): reads category, date, amount, VAT, invoice number and seller for the employee to check. Nothing is saved. */
+        post: operations["receiptRead"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -3173,6 +3413,93 @@ export interface components {
                 phone: string | null;
                 email: string | null;
             };
+        };
+        Receipt: {
+            category: string | null;
+            spent_on: string | null;
+            amount: string | null;
+            vat_amount: string | null;
+            currency: string | null;
+            invoice_number: string | null;
+            seller: string | null;
+            seller_tax_code: string | null;
+        };
+        TripExpense: {
+            id: string;
+            category: string;
+            spent_on: string;
+            /** @description decimal */
+            amount: string;
+            /** @description decimal */
+            vat_amount: string;
+            invoice_number?: string | null;
+            seller?: string | null;
+            seller_tax_code?: string | null;
+            note?: string | null;
+            /** @enum {string} */
+            review_status: "submitted" | "accepted" | "rejected";
+            review_note?: string | null;
+            voided_at?: string | null;
+            void_reason?: string | null;
+            client_id?: string | null;
+            file_count: number;
+            created_at?: string;
+        };
+        TripCash: {
+            id: string;
+            number: string;
+            /** @enum {string} */
+            kind: "advance" | "return" | "reimbursement";
+            /** @description decimal */
+            amount: string;
+            method: string;
+            paid_on: string;
+            reference?: string | null;
+            reversed_at?: string | null;
+            reverse_reason?: string | null;
+            created_at?: string;
+        };
+        Trip: {
+            id: string;
+            number: string;
+            traveller_id: string;
+            traveller_name: string;
+            purpose: string;
+            destination?: string | null;
+            start_on: string;
+            end_on: string;
+            contract_id?: string | null;
+            contract_number?: string | null;
+            organization_id?: string | null;
+            organization_name?: string | null;
+            currency: string;
+            advance_requested?: string | null;
+            advance_approved?: string | null;
+            /** @enum {string} */
+            status: "draft" | "advance_pending" | "in_progress" | "settlement_pending" | "approved" | "closed" | "cancelled";
+            decision_note?: string | null;
+            decided_by_name?: string | null;
+            decided_at?: string | null;
+            version: number;
+            created_at?: string;
+            /** @description decimal */
+            expenses_total?: string;
+            /** @description decimal */
+            accepted_total?: string;
+            /** @description decimal */
+            accepted_net?: string;
+            /** @description decimal */
+            advanced?: string;
+            /** @description decimal */
+            returned?: string;
+            /** @description decimal */
+            reimbursed?: string;
+            /** @description decimal */
+            balance: string;
+            /** @enum {string} */
+            settlement_status: "not_advanced" | "to_settle" | "overdue" | "employee_owed" | "settled" | "cancelled";
+            expenses?: components["schemas"]["TripExpense"][];
+            cash?: components["schemas"]["TripCash"][];
         };
     };
     responses: {
@@ -8569,6 +8896,586 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Envelope"];
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    listTrips: {
+        parameters: {
+            query?: {
+                view?: string;
+                status?: string;
+                traveller_id?: string;
+                contract_id?: string;
+                from?: string;
+                to?: string;
+                page?: string;
+                page_size?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"][];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    createTrip: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Required by confirming, money and visit-recording commands; a retry with the same key replays the first answer. */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    version?: number | null;
+                    traveller_id?: string | null;
+                    purpose: string;
+                    destination?: string | null;
+                    /** Format: date */
+                    start_on: string;
+                    /** Format: date */
+                    end_on: string;
+                    contract_id?: string | null;
+                    organization_id?: string | null;
+                    currency?: string | null;
+                    advance_requested?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    getTrip: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    updateTrip: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    version?: number | null;
+                    traveller_id?: string | null;
+                    purpose: string;
+                    destination?: string | null;
+                    /** Format: date */
+                    start_on: string;
+                    /** Format: date */
+                    end_on: string;
+                    contract_id?: string | null;
+                    organization_id?: string | null;
+                    currency?: string | null;
+                    advance_requested?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    requestTripAdvance: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Required by confirming, money and visit-recording commands; a retry with the same key replays the first answer. */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    version?: number | null;
+                    decision?: string;
+                    note?: string | null;
+                    advance_approved?: string | null;
+                    amount?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    submitTrip: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Required by confirming, money and visit-recording commands; a retry with the same key replays the first answer. */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    version?: number | null;
+                    decision?: string;
+                    note?: string | null;
+                    advance_approved?: string | null;
+                    amount?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    cancelTrip: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Required by confirming, money and visit-recording commands; a retry with the same key replays the first answer. */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    version?: number | null;
+                    decision?: string;
+                    note?: string | null;
+                    advance_approved?: string | null;
+                    amount?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    decideTrip: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Required by confirming, money and visit-recording commands; a retry with the same key replays the first answer. */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    version?: number | null;
+                    decision?: string;
+                    note?: string | null;
+                    advance_approved?: string | null;
+                    amount?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    closeTrip: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Required by confirming, money and visit-recording commands; a retry with the same key replays the first answer. */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    version?: number | null;
+                    decision?: string;
+                    note?: string | null;
+                    advance_approved?: string | null;
+                    amount?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    addTripExpense: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    client_id?: string | null;
+                    /** @enum {string} */
+                    category: "fuel" | "hotel" | "air_ticket" | "train_bus_ticket" | "taxi" | "toll_parking" | "meal" | "other";
+                    /** Format: date */
+                    spent_on: string;
+                    amount: string;
+                    vat_amount?: string | null;
+                    invoice_number?: string | null;
+                    seller?: string | null;
+                    seller_tax_code?: string | null;
+                    note?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    voidTripExpense: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Required by confirming, money and visit-recording commands; a retry with the same key replays the first answer. */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    decision?: string | null;
+                    note?: string | null;
+                    reason?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    reviewTripExpense: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Required by confirming, money and visit-recording commands; a retry with the same key replays the first answer. */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    decision?: string | null;
+                    note?: string | null;
+                    reason?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    addTripCash: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Required by confirming, money and visit-recording commands; a retry with the same key replays the first answer. */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    kind: "advance" | "return" | "reimbursement";
+                    amount: string;
+                    /** @enum {string} */
+                    method: "bank" | "cash";
+                    /** Format: date */
+                    paid_on: string;
+                    reference?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    reverseTripCash: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Required by confirming, money and visit-recording commands; a retry with the same key replays the first answer. */
+                "Idempotency-Key"?: components["parameters"]["IdempotencyKey"];
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    decision?: string | null;
+                    note?: string | null;
+                    reason?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Trip"];
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    contractTrips: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: {
+                            trips?: components["schemas"]["Trip"][];
+                            cost_net?: string;
+                        };
+                    };
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    receiptRead: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /** Format: binary */
+                    file: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Receipt"];
+                    };
                 };
             };
             default: components["responses"]["Error"];

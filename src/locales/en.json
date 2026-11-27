@@ -33,7 +33,8 @@
     "partners": "Customers & suppliers",
     "products": "Products",
     "users": "Users & permissions",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "trips": "Business trips"
   },
   "roles": {
     "sales": "Sales",
@@ -453,7 +454,17 @@
       "confirmed_line_immutable": "A confirmed document's lines do not change; correct it with a reversal.",
       "change_not_applied": "The change could not be applied.",
       "password_change_required": "Choose your own password first.",
-      "invite_invalid": "This link has expired or was already used. Ask your administrator for a new one."
+      "invite_invalid": "This link has expired or was already used. Ask your administrator for a new one.",
+      "trip_self_decision": "Your own trip must be decided by someone else.",
+      "trip_locked": "This trip is waiting for a decision or settled; it cannot be changed now.",
+      "trip_status": "This trip is not at this step.",
+      "trip_no_expenses": "Add at least one expense before submitting.",
+      "trip_has_cash": "Money was paid on this trip. Reverse it or settle the trip instead.",
+      "trip_not_settled": "Settle the balance first.",
+      "advance_not_approved": "No approved advance on this trip.",
+      "trip_closed": "This trip is closed.",
+      "trip_not_yours": "Only the traveller can change this trip.",
+      "trip_for_other": "You can only create trips for yourself."
     }
   },
   "validation": {
@@ -527,7 +538,13 @@
     "before_issued": "Cannot be before the issue date.",
     "acceptance_only": "Only an acceptance can carry a penalty.",
     "whole_number": "Enter a whole number of visits.",
-    "website": "A website has no spaces."
+    "website": "A website has no spaces.",
+    "outside_trip": "The date must be within the trip (± 3 days).",
+    "above_amount": "Not more than the amount.",
+    "above_approved": "Above the approved advance.",
+    "above_balance": "Above the balance.",
+    "above_requested": "Not more than requested.",
+    "before_start": "Must be on or after the start date."
   },
   "mobile": {
     "tabs": {
@@ -820,5 +837,162 @@
     "offline": "Offline: the card can't be read now. The photo is kept.",
     "photo": "Card photo",
     "remove": "Remove photo"
+  },
+  "trips": {
+    "title": "Business trip",
+    "new": "New business trip",
+    "pageHint": "Travel costs: fuel, hotels, tickets, meals… Ask for an advance first if needed; after the trip, submit the settlement with receipts.",
+    "views": {
+      "mine": "Mine",
+      "to_decide": "Waiting for me",
+      "to_settle": "To pay / settle",
+      "all": "All"
+    },
+    "empty": {
+      "mine": "You have no business trips yet.",
+      "to_decide": "No trip is waiting for a decision.",
+      "to_settle": "No trip to pay or settle.",
+      "all": "No business trips yet."
+    },
+    "colTrip": "Trip",
+    "colTraveller": "Traveller",
+    "colDates": "Dates",
+    "colFor": "For contract / customer",
+    "colExpenses": "Expenses",
+    "colAdvanced": "Advanced",
+    "colBalance": "Balance",
+    "colStatus": "Status",
+    "status": {
+      "draft": "Draft",
+      "advance_pending": "Advance waiting",
+      "in_progress": "In progress",
+      "settlement_pending": "Settlement waiting",
+      "approved": "Approved, to settle",
+      "closed": "Settled",
+      "cancelled": "Cancelled"
+    },
+    "settlement": {
+      "not_advanced": "No advance",
+      "to_settle": "To return",
+      "overdue": "Return overdue",
+      "employee_owed": "Company owes",
+      "settled": "Settled",
+      "cancelled": "Cancelled"
+    },
+    "owedShort": "owed",
+    "owedHint": "The company still owes the traveller this amount",
+    "holdsHint": "The traveller still holds this much company money",
+    "owed": "Company owes",
+    "holds": "Traveller holds",
+    "contractTitle": "Trip costs: {{amount}}",
+    "costSum": "Trips {{amount}}",
+    "destination": "Destination",
+    "advance": "Advance",
+    "approvedAmount": "approved {{amount}}",
+    "noAdvance": "No advance",
+    "decisionNote": "Decision note",
+    "cancel": "Cancel trip",
+    "edit": "Edit",
+    "requestAdvance": "Ask for the advance",
+    "submit": "Submit settlement",
+    "reject": "Send back",
+    "approveAdvance": "Approve advance",
+    "approveSettlement": "Approve settlement",
+    "payAdvance": "Pay advance",
+    "recordReturn": "Record return",
+    "reimburse": "Reimburse",
+    "close": "Close trip",
+    "accepted": "Approved",
+    "expenses": "Expenses",
+    "addExpense": "Add expense",
+    "noExpenses": "No expenses yet.",
+    "cash": "Advance and settlement",
+    "cashKind": {
+      "advance": "Advance paid",
+      "return": "Cash returned",
+      "reimbursement": "Reimbursed"
+    },
+    "category": {
+      "fuel": "Fuel",
+      "hotel": "Hotel",
+      "air_ticket": "Air ticket",
+      "train_bus_ticket": "Train / bus ticket",
+      "taxi": "Taxi",
+      "toll_parking": "Tolls, parking",
+      "meal": "Meals",
+      "other": "Other"
+    },
+    "review": {
+      "submitted": "Waiting",
+      "accepted": "Approved",
+      "rejected": "Not approved"
+    },
+    "voided": "Removed",
+    "rejectLine": "Don't approve",
+    "removeLine": "Remove",
+    "reviewNote": "Reason",
+    "vatIncl": "incl. VAT {{vat}}",
+    "editTitle": "Edit {{number}}",
+    "purpose": "Purpose",
+    "purposeHint": "E.g. Survey the valve installation at the plant.",
+    "startOn": "From",
+    "endOn": "To",
+    "contract": "Contract",
+    "contractHint": "The cost counts toward this contract.",
+    "noContract": "— No contract —",
+    "customer": "Customer / lead",
+    "customerHint": "Who you visit, if anyone.",
+    "noCustomer": "— None —",
+    "advanceAsk": "Advance requested (VND)",
+    "advanceHint": "Leave empty if you pay first and settle afterwards.",
+    "categoryLabel": "Category",
+    "spentOn": "Date",
+    "amount": "Amount (incl. VAT)",
+    "amountHint": "As on the receipt.",
+    "vat": "VAT amount",
+    "invoiceNumber": "Invoice number",
+    "sellerTaxCode": "Seller's tax code",
+    "seller": "Seller",
+    "note": "Note",
+    "receipts": "Receipts",
+    "approveHint": "Lines not sent back are approved, {{amount}} in total.",
+    "advanceApproved": "Advance approved",
+    "advanceApprovedHint": "Requested {{amount}}; you may approve less.",
+    "cashTitle": {
+      "advance": "Pay the advance",
+      "return": "Record cash returned",
+      "reimbursement": "Reimburse the traveller"
+    },
+    "cashDue": "Due {{amount}}",
+    "paidOn": "Date paid / received",
+    "reasonTitle": {
+      "void": "Remove an expense",
+      "review": "Don't approve an expense",
+      "reverse": "Reverse an entry",
+      "cancel": "Cancel the trip"
+    },
+    "reasonAction": {
+      "void": "Remove",
+      "review": "Don't approve",
+      "reverse": "Reverse",
+      "cancel": "Cancel trip"
+    },
+    "pendingLines": "{{count}} expenses not sent yet — they go out when online.",
+    "waiting": "{{count}} expenses waiting to be sent",
+    "sendAgain": "Send again",
+    "savedOffline": "Saved on the phone. The expense is sent when you are online (open the trip again)."
+  },
+  "scanReceipt": {
+    "take": "Photograph the receipt",
+    "pick": "Choose a photo",
+    "intro": "Photograph the invoice, ticket or receipt: Navo reads it and fills the empty fields. Check them before saving.",
+    "photo": "Receipt photo",
+    "remove": "Remove photo",
+    "reading": "Navo is reading the receipt…",
+    "filled": "Filled from the receipt. Check each field against it.",
+    "kept": "Read; what you typed was kept.",
+    "nothing": "Nothing could be read. Type the details.",
+    "offline": "No connection: the photo is kept; type the details.",
+    "failed": "Type the details; the photo is kept."
   }
 }

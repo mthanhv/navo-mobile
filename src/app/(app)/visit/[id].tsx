@@ -10,18 +10,12 @@ import { useT } from "../../../lib/i18n";
 import { useApi } from "../../../lib/useApi";
 import { useSession } from "../../../lib/session";
 import { errorMessage } from "../../../lib/errors";
-import { formatDate, todayISO } from "../../../lib/format";
+import { formatDate, parseDayInput, todayISO } from "../../../lib/format";
 import type { ServiceVisit } from "../../../lib/api-types";
 import { Banner, Body, Button, Card, ErrorBox, Loading, Pill, colors } from "../../../components/ui";
 import { VisitPill } from "../../../components/Visits";
 
-/** dd/mm/yyyy (or yyyy-mm-dd) typed by a person → yyyy-mm-dd, or null. */
-function parseDay(s: string): string | null {
-  const t = s.trim();
-  if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
-  const m = t.match(/^(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})$/);
-  return m ? `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}` : null;
-}
+const parseDay = parseDayInput;
 
 type Photo = { id: string; uri: string; name: string; type: string; kind: "service_report" | "photo"; sent?: boolean };
 

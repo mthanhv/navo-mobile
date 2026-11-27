@@ -137,3 +137,11 @@ export function wholePercents(counts: number[]): number[] {
   for (let k = 0; k < 100 - out.reduce((a, b) => a + b, 0); k++) out[order[k].i]++;
   return out;
 }
+
+/** dd/mm/yyyy (or yyyy-mm-dd) typed by a person → yyyy-mm-dd, or null. */
+export function parseDayInput(s: string): string | null {
+  const t = s.trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
+  const m = t.match(/^(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})$/);
+  return m ? `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}` : null;
+}

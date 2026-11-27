@@ -37,7 +37,7 @@ export function Body({ children, muted, bold, size = 15 }: { children: ReactNode
   return <Text style={{ fontSize: size, color: muted ? colors.textSecondary : colors.text, fontWeight: bold ? "700" : "400" }}>{children}</Text>;
 }
 
-type Tone = "red" | "amber" | "blue" | "green" | "gray";
+export type Tone = "red" | "amber" | "blue" | "green" | "gray";
 const TONE: Record<Tone, [string, string]> = {
   red: [colors.dangerLight, colors.danger], amber: [colors.warningLight, colors.warning], blue: [colors.primaryLight, colors.primary],
   green: [colors.successLight, colors.success], gray: ["#F0F2F5", colors.textSecondary],
@@ -177,3 +177,15 @@ const styles = StyleSheet.create({
   fab: { position: "absolute", right: 16, flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: colors.primary, paddingHorizontal: 20, minHeight: 52, borderRadius: 26, elevation: 4, shadowColor: "#000", shadowOpacity: 0.2, shadowRadius: 6, shadowOffset: { width: 0, height: 3 } },
   button: { minHeight: 48, borderRadius: 14, alignItems: "center", justifyContent: "center", paddingHorizontal: 16 },
 });
+
+/** A screen's top bar: back button and title (the new-lead screen's header). */
+export function BackHeader({ title, backLabel, onBack }: { title: string; backLabel: string; onBack: () => void }) {
+  return (
+    <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 8, paddingVertical: 6, backgroundColor: colors.card, borderBottomWidth: 1, borderBottomColor: colors.divider }}>
+      <Pressable accessibilityRole="button" accessibilityLabel={backLabel} onPress={onBack} style={{ width: 44, height: 44, alignItems: "center", justifyContent: "center" }}>
+        <Ionicons name="chevron-back" size={26} color={colors.primary} />
+      </Pressable>
+      <Text accessibilityRole="header" numberOfLines={1} style={{ flex: 1, fontSize: 18, fontWeight: "800", color: colors.text }}>{title}</Text>
+    </View>
+  );
+}

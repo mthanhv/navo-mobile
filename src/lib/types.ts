@@ -170,3 +170,20 @@ export type Amendment = {
   lines: { contract_line_id: string; line_no: number; change: "added" | "changed"; before: Record<string, unknown> | null; after: Record<string, unknown> }[];
 };
 
+
+/** Business trips (công tác phí), as navo-api returns them (money derived by the API). */
+export type TripStatus = "draft" | "advance_pending" | "in_progress" | "settlement_pending" | "approved" | "closed" | "cancelled";
+export type TripCategory = "fuel" | "hotel" | "air_ticket" | "train_bus_ticket" | "taxi" | "toll_parking" | "meal" | "other";
+export const TRIP_CATEGORIES: TripCategory[] = ["fuel", "hotel", "air_ticket", "train_bus_ticket", "taxi", "toll_parking", "meal", "other"];
+export type TripExpense = {
+  id: string; category: TripCategory; spent_on: string; amount: string; vat_amount: string; invoice_number: string | null; seller: string | null;
+  note: string | null; review_status: "submitted" | "accepted" | "rejected"; review_note: string | null; voided_at: string | null; client_id: string | null; file_count: number;
+};
+export type Trip = {
+  id: string; number: string; traveller_id: string; traveller_name: string; purpose: string; destination: string | null; start_on: string; end_on: string;
+  contract_id: string | null; contract_number: string | null; organization_name: string | null; currency: string;
+  advance_requested: string | null; advance_approved: string | null; status: TripStatus; decision_note: string | null; version: number;
+  expenses_total: string; accepted_total: string; advanced: string; balance: string;
+  settlement_status: "not_advanced" | "to_settle" | "overdue" | "employee_owed" | "settled" | "cancelled";
+  expenses?: TripExpense[];
+};

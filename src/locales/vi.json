@@ -33,7 +33,8 @@
     "partners": "Khách hàng & NCC",
     "products": "Sản phẩm",
     "users": "Người dùng & quyền",
-    "signOut": "Đăng xuất"
+    "signOut": "Đăng xuất",
+    "trips": "Công tác phí"
   },
   "roles": {
     "sales": "Sales",
@@ -453,7 +454,17 @@
       "confirmed_line_immutable": "Dòng của chứng từ đã xác nhận không sửa được; hãy đảo chứng từ.",
       "change_not_applied": "Không áp dụng được thay đổi.",
       "password_change_required": "Hãy đặt mật khẩu của riêng bạn trước.",
-      "invite_invalid": "Liên kết đã hết hạn hoặc đã được dùng. Hãy nhờ quản trị viên gửi liên kết mới."
+      "invite_invalid": "Liên kết đã hết hạn hoặc đã được dùng. Hãy nhờ quản trị viên gửi liên kết mới.",
+      "trip_self_decision": "Chuyến của chính bạn phải do người khác duyệt.",
+      "trip_locked": "Chuyến đang chờ duyệt hoặc đã quyết toán, không sửa được lúc này.",
+      "trip_status": "Chuyến không ở bước này.",
+      "trip_no_expenses": "Thêm ít nhất một chi phí trước khi nộp.",
+      "trip_has_cash": "Chuyến đã có tiền tạm ứng. Đảo khoản đó hoặc quyết toán thay vì hủy.",
+      "trip_not_settled": "Còn số dư, hãy hoàn ứng hoặc chi bổ sung trước.",
+      "advance_not_approved": "Chuyến chưa có tạm ứng được duyệt.",
+      "trip_closed": "Chuyến đã đóng.",
+      "trip_not_yours": "Chỉ người đi mới sửa được chuyến này.",
+      "trip_for_other": "Bạn chỉ có thể tạo chuyến công tác cho chính mình."
     }
   },
   "validation": {
@@ -527,7 +538,13 @@
     "before_issued": "Không được trước ngày xuất hoá đơn.",
     "acceptance_only": "Chỉ biên bản nghiệm thu mới có khoản phạt.",
     "whole_number": "Nhập số lần là số nguyên.",
-    "website": "Website không được có dấu cách."
+    "website": "Website không được có dấu cách.",
+    "outside_trip": "Ngày chi phải trong thời gian chuyến đi (± 3 ngày).",
+    "above_amount": "Không lớn hơn số tiền.",
+    "above_approved": "Vượt số tạm ứng được duyệt.",
+    "above_balance": "Vượt số dư còn lại.",
+    "above_requested": "Không lớn hơn số xin.",
+    "before_start": "Phải từ ngày bắt đầu trở đi."
   },
   "mobile": {
     "tabs": {
@@ -816,5 +833,162 @@
     "offline": "Đang ngoại tuyến, chưa đọc được danh thiếp. Ảnh vẫn được giữ.",
     "photo": "Ảnh danh thiếp",
     "remove": "Bỏ ảnh"
+  },
+  "trips": {
+    "title": "Chuyến công tác",
+    "new": "Thêm chuyến công tác",
+    "pageHint": "Chi phí đi công tác: xăng, khách sạn, vé, ăn uống… Có thể xin tạm ứng trước; sau chuyến nộp quyết toán kèm hóa đơn.",
+    "views": {
+      "mine": "Của tôi",
+      "to_decide": "Chờ tôi duyệt",
+      "to_settle": "Cần chi / quyết toán",
+      "all": "Tất cả"
+    },
+    "empty": {
+      "mine": "Bạn chưa có chuyến công tác nào.",
+      "to_decide": "Không có chuyến nào chờ duyệt.",
+      "to_settle": "Không có chuyến nào cần chi hoặc quyết toán.",
+      "all": "Chưa có chuyến công tác nào."
+    },
+    "colTrip": "Chuyến",
+    "colTraveller": "Người đi",
+    "colDates": "Ngày đi",
+    "colFor": "Cho hợp đồng / khách",
+    "colExpenses": "Chi phí",
+    "colAdvanced": "Đã tạm ứng",
+    "colBalance": "Còn lại",
+    "colStatus": "Trạng thái",
+    "status": {
+      "draft": "Nháp",
+      "advance_pending": "Chờ duyệt tạm ứng",
+      "in_progress": "Đang đi",
+      "settlement_pending": "Chờ duyệt quyết toán",
+      "approved": "Đã duyệt, chờ quyết toán",
+      "closed": "Đã quyết toán",
+      "cancelled": "Đã hủy"
+    },
+    "settlement": {
+      "not_advanced": "Chưa tạm ứng",
+      "to_settle": "Cần hoàn ứng",
+      "overdue": "Quá hạn hoàn ứng",
+      "employee_owed": "Công ty còn nợ",
+      "settled": "Đã xong",
+      "cancelled": "Đã hủy"
+    },
+    "owedShort": "công ty nợ",
+    "owedHint": "Công ty còn phải trả người đi số này",
+    "holdsHint": "Người đi còn giữ số tiền này của công ty",
+    "owed": "Công ty còn nợ",
+    "holds": "Người đi còn giữ",
+    "contractTitle": "Chi phí công tác: {{amount}}",
+    "costSum": "Công tác phí {{amount}}",
+    "destination": "Nơi đến",
+    "advance": "Tạm ứng",
+    "approvedAmount": "đã duyệt {{amount}}",
+    "noAdvance": "Không xin tạm ứng",
+    "decisionNote": "Ghi chú duyệt",
+    "cancel": "Hủy chuyến",
+    "edit": "Sửa",
+    "requestAdvance": "Xin tạm ứng",
+    "submit": "Nộp quyết toán",
+    "reject": "Trả lại",
+    "approveAdvance": "Duyệt tạm ứng",
+    "approveSettlement": "Duyệt quyết toán",
+    "payAdvance": "Chi tạm ứng",
+    "recordReturn": "Ghi hoàn ứng",
+    "reimburse": "Chi bổ sung",
+    "close": "Đóng chuyến",
+    "accepted": "Đã duyệt chi",
+    "expenses": "Chi phí",
+    "addExpense": "Thêm chi phí",
+    "noExpenses": "Chưa có chi phí nào.",
+    "cash": "Tạm ứng và quyết toán",
+    "cashKind": {
+      "advance": "Chi tạm ứng",
+      "return": "Hoàn ứng",
+      "reimbursement": "Chi bổ sung"
+    },
+    "category": {
+      "fuel": "Xăng dầu",
+      "hotel": "Khách sạn",
+      "air_ticket": "Vé máy bay",
+      "train_bus_ticket": "Vé tàu, xe",
+      "taxi": "Taxi, Grab",
+      "toll_parking": "Cầu đường, gửi xe",
+      "meal": "Ăn uống",
+      "other": "Khác"
+    },
+    "review": {
+      "submitted": "Chờ duyệt",
+      "accepted": "Đã duyệt",
+      "rejected": "Không duyệt"
+    },
+    "voided": "Đã bỏ",
+    "rejectLine": "Không duyệt",
+    "removeLine": "Bỏ",
+    "reviewNote": "Lý do",
+    "vatIncl": "gồm VAT {{vat}}",
+    "editTitle": "Sửa {{number}}",
+    "purpose": "Mục đích",
+    "purposeHint": "Ví dụ: Khảo sát lắp đặt van tại nhà máy.",
+    "startOn": "Đi từ ngày",
+    "endOn": "Đến ngày",
+    "contract": "Hợp đồng",
+    "contractHint": "Chi phí sẽ tính vào hợp đồng này.",
+    "noContract": "— Không thuộc hợp đồng —",
+    "customer": "Khách hàng / khách tiềm năng",
+    "customerHint": "Nơi đến gặp, nếu có.",
+    "noCustomer": "— Không chọn —",
+    "advanceAsk": "Xin tạm ứng (VND)",
+    "advanceHint": "Để trống nếu tự ứng trước rồi quyết toán sau.",
+    "categoryLabel": "Loại chi phí",
+    "spentOn": "Ngày chi",
+    "amount": "Số tiền (gồm VAT)",
+    "amountHint": "Đúng như trên hóa đơn.",
+    "vat": "Tiền thuế GTGT",
+    "invoiceNumber": "Số hóa đơn",
+    "sellerTaxCode": "MST người bán",
+    "seller": "Người bán",
+    "note": "Ghi chú",
+    "receipts": "Hóa đơn, biên lai",
+    "approveHint": "Các dòng không bị trả lại sẽ được duyệt, tổng {{amount}}.",
+    "advanceApproved": "Số tạm ứng được duyệt",
+    "advanceApprovedHint": "Xin {{amount}}; có thể duyệt ít hơn.",
+    "cashTitle": {
+      "advance": "Chi tạm ứng",
+      "return": "Ghi hoàn ứng",
+      "reimbursement": "Chi bổ sung cho người đi"
+    },
+    "cashDue": "Cần {{amount}}",
+    "paidOn": "Ngày chi / nhận",
+    "reasonTitle": {
+      "void": "Bỏ dòng chi phí",
+      "review": "Không duyệt dòng chi phí",
+      "reverse": "Đảo chứng từ",
+      "cancel": "Hủy chuyến công tác"
+    },
+    "reasonAction": {
+      "void": "Bỏ dòng",
+      "review": "Không duyệt",
+      "reverse": "Đảo",
+      "cancel": "Hủy chuyến"
+    },
+    "pendingLines": "{{count}} chi phí chưa gửi được — sẽ gửi khi có mạng.",
+    "waiting": "{{count}} chi phí chờ gửi",
+    "sendAgain": "Gửi lại",
+    "savedOffline": "Đã lưu trên máy. Chi phí sẽ được gửi khi có mạng (mở lại chuyến công tác)."
+  },
+  "scanReceipt": {
+    "take": "Chụp hóa đơn",
+    "pick": "Chọn ảnh có sẵn",
+    "intro": "Chụp hóa đơn, vé hoặc biên lai: Navo đọc và điền các ô còn trống. Kiểm tra lại trước khi lưu.",
+    "photo": "Ảnh hóa đơn",
+    "remove": "Bỏ ảnh",
+    "reading": "Navo đang đọc hóa đơn…",
+    "filled": "Đã điền từ hóa đơn. Kiểm tra từng ô với hóa đơn.",
+    "kept": "Đã đọc; các ô bạn đã nhập được giữ nguyên.",
+    "nothing": "Không đọc được thông tin nào. Hãy tự nhập.",
+    "offline": "Không có mạng: ảnh được giữ, hãy tự nhập.",
+    "failed": "Hãy tự nhập; ảnh vẫn được giữ."
   }
 }

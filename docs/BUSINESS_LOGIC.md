@@ -65,3 +65,18 @@ are shared (`src/locales`, both languages). Since 24 November the shared types a
 helpers match the web, and the home screen's figures (contracts with late deliveries, firm/tentative
 deliveries, goods arriving this week, a PO fully received) come from the API. Delivery sees no prices
 (the API omits them).
+
+## Business trips
+
+`src/app/(app)/trips.tsx`, `trip/[id].tsx`, `trip-new.tsx`, `expense-new.tsx`, opened from the
+Account tab (everyone records their own trips, technicians included). The phone creates a trip
+(purpose, where, when, an optional contract, an optional advance), adds expenses and submits the
+settlement; deciding, paying and settling happen on the web.
+
+- "Chụp hóa đơn" (shown when `/ai/status` is on) reads the receipt through `/ai/receipt-read` with
+  the same `ScanDocument` as the name card: only empty fields are filled (the date and the
+  category take the receipt's unless chosen by hand), a failed or offline read never blocks typing.
+- Saving puts the line in a per-user queue on the phone (`src/lib/tripExpenses.ts`): it is sent
+  with a `client_id`, then the receipt photo with its own id, with a checkpoint in between, so a
+  lost answer never saves twice. Without a signal it waits and goes out when the trip or the list
+  is opened online ("Gửi lại" on the trip). A line the API refuses goes back to the form.

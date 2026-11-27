@@ -23,14 +23,17 @@ export const emptyLeadForm = (): LeadForm => ({
 const LONG_SIDE = 1600;
 
 /** A JPEG copy of the photo at most LONG_SIDE pixels on its long side (iPhones shoot HEIC, which the reader refuses). */
-export async function shrinkCard(photo: LocalFile): Promise<LocalFile> {
+export async function shrinkPhoto(photo: LocalFile, name: string): Promise<LocalFile> {
   const original = await ImageManipulator.manipulate(photo.uri).renderAsync();
   const image = Math.max(original.width, original.height) > LONG_SIDE
     ? await ImageManipulator.manipulate(photo.uri).resize(original.width >= original.height ? { width: LONG_SIDE } : { height: LONG_SIDE }).renderAsync()
     : original;
   const saved = await image.saveAsync({ compress: 0.7, format: SaveFormat.JPEG });
-  return { uri: saved.uri, name: "danh-thiep.jpg", type: "image/jpeg" };
+  return { uri: saved.uri, name, type: "image/jpeg" };
 }
+
+/** A business card photo, shrunk. */
+export const shrinkCard = (photo: LocalFile) => shrinkPhoto(photo, "danh-thiep.jpg");
 
 /** Asks navo-api to read the card. Throws ApiError when it can't; the person then types the values. */
 export function readCard(photo: LocalFile): Promise<Card> {
