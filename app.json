@@ -24,7 +24,15 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Navo dùng camera để chụp danh thiếp, ảnh hiện trường và biên bản.",
+          "photosPermission": "Navo mở thư viện ảnh để bạn chọn danh thiếp hoặc ảnh hiện trường."
+        }
+      ],
+      "./plugins/with-scene-lifecycle"
     ],
     "experiments": {
       "typedRoutes": false

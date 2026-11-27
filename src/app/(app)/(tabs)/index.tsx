@@ -11,7 +11,7 @@ import { useApi } from "../../../lib/useApi";
 import { formatDate, formatDecimal, todayISO } from "../../../lib/format";
 import { listDrafts, sendDraft, type Draft } from "../../../lib/drafts";
 import type { LineRow, Overview, POSummary, Task } from "../../../lib/types";
-import { Body, Button, Card, DataFreshness, ErrorBox, Loading, Pill, Screen, Title, colors } from "../../../components/ui";
+import { Body, Button, Card, DataFreshness, ErrorBox, Fab, Loading, Pill, Screen, Title, colors } from "../../../components/ui";
 import { VisitList } from "../../../components/Visits";
 
 const ACTION = ["delivery_overdue", "over_delivered", "stock_short", "no_plan", "receipt_overdue", "over_ordered"];
@@ -134,6 +134,7 @@ function LeaderHome({ first }: { first: string }) {
 
 function SalesToday() {
   const { t, lang } = useT();
+  const { can } = useSession();
   const overview = useApi<Overview>("/reports/overview");
   const tasks = useApi<Task[]>("/tasks");
   const pos = useApi<Page<POSummary>>("/purchase-orders?view=awaiting&page_size=50");
@@ -238,11 +239,8 @@ function SalesToday() {
         ))}
         <View style={{ height: 72 }} />
       </Screen>
-      <Pressable accessibilityRole="button" accessibilityLabel={t("mobile.quickNote")} testID="quick-note" onPress={() => router.push("/(app)/note")}
-        style={{ position: "absolute", right: 16, bottom: 16, flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: colors.primary, paddingHorizontal: 20, minHeight: 52, borderRadius: 26, elevation: 4, shadowColor: "#000", shadowOpacity: 0.2, shadowRadius: 6, shadowOffset: { width: 0, height: 3 } }}>
-        <Ionicons name="mic" size={20} color="#fff" />
-        <Text style={{ color: "#fff", fontWeight: "800", fontSize: 16 }}>{t("mobile.quickNote")}</Text>
-      </Pressable>
+      <Fab icon="mic" label={t("mobile.quickNote")} testID="quick-note" onPress={() => router.push("/(app)/note")} />
+      {can("contracts.write") && <Fab icon="card-outline" index={1} label={t("mobile.newLead")} testID="new-lead" onPress={() => router.push("/(app)/lead-new")} />}
     </View>
   );
 }

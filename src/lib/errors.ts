@@ -9,3 +9,12 @@ export function errorMessage(t: TFunction, err: unknown): string {
   const text = t(`errors.codes.${err.code.replaceAll(".", "_")}`, { defaultValue: "" }) || t("errors.generic");
   return err.status >= 500 ? `${text} ${t("errors.reference", { id: err.requestId })}` : text;
 }
+
+/** Field name (as the API names it, e.g. "contacts[0].email") → message, like the web's fieldErrors. */
+export function fieldErrors(t: TFunction, err: unknown): Record<string, string> {
+  const out: Record<string, string> = {};
+  if (err instanceof ApiError) {
+    for (const f of err.fields) out[f.field] = t(`validation.${f.code}`, { ...(f.params ?? {}), defaultValue: t("validation.invalid") });
+  }
+  return out;
+}

@@ -253,7 +253,8 @@
     "taxCode": "Tax code",
     "isCustomer": "Customer",
     "isSupplier": "Supplier",
-    "empty": "No partners yet."
+    "empty": "No partners yet.",
+    "notSet": "Not set"
   },
   "products": {
     "title": "Products",
@@ -525,7 +526,8 @@
     "exceeds_contract": "More than the contract leaves ({{left}}).",
     "before_issued": "Cannot be before the issue date.",
     "acceptance_only": "Only an acceptance can carry a penalty.",
-    "whole_number": "Enter a whole number of visits."
+    "whole_number": "Enter a whole number of visits.",
+    "website": "A website has no spaces."
   },
   "mobile": {
     "tabs": {
@@ -630,7 +632,8 @@
       "noDate": "No date yet"
     },
     "twoStepRequired": "Your account must turn on two-step sign-in before using Navo. Set it up on the web (Account → Two-step sign-in), then sign in here again.",
-    "mustChange": "Your password was set by an administrator. Choose your own before you continue."
+    "mustChange": "Your password was set by an administrator. Choose your own before you continue.",
+    "newLead": "New lead"
   },
   "note": {
     "title": "Customer meeting note",
@@ -759,5 +762,63 @@
     "repeat": "Repeat new password",
     "hint": "10–72 characters.",
     "mismatch": "The two new passwords do not match."
+  },
+  "leads": {
+    "add": "Add lead",
+    "source": {
+      "referral": "Referral",
+      "trade_show": "Trade show",
+      "website": "Website",
+      "cold_call": "Cold call",
+      "zalo": "Zalo",
+      "existing_customer": "Another plant of a customer",
+      "other": "Other"
+    },
+    "sourceLabel": "Source",
+    "industry": "Industry",
+    "industryHint": "For example: Oil & gas, Wind power, Fertiliser",
+    "interest": "Need",
+    "interestHint": "Products they are interested in",
+    "estimatedValue": "Estimated value",
+    "valueHint": "VND, optional",
+    "dupTitle": "This company may already be in Navo:",
+    "dupKind": {
+      "customer": "customer",
+      "supplier": "supplier",
+      "lead": "lead"
+    },
+    "dupReason": {
+      "tax_code": "same tax code",
+      "name": "similar name",
+      "phone": "same phone number"
+    },
+    "address": "Address",
+    "website": "Website",
+    "companyPhone": "Company phone",
+    "companyPhoneHint": "Switchboard or office",
+    "cardNote": "Business card",
+    "created": "Lead {{name}} added.",
+    "photoNotSaved": "The lead was added, but the card photo was not saved.",
+    "offline": "You're offline. Connect to save the lead."
+  },
+  "contacts": {
+    "title": "Contacts",
+    "fullName": "Full name",
+    "jobTitle": "Role / department",
+    "email": "Email",
+    "phone": "Phone"
+  },
+  "scanCard": {
+    "intro": "Take a photo of a business card and Navo fills in the fields below.",
+    "take": "Scan business card",
+    "pick": "Choose a photo",
+    "reading": "Navo is reading the card…",
+    "filled": "Filled from the card. Check each field against the card before saving.",
+    "kept": "Navo read the card but kept what you had typed.",
+    "nothing": "Nothing could be read from the card. Retake it closer or type the details.",
+    "failed": "The card couldn't be read. Type the details; the photo is kept.",
+    "offline": "Offline: the card can't be read now. The photo is kept.",
+    "photo": "Card photo",
+    "remove": "Remove photo"
   }
 }

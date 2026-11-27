@@ -253,7 +253,8 @@
     "taxCode": "Mã số thuế",
     "isCustomer": "Là khách hàng",
     "isSupplier": "Là nhà cung cấp",
-    "empty": "Chưa có đối tác nào."
+    "empty": "Chưa có đối tác nào.",
+    "notSet": "Chưa có"
   },
   "products": {
     "title": "Sản phẩm",
@@ -525,7 +526,8 @@
     "exceeds_contract": "Vượt phần hợp đồng còn lại ({{left}}).",
     "before_issued": "Không được trước ngày xuất hoá đơn.",
     "acceptance_only": "Chỉ biên bản nghiệm thu mới có khoản phạt.",
-    "whole_number": "Nhập số lần là số nguyên."
+    "whole_number": "Nhập số lần là số nguyên.",
+    "website": "Website không được có dấu cách."
   },
   "mobile": {
     "tabs": {
@@ -626,7 +628,8 @@
       "noDate": "Chưa có ngày"
     },
     "twoStepRequired": "Tài khoản của bạn cần bật đăng nhập hai bước trước khi dùng Navo. Hãy cài đặt trên bản web (Tài khoản → Đăng nhập hai bước), rồi đăng nhập lại tại đây.",
-    "mustChange": "Mật khẩu của bạn do quản trị viên đặt. Hãy đặt mật khẩu của riêng bạn trước khi tiếp tục."
+    "mustChange": "Mật khẩu của bạn do quản trị viên đặt. Hãy đặt mật khẩu của riêng bạn trước khi tiếp tục.",
+    "newLead": "Khách mới"
   },
   "note": {
     "title": "Ghi chú gặp khách",
@@ -755,5 +758,63 @@
     "repeat": "Nhập lại mật khẩu mới",
     "hint": "10–72 ký tự.",
     "mismatch": "Hai mật khẩu mới không giống nhau."
+  },
+  "leads": {
+    "add": "Thêm khách tiềm năng",
+    "source": {
+      "referral": "Giới thiệu",
+      "trade_show": "Hội chợ",
+      "website": "Website",
+      "cold_call": "Gọi chủ động",
+      "zalo": "Zalo",
+      "existing_customer": "Nhà máy khác của khách cũ",
+      "other": "Khác"
+    },
+    "sourceLabel": "Nguồn",
+    "industry": "Ngành",
+    "industryHint": "Ví dụ: Dầu khí, Điện gió, Phân đạm",
+    "interest": "Nhu cầu",
+    "interestHint": "Sản phẩm khách quan tâm",
+    "estimatedValue": "Giá trị ước tính",
+    "valueHint": "VND, không bắt buộc",
+    "dupTitle": "Có thể đã có công ty này trong Navo:",
+    "dupKind": {
+      "customer": "khách hàng",
+      "supplier": "nhà cung cấp",
+      "lead": "khách tiềm năng"
+    },
+    "dupReason": {
+      "tax_code": "trùng mã số thuế",
+      "name": "tên gần giống",
+      "phone": "trùng số điện thoại"
+    },
+    "address": "Địa chỉ",
+    "website": "Website",
+    "companyPhone": "Điện thoại công ty",
+    "companyPhoneHint": "Tổng đài hoặc văn phòng",
+    "cardNote": "Danh thiếp",
+    "created": "Đã thêm khách tiềm năng {{name}}.",
+    "photoNotSaved": "Đã thêm khách tiềm năng, nhưng chưa lưu được ảnh danh thiếp.",
+    "offline": "Đang ngoại tuyến. Kết nối mạng để lưu khách tiềm năng."
+  },
+  "contacts": {
+    "title": "Người liên hệ",
+    "fullName": "Họ tên",
+    "jobTitle": "Chức vụ / phòng ban",
+    "email": "Email",
+    "phone": "Điện thoại"
+  },
+  "scanCard": {
+    "intro": "Chụp danh thiếp, Navo điền sẵn các ô bên dưới.",
+    "take": "Chụp danh thiếp",
+    "pick": "Chọn ảnh có sẵn",
+    "reading": "Navo đang đọc danh thiếp…",
+    "filled": "Đã điền từ danh thiếp. Kiểm tra từng ô với danh thiếp trước khi lưu.",
+    "kept": "Navo đọc được danh thiếp nhưng giữ nguyên các ô bạn đã nhập.",
+    "nothing": "Không đọc được thông tin trên danh thiếp. Chụp lại gần hơn hoặc nhập tay.",
+    "failed": "Chưa đọc được danh thiếp. Hãy nhập tay; ảnh vẫn được giữ.",
+    "offline": "Đang ngoại tuyến, chưa đọc được danh thiếp. Ảnh vẫn được giữ.",
+    "photo": "Ảnh danh thiếp",
+    "remove": "Bỏ ảnh"
   }
 }

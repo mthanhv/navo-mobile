@@ -10,7 +10,7 @@ Role choices are in `src/lib/roles.ts`; permissions still decide every action (t
 
 | User | Home tab | Orders tab | Can write |
 |---|---|---|---|
-| sales | "Today": own tasks, unsent note drafts, goods awaited this week | no (awaited goods are on Today) | notes, photos, tasks |
+| sales | "Today": own tasks, unsent note drafts, goods awaited this week | no (awaited goods are on Today) | notes, photos, tasks, new leads (name card) |
 | sales_manager | "Today" | yes | notes, photos, tasks |
 | delivery, accounting, admin | company overview | yes | no notes/tasks (needs contracts.write) |
 | technician | "Service visits": the visits assigned to them | no | records their visits (work, findings, photos of the signed report) |
@@ -39,6 +39,17 @@ photos not yet sent stay on screen with "send the photos again".
 - Sending creates the note (with a client id, so a retry does not duplicate it), then uploads photos
   one by one with checkpoints; a photo is sent once.
 - AI note parsing is optional (`/ai/status`).
+
+## New lead from a name card
+
+`src/app/(app)/lead-new.tsx`, opened by "Khách mới" on Today (contracts.write). The form has the web
+lead drawer's fields plus one contact person. "Chụp danh thiếp" (or a photo from the library) keeps
+the card photo, shrunk to a JPEG of at most 1600 px (`src/lib/cardScan.ts`), and asks the API to read
+it; the reading fills only the fields still empty, so nothing typed meanwhile is lost, and a failed
+or offline read never blocks typing (shown only when `/ai/status` is on). Possible duplicates
+(tax code, similar name, phone) are shown as on the web. Saving needs a connection: the lead is
+created with one Idempotency-Key per screen, then the photo goes on a "Danh thiếp" note; if only
+the photo fails, the lead stays created and the screen says so.
 
 ## Data freshness
 

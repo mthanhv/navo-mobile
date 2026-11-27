@@ -73,6 +73,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ai/card-read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** (multipart "file", a JPEG, PNG or WebP photo of a business card up to 10 MB): reads it into lead fields for the salesperson to check. Nothing is saved; the same photo is read once per user. */
+        post: operations["cardRead"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/ai/note-parse": {
         parameters: {
             query?: never;
@@ -3143,6 +3160,20 @@ export interface components {
             full_name: string;
             technician: boolean;
         };
+        /** @description A business card as read by AI; null where not printed or not valid. */
+        Card: {
+            company_name: string | null;
+            tax_code: string | null;
+            address: string | null;
+            website: string | null;
+            company_phone: string | null;
+            person: {
+                full_name: string | null;
+                job_title: string | null;
+                phone: string | null;
+                email: string | null;
+            };
+        };
     };
     responses: {
         /** @description Error */
@@ -3305,6 +3336,36 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Envelope"];
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    cardRead: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /** Format: binary */
+                    file: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Envelope"] & {
+                        data?: components["schemas"]["Card"];
+                    };
                 };
             };
             default: components["responses"]["Error"];
