@@ -354,7 +354,7 @@
       "reversal_has_dependents": "Đảo chứng từ hoặc phân bổ liên quan trước.",
       "document_not_confirmed": "Chỉ đảo được chứng từ đã xác nhận.",
       "document_not_posted": "Chỉ đảo được phiếu tiền đã ghi sổ.",
-      "invoice_has_payments": "Đảo phân bổ thanh toán trước khi hủy hóa đơn.",
+      "invoice_has_payments": "Đảo các khoản thanh toán và tiền phạt đã trừ vào hóa đơn trước khi hủy.",
       "invoice_not_recorded": "Không thể phân bổ tiền vào hóa đơn này.",
       "payment_not_posted": "Không thể phân bổ phiếu chi này.",
       "acceptance_requires_delivery": "Phải giao đủ trước hoặc trong ngày nghiệm thu.",

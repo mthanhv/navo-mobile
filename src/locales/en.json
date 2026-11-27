@@ -354,7 +354,7 @@
       "reversal_has_dependents": "Correct the dependent documents or allocations first.",
       "document_not_confirmed": "Only confirmed documents can be reversed.",
       "document_not_posted": "Only posted cash documents can be reversed.",
-      "invoice_has_payments": "Reverse the linked payment allocations before cancelling this invoice.",
+      "invoice_has_payments": "Reverse the payments and penalties applied to this invoice before cancelling it.",
       "invoice_not_recorded": "This invoice cannot receive payments.",
       "payment_not_posted": "This payment cannot be allocated.",
       "acceptance_requires_delivery": "Acceptance requires full delivery on or before the acceptance date.",
