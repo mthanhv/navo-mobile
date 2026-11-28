@@ -1042,7 +1042,9 @@
       "4": "Thứ 5",
       "5": "Thứ 6",
       "6": "Thứ 7"
-    }
+    },
+    "note": "Ghi chú",
+    "noteHint": "Cơ hội bán hàng, kết quả, việc cần theo dõi..."
   },
   "reminders": {
     "remindMe": "Nhắc tôi lúc",

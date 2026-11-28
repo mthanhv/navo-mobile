@@ -65,7 +65,7 @@ export default function NewLeadScreen() {
 
   /** The card photo goes on a note on the lead (a lead holds no files of its own). */
   const keepPhoto = async (lead: Lead, card: LocalFile) => {
-    const note = await api<{ id: string }>("/activities", { method: "POST", body: { kind: "note", organization_id: lead.id, summary: t("leads.cardNote") } });
+    const note = await api<{ id: string }>("/activities", { method: "POST", idempotencyKey: `card-${photoKey.current}`, body: { kind: "note", organization_id: lead.id, summary: t("leads.cardNote") } });
     await upload("/files", { owner_type: "note", owner_id: note.id, doc_kind: "photo", client_id: photoKey.current }, card);
   };
 

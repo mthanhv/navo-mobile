@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
-import { Pressable, Switch, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { router, useFocusEffect } from "expo-router";
+import * as Crypto from "expo-crypto";
 import { api, type Page } from "../../lib/api";
 import { useT } from "../../lib/i18n";
 import { useApi } from "../../lib/useApi";
@@ -53,9 +54,8 @@ export default function WeekScreen() {
         {l.outcome && <Pill tone={outcomeTone[l.outcome]}>{t(`weekly.outcome.${l.outcome}`, { date: formatDate(l.moved_to) })}</Pill>}
       </View>
       {!!l.work && <Body>{l.work}</Body>}
-      {(l.time_slot || l.location || l.online) && <Body muted size={13}>{[l.time_slot && t(`weekly.slot.${l.time_slot}`), l.online ? t("weekly.online") : l.location].filter(Boolean).join(" · ")}</Body>}
-      {(l.contact_name || l.mobile) && <Body muted size={13}>{[l.contact_name, l.mobile].filter(Boolean).join(" · ")}</Body>}
-      {!!l.note && <Body size={13.5}>💡 {l.note}</Body>}
+      {!!l.time_slot && <Body muted size={13}>{t(`weekly.slot.${l.time_slot}`)}</Body>}
+      {!!l.note && <Body size={13.5}>{t("weekly.note")}: {l.note}</Body>}
       {!!l.manager_comment && <Text style={{ fontSize: 13.5, color: colors.warning }}>💬 {l.manager_comment}</Text>}
     </Card>
   );
@@ -93,20 +93,20 @@ function AddPlan({ report, onClose, onDone }: { report: Report; onClose: () => v
   const [day, setDay] = useState(choices[0]);
   const [work, setWork] = useState("");
   const [slot, setSlot] = useState<(typeof SLOTS)[number] | null>(null);
-  const [online, setOnline] = useState(false);
-  const [place, setPlace] = useState("");
+  const [note, setNote] = useState("");
   const [query, setQuery] = useState("");
   const [org, setOrg] = useState<Organization | null>(null);
   const orgs = useApi<Page<Organization>>(`/organizations?role=prospect&page_size=100${query.trim().length > 1 ? `&q=${encodeURIComponent(query.trim())}` : ""}`);
   const matches = query.trim() ? (orgs.data?.items ?? []).filter((o) => fold(`${o.name} ${o.code ?? ""}`).includes(fold(query.trim()))).slice(0, 5) : [];
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [key] = useState(() => Crypto.randomUUID()); // a retried save on a weak network adds one line
   const save = async () => {
     if (!work.trim() && !org) { setError(t("weekly.needWork")); return; }
     setBusy(true); setError(null);
     try {
-      await api(`/weekly-reports/${report.id}/lines`, { method: "POST", body: { section: "plan", day, organization_id: org?.id ?? null, work: work.trim(), time_slot: slot,
-        location: place.trim() || null, online } });
+      await api(`/weekly-reports/${report.id}/lines`, { method: "POST", idempotencyKey: key, body: { section: "plan", day, organization_id: org?.id ?? null, work: work.trim(), time_slot: slot,
+        note: note.trim() || null } });
       onDone();
     } catch (e) { setError(errorMessage(t, e)); setBusy(false); }
   };
@@ -138,15 +138,11 @@ function AddPlan({ report, onClose, onDone }: { report: Report; onClose: () => v
           ))}
         </>
       )}
-      <Field id="week-work" label={t("weekly.work")} value={work} onChangeText={setWork} multiline placeholder={t("weekly.workHint")} hint={t("weekly.voiceHint")} />
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
         {SLOTS.map((x) => chip(`week-slot-${x}`, t(`weekly.slot.${x}`), slot === x, () => setSlot(slot === x ? null : x)))}
       </View>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-        <Switch testID="week-online" value={online} onValueChange={setOnline} accessibilityLabel={t("weekly.online")} />
-        <Body>{t("weekly.online")}</Body>
-      </View>
-      {!online && <Field id="week-place" label={t("weekly.place")} value={place} onChangeText={setPlace} placeholder={t("weekly.placeHint")} />}
+      <Field id="week-work" label={t("weekly.work")} value={work} onChangeText={setWork} multiline placeholder={t("weekly.workHint")} hint={t("weekly.voiceHint")} />
+      <Field id="week-note" label={t("weekly.note")} value={note} onChangeText={setNote} multiline placeholder={t("weekly.noteHint")} />
       <View style={{ flexDirection: "row", gap: 8 }}>
         <View style={{ flex: 1 }}><Button label={t("common.cancel")} tone="outline" onPress={onClose} /></View>
         <View style={{ flex: 1 }}><Button testID="week-plan-save" label={t("common.save")} busy={busy} onPress={() => void save()} /></View>

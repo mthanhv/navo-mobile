@@ -1046,7 +1046,9 @@
       "4": "Thu",
       "5": "Fri",
       "6": "Sat"
-    }
+    },
+    "note": "Note",
+    "noteHint": "Sales opportunity, outcome, follow-up..."
   },
   "reminders": {
     "remindMe": "Remind me at",
