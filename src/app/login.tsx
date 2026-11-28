@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, View } from "react-native";
+import { Image, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, View } from "react-native";
 import { Redirect } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSession } from "../lib/session";
@@ -43,6 +43,7 @@ export default function Login() {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={{ flex: 1, justifyContent: "center", padding: 20 }}>
         <View style={styles.card}>
+          <Image source={require("../../assets/brand/logo.png")} accessibilityLabel="Navo" resizeMode="contain" style={{ width: 204, height: 72, alignSelf: "center" }} />
           <Text accessibilityRole="header" style={{ fontSize: 26, fontWeight: "800", color: colors.text }}>{t("login.title")}</Text>
           <Text style={{ fontSize: 15, color: colors.textSecondary }}>{t("login.subtitle")}</Text>
           {error && <Banner tone="red">{error}</Banner>}

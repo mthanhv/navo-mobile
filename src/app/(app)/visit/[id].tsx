@@ -17,7 +17,9 @@ import { VisitPill } from "../../../components/Visits";
 
 const parseDay = parseDayInput;
 
-type Photo = { id: string; uri: string; name: string; type: string; kind: "service_report" | "photo"; sent?: boolean };
+type Photo = { id: string; uri: string; name: string; type: string; kind: string; sent?: boolean };
+type CheckItem = { kind: string; level: "required" | "optional"; present: boolean };
+type VisitFiles = { checklist: CheckItem[]; kind_names: Record<string, string> };
 
 /**
  * One visit on the phone: where to go and what to do; the technician records it (date, work
@@ -29,6 +31,8 @@ export default function VisitScreen() {
   const { can, me } = useSession();
   const { id } = useLocalSearchParams<{ id: string }>();
   const visit = useApi<ServiceVisit>(`/service-visits/${id}`);
+  // What the visit needs (Settings → required documents on the web), with what it already has.
+  const files = useApi<VisitFiles>(`/files?owner_type=service_visit&owner_id=${id}`);
   const [form, setForm] = useState({ done_on: formatDate(todayISO()), work_done: "", findings: "" });
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [key] = useState(() => Crypto.randomUUID());
@@ -45,7 +49,7 @@ export default function VisitScreen() {
     const res = camera ? await ImagePicker.launchCameraAsync({ quality: 0.6 }) : await ImagePicker.launchImageLibraryAsync({ quality: 0.6, mediaTypes: ["images"] });
     if (res.canceled) return;
     const a = res.assets[0];
-    setPhotos((p) => [...p, { id: Crypto.randomUUID(), uri: a.uri, name: a.fileName ?? `${kind === "service_report" ? "bien-ban" : "anh"}-${p.length + 1}.jpg`, type: a.mimeType ?? "image/jpeg", kind }]);
+    setPhotos((p) => [...p, { id: Crypto.randomUUID(), uri: a.uri, name: a.fileName ?? `${kind === "photo" ? "anh" : kind === "service_report" ? "bien-ban" : kind.replace(/^x_/, "")}-${p.length + 1}.jpg`, type: a.mimeType ?? "image/jpeg", kind }]);
   };
 
   const record = async () => {
@@ -115,11 +119,12 @@ export default function VisitScreen() {
                 <TextInput testID="visit-work" editable={!recorded} multiline accessibilityLabelledBy="visit-work-label" value={form.work_done} onChangeText={(x) => setForm({ ...form, work_done: x })} style={[input, { minHeight: 100, textAlignVertical: "top" }]} />
                 <Text nativeID="visit-findings-label" style={{ fontSize: 14, fontWeight: "600", color: colors.text }}>{t("service.findings")}</Text>
                 <TextInput testID="visit-findings" editable={!recorded} multiline accessibilityLabelledBy="visit-findings-label" value={form.findings} onChangeText={(x) => setForm({ ...form, findings: x })} style={[input, { minHeight: 70, textAlignVertical: "top" }]} />
+                <RequiredDocs items={files.data?.checklist ?? []} names={files.data?.kind_names ?? {}} picked={photos.map((p) => p.kind)} onAdd={(kind) => void addPhoto(true, kind)} />
                 <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
                   {photos.map((p) => (
                     <View key={p.id} style={{ width: 84, gap: 2 }}>
-                      <Image source={{ uri: p.uri }} accessibilityLabel={t(p.kind === "service_report" ? "service.reportPhoto" : "service.photo")} style={{ width: 84, height: 84, borderRadius: 8 }} />
-                      <Text style={{ fontSize: 11, color: colors.textSecondary }}>{t(p.kind === "service_report" ? "service.reportPhoto" : "service.photo")}{p.sent ? " ✓" : ""}</Text>
+                      <Image source={{ uri: p.uri }} accessibilityLabel={kindName(t, p.kind, files.data?.kind_names)} style={{ width: 84, height: 84, borderRadius: 8 }} />
+                      <Text style={{ fontSize: 11, color: colors.textSecondary }}>{kindName(t, p.kind, files.data?.kind_names)}{p.sent ? " ✓" : ""}</Text>
                     </View>
                   ))}
                 </View>
@@ -135,5 +140,43 @@ export default function VisitScreen() {
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
+  );
+}
+
+function kindName(t: ReturnType<typeof useT>["t"], kind: string, names?: Record<string, string>) {
+  if (kind === "service_report") return t("service.reportPhoto");
+  if (kind === "photo") return t("service.photo");
+  return names?.[kind] ?? t(`docKinds.${kind}`, { defaultValue: kind });
+}
+
+/** The documents this visit needs, as on the web: ✓ when there (or taken now), otherwise tap to photograph it. */
+function RequiredDocs({ items, names, picked, onAdd }: { items: CheckItem[]; names: Record<string, string>; picked: string[]; onAdd: (kind: string) => void }) {
+  const { t } = useT();
+  if (items.length === 0) return null;
+  const sorted = [...items].sort((a, b) => (a.level === b.level ? 0 : a.level === "required" ? -1 : 1));
+  const has = (c: CheckItem) => c.present || picked.includes(c.kind);
+  const missing = sorted.filter((c) => c.level === "required" && !has(c)).length;
+  return (
+    <View style={{ gap: 6, backgroundColor: colors.background, borderRadius: 10, padding: 10 }}>
+      <Text style={{ fontSize: 13.5, fontWeight: "600", color: colors.text }}>
+        {t("docField.needed")} · <Text style={{ color: missing > 0 ? colors.danger : colors.success }}>{missing > 0 ? t("docField.missingPill", { count: missing }) : t("docField.complete")}</Text>
+      </Text>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+        {sorted.map((c) => {
+          const ok = has(c);
+          const name = names[c.kind] ?? t(`docKinds.${c.kind}`, { defaultValue: c.kind });
+          const level = t(c.level === "required" ? "docField.levelRequired" : "docField.levelOptional");
+          const tone = ok ? [colors.successLight, colors.success] : c.level === "required" ? [colors.dangerLight, colors.danger] : [colors.divider, colors.textSecondary];
+          return (
+            <Pressable key={c.kind} testID={`visit-need-${c.kind}`} disabled={ok} onPress={() => onAdd(c.kind)} accessibilityRole="button"
+              accessibilityLabel={ok ? `${name} ✓` : t("docField.addAs", { kind: name })}
+              style={{ flexDirection: "row", alignItems: "center", gap: 4, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 6, backgroundColor: tone[0] }}>
+              <Ionicons name={ok ? "checkmark" : "camera-outline"} size={14} color={tone[1]} />
+              <Text style={{ color: tone[1], fontWeight: "700", fontSize: 13 }}>{name} <Text style={{ fontWeight: "400" }}>· {level}</Text></Text>
+            </Pressable>
+          );
+        })}
+      </View>
+    </View>
   );
 }

@@ -1,3 +1,5 @@
+<img src="assets/brand/logo.svg" alt="Navo" width="200" />
+
 # navo-mobile
 
 Expo (SDK 57, expo-router) app for Navo, one app with content by role: sellers (sales, sales

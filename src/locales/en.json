@@ -1057,5 +1057,38 @@
       "morning": "8:00 that day",
       "afternoon": "13:30 that day"
     }
+  },
+  "docKinds": {
+    "signed_contract": "Signed contract",
+    "amendment": "Amendment",
+    "quotation": "Quotation",
+    "customer_order": "Customer's order/contract",
+    "minutes": "Minutes",
+    "correspondence": "Correspondence",
+    "profile": "Company profile",
+    "nda": "NDA",
+    "po_signed": "Signed PO",
+    "supplier_confirmation": "Supplier confirmation",
+    "supplier_invoice": "Supplier invoice",
+    "packing_list": "Packing list",
+    "receipt_note": "Goods receipt note",
+    "co": "CO",
+    "cq": "CQ",
+    "delivery_note": "Delivery note",
+    "acceptance": "Acceptance minutes",
+    "photo": "Photo",
+    "sales_invoice": "Sales invoice",
+    "bank": "Bank document",
+    "other": "Other",
+    "customer_request": "Customer's request (RFQ)",
+    "service_report": "Service report"
+  },
+  "docField": {
+    "needed": "Documents needed",
+    "missingPill": "{{count}} missing",
+    "complete": "Complete",
+    "levelRequired": "required",
+    "levelOptional": "optional",
+    "addAs": "Add a {{kind}} file"
   }
 }

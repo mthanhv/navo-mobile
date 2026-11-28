@@ -19,7 +19,11 @@
     },
     "android": {
       "predictiveBackGestureEnabled": false,
-      "package": "com.tinybeex.navo"
+      "package": "com.tinybeex.navo",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/brand/adaptive-foreground.png",
+        "backgroundColor": "#132B4F"
+      }
     },
     "plugins": [
       "expo-router",
@@ -28,7 +32,8 @@
       [
         "expo-notifications",
         {
-          "color": "#1565C0"
+          "color": "#132B4F",
+          "icon": "./assets/brand/notification.png"
         }
       ],
       [
@@ -48,6 +53,12 @@
       "eas": {
         "projectId": "61c1bad1-b896-41fe-ae7d-ac9b376cb014"
       }
+    },
+    "icon": "./assets/brand/app-icon.png",
+    "splash": {
+      "image": "./assets/brand/symbol.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
     }
   }
 }

@@ -1053,5 +1053,38 @@
       "morning": "8:00 sáng hôm đó",
       "afternoon": "13:30 hôm đó"
     }
+  },
+  "docKinds": {
+    "signed_contract": "Hợp đồng đã ký",
+    "amendment": "Phụ lục",
+    "quotation": "Báo giá",
+    "customer_order": "Đơn hàng/HĐ của khách",
+    "minutes": "Biên bản",
+    "correspondence": "Thư từ",
+    "profile": "Hồ sơ năng lực",
+    "nda": "NDA",
+    "po_signed": "PO đã ký",
+    "supplier_confirmation": "Xác nhận NCC",
+    "supplier_invoice": "Hóa đơn NCC",
+    "packing_list": "Packing list",
+    "receipt_note": "Phiếu nhận",
+    "co": "CO",
+    "cq": "CQ",
+    "delivery_note": "Biên bản giao nhận",
+    "acceptance": "Biên bản nghiệm thu",
+    "photo": "Ảnh",
+    "sales_invoice": "Hóa đơn bán",
+    "bank": "Chứng từ ngân hàng",
+    "other": "Khác",
+    "customer_request": "Yêu cầu báo giá của khách",
+    "service_report": "Biên bản bảo trì"
+  },
+  "docField": {
+    "needed": "Hồ sơ cần có",
+    "missingPill": "Thiếu {{count}} hồ sơ",
+    "complete": "Đủ hồ sơ",
+    "levelRequired": "bắt buộc",
+    "levelOptional": "không bắt buộc",
+    "addAs": "Thêm tệp {{kind}}"
   }
 }
