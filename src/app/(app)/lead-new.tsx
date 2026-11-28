@@ -10,7 +10,7 @@ import { emptyLeadForm, fillFromCard, type Card as CardReading, type LeadForm } 
 import { errorMessage, fieldErrors } from "../../lib/errors";
 import { parseDecimalInput } from "../../lib/format";
 import { useT } from "../../lib/i18n";
-import { Banner, Body, Button, Card, ChoiceList, Field, colors } from "../../components/ui";
+import { Banner, Body, Button, Card, ChoiceList, Field, NumberField, colors } from "../../components/ui";
 import { ScanCard } from "../../components/ScanCard";
 
 const SOURCES = ["referral", "trade_show", "website", "cold_call", "zalo", "existing_customer", "other"] as const;
@@ -157,7 +157,7 @@ export default function NewLeadScreen() {
               options={[{ value: "", label: t("partners.notSet") }, ...SOURCES.map((s) => ({ value: s, label: t(`leads.source.${s}`) }))]} />
             {errors.source && <Text style={{ fontSize: 13.5, color: colors.danger }}>{errors.source}</Text>}
             <Field {...fieldProps("interest")} label={t("leads.interest")} hint={t("leads.interestHint")} multiline />
-            <Field {...fieldProps("estimated_value")} label={t("leads.estimatedValue")} hint={t("leads.valueHint")} keyboardType="decimal-pad" />
+            <NumberField {...fieldProps("estimated_value")} label={t("leads.estimatedValue")} hint={t("leads.valueHint")} />
           </Card>
         </ScrollView>
         {!done && (

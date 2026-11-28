@@ -10,7 +10,7 @@ import { errorMessage, fieldErrors } from "../../lib/errors";
 import { formatDate, parseDayInput, parseDecimalInput, todayISO } from "../../lib/format";
 import type { Page } from "../../lib/api";
 import type { Contract, Trip } from "../../lib/types";
-import { BackHeader, Banner, Button, Card, ChoiceList, Field, colors } from "../../components/ui";
+import { BackHeader, Banner, Button, Card, ChoiceList, Field, NumberField, colors } from "../../components/ui";
 
 /** A new business trip: purpose, where, when, the contract it serves (optional), an advance. */
 export default function NewTripScreen() {
@@ -59,7 +59,7 @@ export default function NewTripScreen() {
           </Card>
           <Card>
             <ChoiceList id="trip-contract" label={t("trips.contract")} value={v.contract} options={options} onChange={(x) => setV({ ...v, contract: x })} />
-            <Field id="trip-advance" label={t("trips.advanceAsk")} hint={t("trips.advanceHint")} keyboardType="decimal-pad" value={v.advance} onChangeText={(x) => setV({ ...v, advance: x })} error={errors.advance_requested} />
+            <NumberField id="trip-advance" label={t("trips.advanceAsk")} hint={t("trips.advanceHint")} value={v.advance} onChangeText={(x) => setV({ ...v, advance: x })} error={errors.advance_requested} />
           </Card>
         </ScrollView>
         <View style={{ padding: 12, borderTopWidth: 1, borderTopColor: colors.divider, backgroundColor: colors.card }}>

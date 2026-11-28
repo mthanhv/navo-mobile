@@ -10,7 +10,7 @@ import { formatDate, parseDayInput, parseDecimalInput, todayISO } from "../../li
 import { ApiError, type LocalFile } from "../../lib/api";
 import { emptyExpenseForm, fillFromReceipt, queueExpense, readReceipt, receiptHasValues, removePending, sendPending, type ExpenseForm, type PendingExpense, type Receipt } from "../../lib/tripExpenses";
 import { TRIP_CATEGORIES, type Trip, type TripCategory } from "../../lib/types";
-import { BackHeader, Banner, Button, Card, ChoiceList, Field, colors } from "../../components/ui";
+import { BackHeader, Banner, Button, Card, ChoiceList, Field, NumberField, colors } from "../../components/ui";
 import { ScanDocument } from "../../components/ScanDocument";
 
 /**
@@ -79,8 +79,8 @@ export default function NewExpenseScreen() {
             <ChoiceList id="expense-category" label={t("trips.categoryLabel")} value={form.category} options={categories} onChange={(c) => { touched.current = true; set({ category: c as TripCategory }); }} />
             <Field id="expense-date" label={t("trips.spentOn")} required placeholder="dd/mm/yyyy" keyboardType="numbers-and-punctuation" value={form.spent_on} onChangeText={(x) => set({ spent_on: x })} error={errors.spent_on} />
             <View style={{ flexDirection: "row", gap: 10 }}>
-              <View style={{ flex: 1 }}><Field id="expense-amount" label={t("trips.amount")} required keyboardType="decimal-pad" value={form.amount} onChangeText={(x) => set({ amount: x })} error={errors.amount} /></View>
-              <View style={{ flex: 1 }}><Field id="expense-vat" label={t("trips.vat")} keyboardType="decimal-pad" value={form.vat_amount} onChangeText={(x) => set({ vat_amount: x })} error={errors.vat_amount} /></View>
+              <View style={{ flex: 1 }}><NumberField id="expense-amount" label={t("trips.amount")} required value={form.amount} onChangeText={(x) => set({ amount: x })} error={errors.amount} /></View>
+              <View style={{ flex: 1 }}><NumberField id="expense-vat" label={t("trips.vat")} value={form.vat_amount} onChangeText={(x) => set({ vat_amount: x })} error={errors.vat_amount} /></View>
             </View>
           </Card>
           <Card>

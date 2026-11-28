@@ -3,6 +3,7 @@ import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, T
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useT } from "../lib/i18n";
+import { editNumber, groupNumber, numberMarks, type TypedNumber } from "../lib/numberInput";
 import { errorMessage } from "../lib/errors";
 import type { Flag } from "../lib/types";
 
@@ -119,6 +120,36 @@ export function Field({ id, label, required, hint, error, ...input }: { id: stri
         style={[inputStyle, error ? { borderColor: colors.danger } : null, input.multiline ? { minHeight: 72, textAlignVertical: "top" } : null]} />
       {error ? <Text style={{ fontSize: 13.5, color: colors.danger }}>{error}</Text> : hint ? <Text style={{ fontSize: 13, color: colors.muted }}>{hint}</Text> : null}
     </View>
+  );
+}
+
+/**
+ * A Field for an amount, quantity or day count: groups thousands while it is typed, in the language's
+ * marks (1.250.000,5 in Vietnamese), as the web NumberInput and the Lova apps do. value and
+ * onChangeText carry the text in those marks, read with parseDecimalInput. `whole` takes no decimals.
+ */
+export function NumberField({ value, onChangeText, whole, ...field }: Omit<Parameters<typeof Field>[0], "value" | "onChangeText" | "keyboardType"> & {
+  value: string; onChangeText: (text: string) => void; whole?: boolean;
+}) {
+  const { lang } = useT();
+  const marks = numberMarks(lang);
+  const [edit, setEdit] = useState<(TypedNumber & { emitted: string }) | null>(null);
+  const live = edit && edit.emitted === value ? edit : null;
+  const shown = live ? live.text : /^-?\d+$/.test(value) ? groupNumber(value, marks) : value;
+  return (
+    <Field {...field} value={shown} keyboardType={whole ? "number-pad" : "decimal-pad"}
+      onChangeText={(text) => {
+        // A phone's number pad types at the end; a longer change is a paste.
+        const grew = text.length - shown.length;
+        const inputType = grew < 0 ? "deleteContentBackward" : grew === 1 && text.startsWith(shown) ? "insertText" : "insertFromPaste";
+        const next = editNumber({ text, caret: text.length, from: inputType === "insertText" ? shown.length : grew < 0 ? text.length : 0, before: shown, inputType,
+          pending: live?.pending, marked: live?.marked, padDecimal: live?.padDecimal }, marks, whole);
+        if (next.ignored) return;
+        const emitted = next.value === null ? next.text : groupNumber(next.value, marks);
+        setEdit({ ...next, emitted });
+        onChangeText(emitted);
+      }}
+      onBlur={(e) => { if (live?.value !== null) setEdit(null); field.onBlur?.(e); }} />
   );
 }
 
