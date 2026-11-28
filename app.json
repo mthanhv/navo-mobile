@@ -26,6 +26,12 @@
       "expo-secure-store",
       "expo-localization",
       [
+        "expo-notifications",
+        {
+          "color": "#1565C0"
+        }
+      ],
+      [
         "expo-image-picker",
         {
           "cameraPermission": "Navo dùng camera để chụp danh thiếp, ảnh hiện trường và biên bản.",

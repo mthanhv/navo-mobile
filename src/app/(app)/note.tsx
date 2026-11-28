@@ -22,6 +22,30 @@ function parseDay(s: string): string | null {
   return m ? `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}` : null;
 }
 
+/** Quick reminder times for the task's day: 17:00 the day before, 8:00 or 13:30 that day (tap again to clear). */
+function RemindChips({ day, value, onChange }: { day: string; value?: string; onChange: (v: string | undefined) => void }) {
+  const { t } = useT();
+  const at = (shift: number, hh: number, mm: number) => { const d = new Date(`${day}T00:00:00`); d.setDate(d.getDate() + shift); d.setHours(hh, mm, 0, 0); return d.toISOString(); };
+  const options = [{ id: "dayBefore", iso: at(-1, 17, 0) }, { id: "morning", iso: at(0, 8, 0) }, { id: "afternoon", iso: at(0, 13, 30) }].filter((o) => new Date(o.iso) > new Date());
+  if (!options.length) return null;
+  return (
+    <View style={{ gap: 6 }}>
+      <Text style={{ fontSize: 14, fontWeight: "600", color: colors.text }}>{t("reminders.remindMe")}</Text>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+        {options.map((o) => {
+          const on = value === o.iso;
+          return (
+            <Pressable key={o.id} testID={`note-remind-${o.id}`} accessibilityRole="button" accessibilityState={{ selected: on }} onPress={() => onChange(on ? undefined : o.iso)}
+              style={{ paddingHorizontal: 12, paddingVertical: 7, borderRadius: 999, borderWidth: 1.5, borderColor: on ? colors.primary : colors.divider, backgroundColor: on ? colors.primaryLight : colors.card }}>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: on ? colors.primary : colors.text }}>{on ? "⏰ " : ""}{t(`reminders.preset.${o.id}`)}</Text>
+            </Pressable>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
+
 /** Ghi nhanh (mockup MQuickNote): who, what was said, photos, the next step — saved on the phone first. */
 export default function QuickNoteScreen() {
   const { t } = useT();
@@ -247,6 +271,7 @@ export default function QuickNoteScreen() {
             <TextInput testID="note-task" editable={!draft.noteId} accessibilityLabelledBy="note-task-label" value={draft.taskTitle} onChangeText={(v) => set({ taskTitle: v })} style={input} />
             <Text nativeID="note-due-label" style={{ fontSize: 14, fontWeight: "600", color: colors.text }}>{t("note.remind")}</Text>
             <TextInput testID="note-due" editable={!draft.noteId} accessibilityLabelledBy="note-due-label" value={due} onChangeText={setDue} placeholder="dd/mm/yyyy" keyboardType="numbers-and-punctuation" style={input} />
+            {!!parseDay(due) && !draft.noteId && <RemindChips day={parseDay(due)!} value={draft.taskRemindAt} onChange={(v) => set({ taskRemindAt: v })} />}
           </Card>
           {!!draft.customerId && <EarlierNotes key={draft.customerId} customerId={draft.customerId} />}
         </ScrollView>

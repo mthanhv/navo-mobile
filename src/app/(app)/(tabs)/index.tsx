@@ -185,6 +185,15 @@ function SalesToday() {
             </View>
           </Card>
         )}
+        {can("contracts.write") && (
+          <Pressable testID="home-week" accessibilityRole="link" onPress={() => router.push("/(app)/week")}>
+            <Card style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+              <Ionicons name="calendar-outline" size={22} color={colors.primary} />
+              <View style={{ flex: 1 }}><Body bold>{t("weekly.title")}</Body><Body muted size={13}>{t("weekly.homeHint")}</Body></View>
+              <Ionicons name="chevron-forward" size={20} color={colors.muted} />
+            </Card>
+          </Pressable>
+        )}
         <Title>{t("mobile.tasks", { count: open })}</Title>
         {tasks.loading && !tasks.data && <Loading />}
         {tasks.data?.length === 0 && <Card><Body muted>{t("mobile.noTasks")}</Body></Card>}

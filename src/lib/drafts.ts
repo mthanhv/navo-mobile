@@ -15,6 +15,8 @@ export type Draft = {
   body: string;
   taskTitle: string;
   taskDue: string;
+  /** When to remind the author about the task (ISO date-time), if they asked. */
+  taskRemindAt?: string;
   photos: (LocalFile & { id?: string })[];
   writtenAt: string;
   noteId?: string;
@@ -107,7 +109,7 @@ async function send(d: Draft): Promise<Note> {
     note = await api<Note>("/notes", { method: "POST", body: {
       client_id: current.id, customer_id: current.customerId, contract_id: current.contractId,
       body: current.body, written_at: current.writtenAt,
-      task: current.taskTitle.trim() ? { title: current.taskTitle.trim(), due_on: current.taskDue || null } : undefined,
+      task: current.taskTitle.trim() ? { title: current.taskTitle.trim(), due_on: current.taskDue || null, remind_at: current.taskRemindAt || null } : undefined,
     } });
     assertOwner(current.ownerKey);
     current = { ...current, noteId: note.id, photosSent: 0 };

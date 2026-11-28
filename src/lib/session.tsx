@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { api, loadToken, saveToken, setUnauthorizedHandler } from "./api";
 import { setDraftOwner } from "./drafts";
+import { registerForPush, unregisterPush } from "./push";
 import type { Me } from "./types";
 
 type Session = {
@@ -29,7 +30,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setUnauthorizedHandler(() => void clear());
     loadToken()
-      .then((t) => (t ? api<Me>("/me").then((m) => { setDraftOwner(m.user.id); setMe(m); }) : undefined))
+      .then((t) => (t ? api<Me>("/me").then((m) => { setDraftOwner(m.user.id); setMe(m); void registerForPush(); }) : undefined))
       .catch(() => undefined)
       .finally(() => setReady(true));
   }, [clear]);
@@ -42,11 +43,13 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     const m = await api<Me>("/me");
     setDraftOwner(m.user.id);
     setMe(m);
+    void registerForPush();
   }, []);
 
   const refresh = useCallback(async () => { setMe(await api<Me>("/me")); }, []);
 
   const logout = useCallback(async () => {
+    await unregisterPush();
     await api("/auth/logout", { method: "POST" }).catch(() => undefined);
     await clear();
   }, [clear]);

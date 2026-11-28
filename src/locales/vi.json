@@ -221,7 +221,8 @@
     "confirmTitle": "Xác nhận đã giao · {{number}}",
     "deliveredOn": "Ngày giao thực tế",
     "consequence": "Sau khi xác nhận, đã giao của dòng {{line}} tăng thêm {{qty}} {{unit}}. Không sửa trực tiếp được; muốn sửa phải tạo phiếu đảo có lý do.",
-    "confirm": "Xác nhận đã giao"
+    "confirm": "Xác nhận đã giao",
+    "addressIs": "Giao đến: {{address}}"
   },
   "newContract": {
     "title": "Tạo hợp đồng",
@@ -993,5 +994,62 @@
     "nothing": "Không đọc được thông tin nào. Hãy tự nhập.",
     "offline": "Không có mạng: ảnh được giữ, hãy tự nhập.",
     "failed": "Hãy tự nhập; ảnh vẫn được giữ."
+  },
+  "weekly": {
+    "title": "Báo cáo tuần",
+    "lateStatus": "Trễ hạn gửi",
+    "status": {
+      "draft": "Đang soạn",
+      "submitted": "Đã gửi",
+      "reviewed": "Đã xem"
+    },
+    "lastPlan": "Kế hoạch tuần này",
+    "outcome": {
+      "done": "Đã làm",
+      "moved": "Dời sang {{date}}",
+      "not_done": "Chưa làm",
+      "removed": "Đã bỏ"
+    },
+    "doneTitle": "Đã làm tuần này",
+    "planTitle": "Kế hoạch tuần sau",
+    "doneEmptyPhone": "Ghi nhanh sau mỗi chuyến thăm, cuộc gọi sẽ tự vào đây.",
+    "addPlan": "Thêm kế hoạch",
+    "submit": "Gửi báo cáo",
+    "phoneHint": "Xem và sửa đầy đủ bảng báo cáo trên máy tính.",
+    "noCustomer": "Việc khác",
+    "day": "Ngày",
+    "customer": "Khách hàng / KH tiềm năng",
+    "customerHint": "Gõ tên khách...",
+    "change": "Đổi",
+    "work": "Công việc chính",
+    "workHint": "VD: Giao hàng, hướng dẫn sử dụng...",
+    "voiceHint": "Bấm micro trên bàn phím để nói thay gõ.",
+    "slot": {
+      "morning": "Sáng",
+      "afternoon": "Chiều",
+      "all_day": "Cả ngày"
+    },
+    "online": "Online",
+    "place": "Địa điểm",
+    "placeHint": "VD: Kho EPS",
+    "needWork": "Chọn khách hoặc ghi công việc.",
+    "homeHint": "Việc đã làm và kế hoạch tuần sau",
+    "weekday": {
+      "0": "CN",
+      "1": "Thứ 2",
+      "2": "Thứ 3",
+      "3": "Thứ 4",
+      "4": "Thứ 5",
+      "5": "Thứ 6",
+      "6": "Thứ 7"
+    }
+  },
+  "reminders": {
+    "remindMe": "Nhắc tôi lúc",
+    "preset": {
+      "dayBefore": "17:00 hôm trước",
+      "morning": "8:00 sáng hôm đó",
+      "afternoon": "13:30 hôm đó"
+    }
   }
 }

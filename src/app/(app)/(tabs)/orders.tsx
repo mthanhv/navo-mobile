@@ -56,6 +56,7 @@ export default function OrdersScreen() {
               </>}
               {d && <>
                 <Body>{t("mobile.orders.lines", { count: d.lines })}</Body>
+                {d.delivery_address && <Body muted size={13.5}>{t("do.addressIs", { address: d.delivery_address })}</Body>}
                 {d.planned_on
                   ? <Pill tone={d.overdue ? "red" : "blue"} dashed={d.firmness === "tentative"}>{formatDate(d.planned_on)} · {t(`status.${d.firmness}`)}{d.overdue ? ` · ${t("mobile.orders.overdue")}` : ""}</Pill>
                   : <Pill tone="amber">{t("mobile.orders.noDate")}</Pill>}

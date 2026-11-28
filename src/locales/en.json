@@ -221,7 +221,8 @@
     "confirmTitle": "Confirm delivered · {{number}}",
     "deliveredOn": "Actual delivery date",
     "consequence": "Once confirmed, line {{line}} delivered goes up by {{qty}} {{unit}}. It cannot be edited directly; corrections need a reversal with a reason.",
-    "confirm": "Confirm delivered"
+    "confirm": "Confirm delivered",
+    "addressIs": "Deliver to: {{address}}"
   },
   "newContract": {
     "title": "New contract",
@@ -997,5 +998,62 @@
     "nothing": "Nothing could be read. Type the details.",
     "offline": "No connection: the photo is kept; type the details.",
     "failed": "Type the details; the photo is kept."
+  },
+  "weekly": {
+    "title": "Weekly report",
+    "lateStatus": "Late",
+    "status": {
+      "draft": "Draft",
+      "submitted": "Sent",
+      "reviewed": "Reviewed"
+    },
+    "lastPlan": "This week's plan",
+    "outcome": {
+      "done": "Done",
+      "moved": "Moved to {{date}}",
+      "not_done": "Not done",
+      "removed": "Dropped"
+    },
+    "doneTitle": "Done this week",
+    "planTitle": "Next week's plan",
+    "doneEmptyPhone": "Quick notes after visits and calls show up here.",
+    "addPlan": "Add to plan",
+    "submit": "Send report",
+    "phoneHint": "See and edit the full report on a computer.",
+    "noCustomer": "Other work",
+    "day": "Day",
+    "customer": "Customer / lead",
+    "customerHint": "Type a name...",
+    "change": "Change",
+    "work": "Main work",
+    "workHint": "e.g. delivery, product training...",
+    "voiceHint": "Tap the keyboard's microphone to speak instead of typing.",
+    "slot": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "all_day": "All day"
+    },
+    "online": "Online",
+    "place": "Place",
+    "placeHint": "e.g. EPS warehouse",
+    "needWork": "Pick a customer or write the work.",
+    "homeHint": "Work done and next week's plan",
+    "weekday": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fri",
+      "6": "Sat"
+    }
+  },
+  "reminders": {
+    "remindMe": "Remind me at",
+    "preset": {
+      "dayBefore": "17:00 the day before",
+      "morning": "8:00 that day",
+      "afternoon": "13:30 that day"
+    }
   }
 }

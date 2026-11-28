@@ -119,6 +119,7 @@ export default function ContractScreen() {
           {docs.data?.delivery_orders.map((d) => (
             <Card key={d.id}>
               <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}><Pill tone="green">{t("mobile.doLabel")}</Pill><Body bold>{d.number}</Body></View>
+              {d.delivery_address && <Body muted size={13.5}>{t("do.addressIs", { address: d.delivery_address })}</Body>}
               {d.lines.map((dl) => <Body key={dl.contract_line_id} muted size={13.5}>{t("contracts.colLine")} {dl.contract_line_no} · {n(dl.quantity)}</Body>)}
               {d.status === "confirmed"
                 ? <Pill tone="green">✓ {t("docs.deliveredOn", { date: formatDate(d.delivered_on) })}</Pill>

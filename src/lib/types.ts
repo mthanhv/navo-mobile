@@ -38,7 +38,7 @@ export type Task = { id: string; title: string; due_on: string | null; customer_
 export type Note = { id: string; client_id: string; customer_id: string; customer_name: string; contract_id: string | null; contract_number: string | null; body: string; written_at: string; author: string; tasks: Task[] };
 export type DOSummary = {
   id: string; number: string; status: "draft" | "confirmed" | "cancelled" | "reversed"; contract_id: string; contract_number: string; customer_name: string;
-  planned_on: string | null; firmness: "tentative" | "firm"; delivered_on: string | null; lines: number; overdue: boolean; override_status: OverrideInfo["status"] | null;
+  planned_on: string | null; firmness: "tentative" | "firm"; delivery_address?: string | null; delivered_on: string | null; lines: number; overdue: boolean; override_status: OverrideInfo["status"] | null;
 };
 
 export type POSummary = {
@@ -130,6 +130,8 @@ export type DeliveryOrder = {
   planned_on: string | null;
   firmness: "tentative" | "firm";
   route: "via_company" | "direct";
+  /** Where this delivery goes (the contract's delivery location unless changed). */
+  delivery_address?: string | null;
   delivered_on: string | null;
   lines: { contract_line_id: string; contract_line_no: number; quantity: string }[];
   version: number;
