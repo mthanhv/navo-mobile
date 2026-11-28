@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View, type TextInputProps, type ViewStyle } from "react-native";
+import { ActivityIndicator, Modal, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View, type TextInputProps, type ViewStyle } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useT } from "../lib/i18n";
@@ -98,13 +98,68 @@ export function ErrorBox({ error, onRetry }: { error: unknown; onRetry: () => vo
   );
 }
 
-export function Button({ label, onPress, tone = "primary", busy, testID }: { label: string; onPress: () => void; tone?: "primary" | "outline"; busy?: boolean; testID?: string }) {
+export function Button({ label, onPress, tone = "primary", busy, disabled, icon, testID }: { label: string; onPress: () => void; tone?: "primary" | "outline" | "ghost"; busy?: boolean; disabled?: boolean; icon?: keyof typeof Ionicons.glyphMap; testID?: string }) {
   const primary = tone === "primary";
+  const ghost = tone === "ghost";
+  const ink = primary ? "#fff" : ghost ? colors.primary : colors.text;
   return (
-    <Pressable testID={testID} accessibilityRole="button" accessibilityState={{ busy, disabled: busy }} disabled={busy} onPress={onPress}
-      style={({ pressed }) => [styles.button, primary ? { backgroundColor: colors.primary } : { backgroundColor: colors.card, borderWidth: 1.5, borderColor: colors.border }, pressed && { opacity: 0.85 }]}>
-      {busy ? <ActivityIndicator color={primary ? "#fff" : colors.primary} /> : <Text style={{ color: primary ? "#fff" : colors.text, fontSize: 16, fontWeight: "700" }}>{label}</Text>}
+    <Pressable testID={testID} accessibilityRole="button" accessibilityState={{ busy, disabled: busy || disabled }} disabled={busy || disabled} onPress={onPress}
+      style={({ pressed }) => [styles.button, primary ? { backgroundColor: colors.primary } : ghost ? styles.ghost : { backgroundColor: colors.card, borderWidth: 1.5, borderColor: colors.border },
+        disabled && { opacity: 0.5 }, pressed && { opacity: 0.85 }]}>
+      {busy ? <ActivityIndicator color={primary ? "#fff" : colors.primary} /> : (
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          {icon && <Ionicons name={icon} size={ghost ? 18 : 20} color={ink} />}
+          <Text style={{ color: ink, fontSize: ghost ? 15 : 16, fontWeight: ghost ? "600" : "700" }}>{label}</Text>
+        </View>
+      )}
     </Pressable>
+  );
+}
+
+/** How long the sheet takes to slide away before the camera or picker may open (iOS). */
+const SHEET_CLOSE_MS = 350;
+
+export type SheetChoice = { key: string; label: string; icon: keyof typeof Ionicons.glyphMap; testID: string };
+
+/** A sheet from the bottom of the screen with a few choices and Cancel (after Lova Driver), so a section offers one button. */
+export function ChoiceSheet({ visible, title, choices, onChoose, onClose }: { visible: boolean; title: string; choices: SheetChoice[]; onChoose: (key: string) => void; onClose: () => void }) {
+  const { t } = useT();
+  return (
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+      <Pressable style={styles.backdrop} onPress={onClose} accessibilityLabel={t("common.cancel")} />
+      <View style={styles.sheet}>
+        <Text style={{ fontSize: 13.5, color: colors.muted, marginBottom: 6, marginLeft: 8 }}>{title}</Text>
+        {choices.map((c) => (
+          <Pressable key={c.key} testID={c.testID} accessibilityRole="button" accessibilityLabel={c.label}
+            onPress={() => { onClose(); setTimeout(() => onChoose(c.key), SHEET_CLOSE_MS); }}
+            style={({ pressed }) => [styles.sheetRow, pressed && { backgroundColor: colors.background }]}>
+            <Ionicons name={c.icon} size={22} color={colors.primary} />
+            <Text style={{ fontSize: 16, fontWeight: "600", color: colors.text }}>{c.label}</Text>
+          </Pressable>
+        ))}
+        <Pressable accessibilityRole="button" onPress={onClose} style={({ pressed }) => [styles.sheetRow, { justifyContent: "center", marginTop: 6 }, pressed && { backgroundColor: colors.background }]}>
+          <Text style={{ fontSize: 16, fontWeight: "600", color: colors.muted }}>{t("common.cancel")}</Text>
+        </Pressable>
+      </View>
+    </Modal>
+  );
+}
+
+/** One button for a photo: a sheet takes one with the camera or chooses one from the phone (`${testID}-camera`, `${testID}-library`). */
+export function PhotoButton({ label, onPick, testID, tone = "primary", icon = "camera-outline", busy, disabled }: {
+  label: string; onPick: (fromLibrary: boolean) => void; testID: string; tone?: "primary" | "outline" | "ghost"; icon?: keyof typeof Ionicons.glyphMap; busy?: boolean; disabled?: boolean;
+}) {
+  const { t } = useT();
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button testID={testID} tone={tone} icon={icon} label={label} busy={busy} disabled={disabled} onPress={() => setOpen(true)} />
+      <ChoiceSheet visible={open} title={label} onClose={() => setOpen(false)} onChoose={(key) => onPick(key === "library")}
+        choices={[
+          { key: "camera", label: t("scan.take"), icon: "camera-outline", testID: `${testID}-camera` },
+          { key: "library", label: t("scan.pick"), icon: "images-outline", testID: `${testID}-library` },
+        ]} />
+    </>
   );
 }
 
@@ -112,13 +167,20 @@ export function Button({ label, onPress, tone = "primary", busy, testID }: { lab
 export const inputStyle = { borderWidth: 1, borderColor: colors.inputBorder, borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, fontSize: 16, color: colors.text, backgroundColor: colors.card } as const;
 
 /** A labelled text field; the label is read with the box, the hint or error under it. */
-export function Field({ id, label, required, hint, error, ...input }: { id: string; label: string; required?: boolean; hint?: string; error?: string } & Omit<TextInputProps, "style">) {
+export function Field({ id, label, required, hint, error, filled, ...input }: { id: string; label: string; required?: boolean; hint?: string; error?: string; filled?: boolean } & Omit<TextInputProps, "style">) {
+  const { t } = useT();
   return (
     <View style={{ gap: 6 }}>
       <Text nativeID={`${id}-label`} style={{ fontSize: 14, fontWeight: "600", color: colors.text }}>{label}{required ? " *" : ""}</Text>
       <TextInput testID={id} accessibilityLabelledBy={`${id}-label`} {...input}
-        style={[inputStyle, error ? { borderColor: colors.danger } : null, input.multiline ? { minHeight: 72, textAlignVertical: "top" } : null]} />
-      {error ? <Text style={{ fontSize: 13.5, color: colors.danger }}>{error}</Text> : hint ? <Text style={{ fontSize: 13, color: colors.muted }}>{hint}</Text> : null}
+        style={[inputStyle, filled ? { borderColor: colors.primary, backgroundColor: colors.primaryLight } : null, error ? { borderColor: colors.danger } : null, input.multiline ? { minHeight: 72, textAlignVertical: "top" } : null]} />
+      {error ? <Text style={{ fontSize: 13.5, color: colors.danger }}>{error}</Text>
+        : filled ? (
+          <View testID={`${id}-filled`} style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+            <Ionicons name="scan-outline" size={14} color={colors.primary} />
+            <Text style={{ fontSize: 13, color: colors.primary }}>{t("scan.check")}</Text>
+          </View>
+        ) : hint ? <Text style={{ fontSize: 13, color: colors.muted }}>{hint}</Text> : null}
     </View>
   );
 }
@@ -207,6 +269,10 @@ const styles = StyleSheet.create({
   banner: { flexDirection: "row", gap: 10, alignItems: "center", padding: 12, borderRadius: 12 },
   fab: { position: "absolute", right: 16, flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: colors.primary, paddingHorizontal: 20, minHeight: 52, borderRadius: 26, elevation: 4, shadowColor: "#000", shadowOpacity: 0.2, shadowRadius: 6, shadowOffset: { width: 0, height: 3 } },
   button: { minHeight: 48, borderRadius: 14, alignItems: "center", justifyContent: "center", paddingHorizontal: 16 },
+  ghost: { minHeight: 44, backgroundColor: "transparent", paddingHorizontal: 8 },
+  backdrop: { flex: 1, backgroundColor: "rgba(15,23,42,0.35)" },
+  sheet: { backgroundColor: colors.card, borderTopLeftRadius: 20, borderTopRightRadius: 20, paddingHorizontal: 16, paddingTop: 14, paddingBottom: 36 },
+  sheetRow: { flexDirection: "row", alignItems: "center", gap: 14, minHeight: 56, paddingHorizontal: 8, borderRadius: 12 },
 });
 
 /** A screen's top bar: back button and title (the new-lead screen's header). */

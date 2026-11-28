@@ -18,12 +18,14 @@ const SOURCES = ["referral", "trade_show", "website", "cold_call", "zalo", "exis
 type Dup = { id: string; code: string; name: string; kind: "customer" | "supplier" | "lead"; owner_name: string | null; reason: "tax_code" | "name" | "phone" };
 type Lead = { id: string; name: string };
 
-/** Add a lead on the phone, by scanning a business card or by hand (the web's "Thêm khách tiềm năng"). */
+/** Add a lead on the phone, by scanning a business card (or only attaching its photo when Navo can't read) or by hand (the web's "Thêm khách tiềm năng"). */
 export default function NewLeadScreen() {
   const { t, lang } = useT();
   const [form, setForm] = useState<LeadForm>(emptyLeadForm);
   const [photo, setPhoto] = useState<LocalFile | null>(null);
   const [aiOn, setAiOn] = useState(false);
+  // Fields the card filled, marked for checking until edited.
+  const [fromCard, setFromCard] = useState<Set<string>>(() => new Set());
   const [dups, setDups] = useState<Dup[]>([]);
   const [busy, setBusy] = useState(false);
   const [offline, setOffline] = useState(false);
@@ -60,8 +62,10 @@ export default function NewLeadScreen() {
     const { form: next, filled } = fillFromCard(formRef.current, card);
     formRef.current = next;
     setForm(next);
-    return filled;
+    setFromCard((was) => new Set([...was, ...filled]));
+    return filled.length;
   }, []);
+  const edited = (key: string) => setFromCard((was) => { if (!was.has(key)) return was; const next = new Set(was); next.delete(key); return next; });
 
   /** The card photo goes on a note on the lead (a lead holds no files of its own). */
   const keepPhoto = async (lead: Lead, card: LocalFile) => {
@@ -98,8 +102,8 @@ export default function NewLeadScreen() {
     }
   };
 
-  const fieldProps = (id: keyof Omit<LeadForm, "contact">) => ({ id: `lead-${id}`, value: form[id], error: errors[id], onChangeText: (v: string) => set({ [id]: v }), editable: !done });
-  const contactProps = (id: keyof LeadForm["contact"]) => ({ id: `lead-contact-${id}`, value: form.contact[id], error: errors[`contacts[0].${id}`], onChangeText: (v: string) => setContact({ [id]: v }), editable: !done });
+  const fieldProps = (id: keyof Omit<LeadForm, "contact">) => ({ id: `lead-${id}`, value: form[id], error: errors[id], filled: fromCard.has(id), onChangeText: (v: string) => { edited(id); set({ [id]: v }); }, editable: !done });
+  const contactProps = (id: keyof LeadForm["contact"]) => ({ id: `lead-contact-${id}`, value: form.contact[id], error: errors[`contacts[0].${id}`], filled: fromCard.has(`contact.${id}`), onChangeText: (v: string) => { edited(`contact.${id}`); setContact({ [id]: v }); }, editable: !done });
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={["top", "bottom"]}>
       <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 8, paddingVertical: 6, backgroundColor: colors.card, borderBottomWidth: 1, borderBottomColor: colors.divider }}>
@@ -122,7 +126,7 @@ export default function NewLeadScreen() {
           {offline && !done && <Banner tone="amber">{t("leads.offline")}</Banner>}
           {error && <Banner tone="red">{error}</Banner>}
 
-          {aiOn && !done && <ScanCard photo={photo} onPhoto={setPhoto} onReading={onReading} />}
+          {!done && <ScanCard photo={photo} onPhoto={setPhoto} onReading={onReading} canRead={aiOn} />}
 
           {dupQuery && dups.length > 0 && !done && (
             <View testID="lead-duplicates" accessibilityRole="alert" style={{ padding: 12, borderRadius: 12, gap: 4, backgroundColor: colors.warningLight }}>

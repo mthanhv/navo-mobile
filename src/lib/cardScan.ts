@@ -19,18 +19,26 @@ export const emptyLeadForm = (): LeadForm => ({
   contact: { full_name: "", job_title: "", phone: "", email: "" },
 });
 
-/** The long side a card is sent and kept at: legible print, a small upload on a weak signal. */
-const LONG_SIDE = 1600;
+/** The long side a photo is sent at to be read: legible print, a small upload on a weak signal. */
+const READ_SIDE = 1600;
+/** The long side a photo is kept at on the record: sharp enough to check every number later. */
+const KEEP_SIDE = 3000;
 
-/** A JPEG copy of the photo at most LONG_SIDE pixels on its long side (iPhones shoot HEIC, which the reader refuses). */
-export async function shrinkPhoto(photo: LocalFile, name: string): Promise<LocalFile> {
+/** A JPEG copy at most longSide pixels on its long side (iPhones shoot HEIC, which the API refuses). */
+async function jpegCopy(photo: LocalFile, name: string, longSide: number, compress: number): Promise<LocalFile> {
   const original = await ImageManipulator.manipulate(photo.uri).renderAsync();
-  const image = Math.max(original.width, original.height) > LONG_SIDE
-    ? await ImageManipulator.manipulate(photo.uri).resize(original.width >= original.height ? { width: LONG_SIDE } : { height: LONG_SIDE }).renderAsync()
+  const image = Math.max(original.width, original.height) > longSide
+    ? await ImageManipulator.manipulate(photo.uri).resize(original.width >= original.height ? { width: longSide } : { height: longSide }).renderAsync()
     : original;
-  const saved = await image.saveAsync({ compress: 0.7, format: SaveFormat.JPEG });
+  const saved = await image.saveAsync({ compress, format: SaveFormat.JPEG });
   return { uri: saved.uri, name, type: "image/jpeg" };
 }
+
+/** The copy sent to be read. */
+export const shrinkPhoto = (photo: LocalFile, name: string) => jpegCopy(photo, name, READ_SIDE, 0.7);
+
+/** The copy attached to the record (as Lova keeps the receipt itself, not the copy that was read). */
+export const keepablePhoto = (photo: LocalFile, name: string) => jpegCopy(photo, name, KEEP_SIDE, 0.8);
 
 /** A business card photo, shrunk. */
 export const shrinkCard = (photo: LocalFile) => shrinkPhoto(photo, "danh-thiep.jpg");
@@ -47,28 +55,29 @@ export function cardHasValues(card: Card): boolean {
 
 /**
  * Fills only the fields that are still empty, so nothing typed while the card was being read is
- * overwritten. Returns the new form and how many fields it filled. A card with no company name
+ * overwritten. Returns the new form and the fields it filled ("name", "contact.phone"…), which the
+ * form marks for checking. A card with no company name
  * (a sole trader) names the lead after the person.
  */
-export function fillFromCard(form: LeadForm, card: Card): { form: LeadForm; filled: number } {
-  let filled = 0;
-  const pick = (current: string, read: string | null | undefined) => {
+export function fillFromCard(form: LeadForm, card: Card): { form: LeadForm; filled: string[] } {
+  const filled: string[] = [];
+  const pick = (key: string, current: string, read: string | null | undefined) => {
     if (current.trim() || !read?.trim()) return current;
-    filled++;
+    filled.push(key);
     return read.trim();
   };
   const next: LeadForm = {
     ...form,
-    name: pick(form.name, card.company_name ?? card.person.full_name),
-    tax_code: pick(form.tax_code, card.tax_code),
-    address: pick(form.address, card.address),
-    website: pick(form.website, card.website),
-    phone: pick(form.phone, card.company_phone),
+    name: pick("name", form.name, card.company_name ?? card.person.full_name),
+    tax_code: pick("tax_code", form.tax_code, card.tax_code),
+    address: pick("address", form.address, card.address),
+    website: pick("website", form.website, card.website),
+    phone: pick("phone", form.phone, card.company_phone),
     contact: {
-      full_name: pick(form.contact.full_name, card.person.full_name),
-      job_title: pick(form.contact.job_title, card.person.job_title),
-      phone: pick(form.contact.phone, card.person.phone),
-      email: pick(form.contact.email, card.person.email),
+      full_name: pick("contact.full_name", form.contact.full_name, card.person.full_name),
+      job_title: pick("contact.job_title", form.contact.job_title, card.person.job_title),
+      phone: pick("contact.phone", form.contact.phone, card.person.phone),
+      email: pick("contact.email", form.contact.email, card.person.email),
     },
   };
   return { form: next, filled };

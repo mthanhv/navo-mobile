@@ -30,13 +30,19 @@ export default function NewExpenseScreen() {
   const [queued, setQueued] = useState(false);
   const formRef = useRef(form);
   const touched = useRef(false);
+  // Fields the receipt filled, marked for checking until edited.
+  const [fromReceipt, setFromReceipt] = useState<Set<keyof ExpenseForm>>(() => new Set());
   useEffect(() => { formRef.current = form; }, [form]);
-  const set = (patch: Partial<ExpenseForm>) => setForm((f) => ({ ...f, ...patch }));
+  const set = (patch: Partial<ExpenseForm>) => {
+    setForm((f) => ({ ...f, ...patch }));
+    setFromReceipt((was) => (Object.keys(patch).some((k) => was.has(k as keyof ExpenseForm)) ? new Set([...was].filter((k) => !(k in patch))) : was));
+  };
   const onReading = useCallback((r: Receipt) => {
     const { form: next, filled } = fillFromReceipt(formRef.current, r, touched.current);
     formRef.current = next;
     setForm(next);
-    return filled;
+    setFromReceipt((was) => new Set([...was, ...filled]));
+    return filled.length;
   }, []);
   const save = async () => {
     const day = parseDayInput(form.spent_on);
@@ -72,21 +78,21 @@ export default function NewExpenseScreen() {
         <ScrollView contentContainerStyle={{ padding: 16, gap: 14 }} keyboardShouldPersistTaps="handled">
           {queued && <Banner tone="amber">{t("trips.savedOffline")}</Banner>}
           {error && <Banner tone="red">{error}</Banner>}
-          {ai.data?.enabled && !queued && (
-            <ScanDocument texts="scanReceipt" fileName="hoa-don.jpg" testPrefix="receipt" photo={photo} onPhoto={setPhoto} read={readReceipt} hasValues={receiptHasValues} onReading={onReading} />
+          {!queued && (
+            <ScanDocument texts="scanReceipt" fileName="hoa-don.jpg" testPrefix="receipt" photo={photo} onPhoto={setPhoto} read={readReceipt} hasValues={receiptHasValues} onReading={onReading} canRead={!!ai.data?.enabled} />
           )}
           <Card>
             <ChoiceList id="expense-category" label={t("trips.categoryLabel")} value={form.category} options={categories} onChange={(c) => { touched.current = true; set({ category: c as TripCategory }); }} />
-            <Field id="expense-date" label={t("trips.spentOn")} required placeholder="dd/mm/yyyy" keyboardType="numbers-and-punctuation" value={form.spent_on} onChangeText={(x) => set({ spent_on: x })} error={errors.spent_on} />
+            <Field id="expense-date" filled={fromReceipt.has("spent_on")} label={t("trips.spentOn")} required placeholder="dd/mm/yyyy" keyboardType="numbers-and-punctuation" value={form.spent_on} onChangeText={(x) => set({ spent_on: x })} error={errors.spent_on} />
             <View style={{ flexDirection: "row", gap: 10 }}>
-              <View style={{ flex: 1 }}><NumberField id="expense-amount" label={t("trips.amount")} required value={form.amount} onChangeText={(x) => set({ amount: x })} error={errors.amount} /></View>
-              <View style={{ flex: 1 }}><NumberField id="expense-vat" label={t("trips.vat")} value={form.vat_amount} onChangeText={(x) => set({ vat_amount: x })} error={errors.vat_amount} /></View>
+              <View style={{ flex: 1 }}><NumberField id="expense-amount" filled={fromReceipt.has("amount")} label={t("trips.amount")} required value={form.amount} onChangeText={(x) => set({ amount: x })} error={errors.amount} /></View>
+              <View style={{ flex: 1 }}><NumberField id="expense-vat" filled={fromReceipt.has("vat_amount")} label={t("trips.vat")} value={form.vat_amount} onChangeText={(x) => set({ vat_amount: x })} error={errors.vat_amount} /></View>
             </View>
           </Card>
           <Card>
-            <Field id="expense-seller" label={t("trips.seller")} value={form.seller} onChangeText={(x) => set({ seller: x })} error={errors.seller} />
-            <Field id="expense-invoice" label={t("trips.invoiceNumber")} value={form.invoice_number} onChangeText={(x) => set({ invoice_number: x })} error={errors.invoice_number} />
-            <Field id="expense-tax" label={t("trips.sellerTaxCode")} keyboardType="numbers-and-punctuation" value={form.seller_tax_code} onChangeText={(x) => set({ seller_tax_code: x })} error={errors.seller_tax_code} />
+            <Field id="expense-seller" filled={fromReceipt.has("seller")} label={t("trips.seller")} value={form.seller} onChangeText={(x) => set({ seller: x })} error={errors.seller} />
+            <Field id="expense-invoice" filled={fromReceipt.has("invoice_number")} label={t("trips.invoiceNumber")} value={form.invoice_number} onChangeText={(x) => set({ invoice_number: x })} error={errors.invoice_number} />
+            <Field id="expense-tax" filled={fromReceipt.has("seller_tax_code")} label={t("trips.sellerTaxCode")} keyboardType="numbers-and-punctuation" value={form.seller_tax_code} onChangeText={(x) => set({ seller_tax_code: x })} error={errors.seller_tax_code} />
             <Field id="expense-note" label={t("trips.note")} multiline value={form.note} onChangeText={(x) => set({ note: x })} error={errors.note} />
           </Card>
         </ScrollView>

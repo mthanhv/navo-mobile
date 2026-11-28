@@ -31,28 +31,28 @@ export function receiptHasValues(r: Receipt): boolean {
  * Fills the fields still empty, so nothing typed while the receipt was being read is overwritten;
  * the date (the form starts on today) and the category (while not chosen by hand) take the
  * receipt's. Dates come back as yyyy-mm-dd and are shown as dd/mm/yyyy. Returns the new form and
- * how many fields it filled.
+ * the fields it filled, which the form marks for checking.
  */
-export function fillFromReceipt(form: ExpenseForm, r: Receipt, categoryTouched: boolean): { form: ExpenseForm; filled: number } {
-  let filled = 0;
-  const pick = (current: string, read: string | null | undefined) => {
+export function fillFromReceipt(form: ExpenseForm, r: Receipt, categoryTouched: boolean): { form: ExpenseForm; filled: (keyof ExpenseForm)[] } {
+  const filled: (keyof ExpenseForm)[] = [];
+  const pick = (key: keyof ExpenseForm, current: string, read: string | null | undefined) => {
     if (current.trim() || !read?.trim()) return current;
-    filled++;
+    filled.push(key);
     return read.trim();
   };
   const day = r.spent_on && /^\d{4}-\d{2}-\d{2}$/.test(r.spent_on) ? `${r.spent_on.slice(8, 10)}/${r.spent_on.slice(5, 7)}/${r.spent_on.slice(0, 4)}` : null;
   const next: ExpenseForm = {
     ...form,
-    spent_on: r.spent_on && day ? (filled++, day) : form.spent_on,
-    amount: pick(form.amount, r.amount),
-    vat_amount: pick(form.vat_amount, r.vat_amount),
-    invoice_number: pick(form.invoice_number, r.invoice_number),
-    seller: pick(form.seller, r.seller),
-    seller_tax_code: pick(form.seller_tax_code, r.seller_tax_code),
+    spent_on: r.spent_on && day ? (filled.push("spent_on"), day) : form.spent_on,
+    amount: pick("amount", form.amount, r.amount),
+    vat_amount: pick("vat_amount", form.vat_amount, r.vat_amount),
+    invoice_number: pick("invoice_number", form.invoice_number, r.invoice_number),
+    seller: pick("seller", form.seller, r.seller),
+    seller_tax_code: pick("seller_tax_code", form.seller_tax_code, r.seller_tax_code),
   };
   if (!categoryTouched && r.category && TRIP_CATEGORIES.includes(r.category) && r.category !== form.category) {
     next.category = r.category;
-    filled++;
+    filled.push("category");
   }
   return { form: next, filled };
 }

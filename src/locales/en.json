@@ -834,13 +834,17 @@
     "take": "Scan business card",
     "pick": "Choose a photo",
     "reading": "Navo is reading the card…",
-    "filled": "Filled from the card. Check each field against the card before saving.",
+    "filled": "Filled from the card. Check each marked field before saving.",
     "kept": "Navo read the card but kept what you had typed.",
     "nothing": "Nothing could be read from the card. Retake it closer or type the details.",
     "failed": "The card couldn't be read. Type the details; the photo is kept.",
     "offline": "Offline: the card can't be read now. The photo is kept.",
     "photo": "Card photo",
-    "remove": "Remove photo"
+    "remove": "Remove photo",
+    "button": "Scan business card",
+    "attach": "Attach card photo",
+    "replace": "Change card photo",
+    "introAttach": "Photograph the business card to keep it with the lead."
   },
   "trips": {
     "title": "Business trip",
@@ -993,11 +997,15 @@
     "photo": "Receipt photo",
     "remove": "Remove photo",
     "reading": "Navo is reading the receipt…",
-    "filled": "Filled from the receipt. Check each field against it.",
+    "filled": "Filled from the receipt. Check each marked field.",
     "kept": "Read; what you typed was kept.",
     "nothing": "Nothing could be read. Type the details.",
     "offline": "No connection: the photo is kept; type the details.",
-    "failed": "Type the details; the photo is kept."
+    "failed": "Type the details; the photo is kept.",
+    "button": "Scan receipt",
+    "attach": "Attach receipt photo",
+    "replace": "Change receipt photo",
+    "introAttach": "Photograph the receipt, ticket or invoice to attach it to the expense."
   },
   "weekly": {
     "title": "Weekly report",
@@ -1090,5 +1098,11 @@
     "levelRequired": "required",
     "levelOptional": "optional",
     "addAs": "Add a {{kind}} file"
+  },
+  "scan": {
+    "take": "Take photo",
+    "pick": "Choose from photos",
+    "attachOnly": "Attach photo only, don't read",
+    "check": "Filled from the photo: check it"
   }
 }

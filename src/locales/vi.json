@@ -830,13 +830,17 @@
     "take": "Chụp danh thiếp",
     "pick": "Chọn ảnh có sẵn",
     "reading": "Navo đang đọc danh thiếp…",
-    "filled": "Đã điền từ danh thiếp. Kiểm tra từng ô với danh thiếp trước khi lưu.",
+    "filled": "Đã điền từ danh thiếp. Hãy đối chiếu từng ô được đánh dấu trước khi lưu.",
     "kept": "Navo đọc được danh thiếp nhưng giữ nguyên các ô bạn đã nhập.",
     "nothing": "Không đọc được thông tin trên danh thiếp. Chụp lại gần hơn hoặc nhập tay.",
     "failed": "Chưa đọc được danh thiếp. Hãy nhập tay; ảnh vẫn được giữ.",
     "offline": "Đang ngoại tuyến, chưa đọc được danh thiếp. Ảnh vẫn được giữ.",
     "photo": "Ảnh danh thiếp",
-    "remove": "Bỏ ảnh"
+    "remove": "Bỏ ảnh",
+    "button": "Quét danh thiếp",
+    "attach": "Đính kèm ảnh danh thiếp",
+    "replace": "Đổi ảnh danh thiếp",
+    "introAttach": "Chụp danh thiếp để lưu kèm khách tiềm năng."
   },
   "trips": {
     "title": "Chuyến công tác",
@@ -989,11 +993,15 @@
     "photo": "Ảnh hóa đơn",
     "remove": "Bỏ ảnh",
     "reading": "Navo đang đọc hóa đơn…",
-    "filled": "Đã điền từ hóa đơn. Kiểm tra từng ô với hóa đơn.",
+    "filled": "Đã điền từ hóa đơn. Hãy đối chiếu từng ô được đánh dấu.",
     "kept": "Đã đọc; các ô bạn đã nhập được giữ nguyên.",
     "nothing": "Không đọc được thông tin nào. Hãy tự nhập.",
     "offline": "Không có mạng: ảnh được giữ, hãy tự nhập.",
-    "failed": "Hãy tự nhập; ảnh vẫn được giữ."
+    "failed": "Hãy tự nhập; ảnh vẫn được giữ.",
+    "button": "Quét hóa đơn",
+    "attach": "Đính kèm ảnh hóa đơn",
+    "replace": "Đổi ảnh hóa đơn",
+    "introAttach": "Chụp hóa đơn, vé hoặc biên lai để đính kèm vào khoản chi."
   },
   "weekly": {
     "title": "Báo cáo tuần",
@@ -1086,5 +1094,11 @@
     "levelRequired": "bắt buộc",
     "levelOptional": "không bắt buộc",
     "addAs": "Thêm tệp {{kind}}"
+  },
+  "scan": {
+    "take": "Chụp ảnh",
+    "pick": "Chọn ảnh có sẵn",
+    "attachOnly": "Chỉ đính kèm ảnh, không đọc",
+    "check": "Điền từ ảnh: hãy đối chiếu"
   }
 }

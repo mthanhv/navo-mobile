@@ -15,7 +15,8 @@ const receipt = (over: Partial<Receipt> = {}): Receipt => ({
 test("a blank form takes the receipt, the date shown as dd/mm/yyyy", () => {
   const { form, filled } = fillFromReceipt(emptyExpenseForm(""), receipt(), false);
   expect(form).toMatchObject({ category: "hotel", spent_on: "25/11/2026", amount: "1250000", vat_amount: "125000", seller: "Khách sạn Sông Trà" });
-  expect(filled).toBe(7);
+  expect(filled).toHaveLength(7);
+  expect(filled).toEqual(expect.arrayContaining(["spent_on", "amount", "category"]));
 });
 
 test("what was typed and a category chosen by hand are kept", () => {
@@ -29,5 +30,5 @@ test("what was typed and a category chosen by hand are kept", () => {
 test("an empty reading fills nothing", () => {
   const nothing = receipt({ category: null, spent_on: null, amount: null, vat_amount: null, invoice_number: null, seller: null, seller_tax_code: null });
   expect(receiptHasValues(nothing)).toBe(false);
-  expect(fillFromReceipt(emptyExpenseForm("x"), nothing, false).filled).toBe(0);
+  expect(fillFromReceipt(emptyExpenseForm("x"), nothing, false).filled).toEqual([]);
 });

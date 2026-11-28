@@ -12,7 +12,8 @@ const card = (over: Partial<Card> = {}): Card => ({
 
 test("a blank form takes every value the card gave", () => {
   const { form, filled } = fillFromCard(emptyLeadForm(), card());
-  expect(filled).toBe(9);
+  expect(filled).toHaveLength(9);
+  expect(filled).toContain("contact.email");
   expect(form.name).toBe("Công ty TNHH Kỹ thuật ABC");
   expect(form.phone).toBe("028 3823 4567");
   expect(form.contact).toEqual({ full_name: "Nguyễn Văn An", job_title: "Trưởng phòng mua hàng", phone: "0903 123 456", email: "an@abc.com.vn" });
@@ -23,8 +24,9 @@ test("what was typed while the card was read is kept", () => {
   const { form, filled } = fillFromCard(typed, card());
   expect(form.name).toBe("ABC");
   expect(form.contact.phone).toBe("0909 000 000");
-  expect(filled).toBe(7);
-  expect(fillFromCard(form, card()).filled).toBe(0);
+  expect(filled).toHaveLength(7);
+  expect(filled).not.toContain("name");
+  expect(fillFromCard(form, card()).filled).toEqual([]);
 });
 
 test("a card without a company name names the lead after the person", () => {
@@ -35,5 +37,5 @@ test("a card without a company name names the lead after the person", () => {
 test("an empty reading fills nothing", () => {
   const nothing = card({ company_name: null, tax_code: null, address: null, website: null, company_phone: null, person: { full_name: null, job_title: null, phone: " ", email: null } });
   expect(cardHasValues(nothing)).toBe(false);
-  expect(fillFromCard(emptyLeadForm(), nothing).filled).toBe(0);
+  expect(fillFromCard(emptyLeadForm(), nothing).filled).toEqual([]);
 });

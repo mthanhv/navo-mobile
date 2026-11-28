@@ -1,24 +1,26 @@
 import { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import NetInfo from "@react-native-community/netinfo";
 import { Ionicons } from "@expo/vector-icons";
 import { ApiError, type LocalFile } from "../lib/api";
-import { shrinkPhoto } from "../lib/cardScan";
+import { keepablePhoto, shrinkPhoto } from "../lib/cardScan";
 import { errorMessage } from "../lib/errors";
 import { useT } from "../lib/i18n";
-import { Body, Button, Card, colors } from "./ui";
+import { Body, Card, PhotoButton, colors } from "./ui";
 
 type Status = "idle" | "reading" | "filled" | "kept" | "nothing" | "offline" | "failed";
 
 /**
- * Photograph a document and let navo-api read it (after Lova Driver's receipt scan): the photo is
- * kept at once, then read; the reading fills only fields still empty (onReading returns how
- * many). A failed or offline read never blocks typing. Texts come from `texts` (scanCard.*,
- * scanReceipt.*): take, pick, intro, photo, remove, reading, filled, kept, nothing, offline, failed.
+ * Scan a document at the top of a form, after Lova Driver's "Scan receipt": one button takes the
+ * photo (or chooses one from the phone) and attaches it at once, then, with signal and when the
+ * server reads documents (`canRead`), has it read; the reading fills only fields still empty
+ * (onReading returns how many) and the form marks them for checking. "Attach photo only" keeps the
+ * photo without reading. Without reading only the attach button shows, so the photo is still kept.
+ * Whatever happens the person can type. Texts come from `texts` (scanCard.*, scanReceipt.*).
  */
-export function ScanDocument<R>({ texts, fileName, photo, onPhoto, read, hasValues, onReading, testPrefix }: {
-  texts: string; fileName: string; photo: LocalFile | null; onPhoto: (p: LocalFile | null) => void;
+export function ScanDocument<R>({ texts, fileName, photo, onPhoto, read, hasValues, onReading, testPrefix, canRead }: {
+  texts: string; fileName: string; photo: LocalFile | null; onPhoto: (p: LocalFile | null) => void; canRead: boolean;
   read: (photo: LocalFile) => Promise<R>; hasValues: (r: R) => boolean; onReading: (r: R) => number; testPrefix: string;
 }) {
   const { t } = useT();
@@ -28,28 +30,30 @@ export function ScanDocument<R>({ texts, fileName, photo, onPhoto, read, hasValu
   const latest = useRef(onReading);
   useEffect(() => { latest.current = onReading; }, [onReading]);
 
-  const scan = async (camera: boolean) => {
-    const perm = camera ? await ImagePicker.requestCameraPermissionsAsync() : await ImagePicker.requestMediaLibraryPermissionsAsync();
+  const take = async (fromLibrary: boolean, reading: boolean) => {
+    const perm = fromLibrary ? await ImagePicker.requestMediaLibraryPermissionsAsync() : await ImagePicker.requestCameraPermissionsAsync();
     if (!perm.granted) return;
-    const res = camera
-      ? await ImagePicker.launchCameraAsync({ quality: 0.8, mediaTypes: ["images"] })
-      : await ImagePicker.launchImageLibraryAsync({ quality: 0.8, mediaTypes: ["images"] });
+    const res = fromLibrary
+      ? await ImagePicker.launchImageLibraryAsync({ quality: 0.9, mediaTypes: ["images"] })
+      : await ImagePicker.launchCameraAsync({ quality: 0.9, mediaTypes: ["images"] });
     if (res.canceled) return;
     const a = res.assets[0];
-    let shot: LocalFile;
+    const original: LocalFile = { uri: a.uri, name: a.fileName ?? fileName, type: a.mimeType ?? "image/jpeg" };
+    let kept: LocalFile;
     try {
-      shot = await shrinkPhoto({ uri: a.uri, name: a.fileName ?? fileName, type: a.mimeType ?? "image/jpeg" }, fileName);
+      kept = await keepablePhoto(original, fileName);
     } catch (e) {
       setFailure(errorMessage(t, e)); setStatus("failed");
       return;
     }
-    onPhoto(shot);
+    onPhoto(kept);
+    if (!reading) { setStatus("idle"); return; }
     if ((await NetInfo.fetch()).isConnected === false) { setStatus("offline"); return; }
     setStatus("reading");
     try {
-      const reading = await read(shot);
-      if (!hasValues(reading)) { setStatus("nothing"); return; }
-      setStatus(latest.current(reading) > 0 ? "filled" : "kept");
+      const result = await read(await shrinkPhoto(original, fileName));
+      if (!hasValues(result)) { setStatus("nothing"); return; }
+      setStatus(latest.current(result) > 0 ? "filled" : "kept");
     } catch (e) {
       if (e instanceof ApiError && e.status === 0) { setStatus("offline"); return; }
       setFailure(errorMessage(t, e)); setStatus("failed");
@@ -57,17 +61,13 @@ export function ScanDocument<R>({ texts, fileName, photo, onPhoto, read, hasValu
   };
 
   const reading = status === "reading";
-  const tone = status === "filled" ? colors.success : status === "failed" || status === "offline" || status === "nothing" ? colors.warning : colors.textSecondary;
+  const tone = status === "filled" ? colors.primary : status === "failed" || status === "offline" || status === "nothing" ? colors.warning : colors.textSecondary;
   return (
     <Card style={{ backgroundColor: colors.primaryLight }}>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-        <Ionicons name="scan-outline" size={22} color={colors.primary} />
-        <Body bold>{t(`${texts}.take`)}</Body>
-      </View>
-      <Body size={14}>{t(`${texts}.intro`)}</Body>
+      <Body size={14}>{t(canRead ? `${texts}.intro` : `${texts}.introAttach`)}</Body>
       {photo && (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-          <Image source={{ uri: photo.uri }} accessibilityLabel={t(`${texts}.photo`)} style={{ width: 120, height: 72, borderRadius: 8, backgroundColor: colors.card }} resizeMode="cover" />
+          <Image testID={`${testPrefix}-photo`} source={{ uri: photo.uri }} accessibilityLabel={t(`${texts}.photo`)} style={{ width: 120, height: 72, borderRadius: 8, backgroundColor: colors.card }} resizeMode="cover" />
           {!reading && (
             <Pressable accessibilityRole="button" testID={`${testPrefix}-remove`} onPress={() => { onPhoto(null); setStatus("idle"); }} style={{ minHeight: 44, justifyContent: "center" }}>
               <Text style={{ color: colors.primary, fontSize: 15, fontWeight: "600" }}>{t(`${texts}.remove`)}</Text>
@@ -75,20 +75,17 @@ export function ScanDocument<R>({ texts, fileName, photo, onPhoto, read, hasValu
           )}
         </View>
       )}
-      {reading ? (
-        <View accessibilityLiveRegion="polite" style={{ flexDirection: "row", alignItems: "center", gap: 10, minHeight: 48 }}>
-          <ActivityIndicator color={colors.primary} />
-          <Body>{t(`${texts}.reading`)}</Body>
+      {canRead ? (
+        <View style={{ gap: 2 }}>
+          <PhotoButton testID={`${testPrefix}-scan`} icon="scan-outline" label={t(`${texts}.button`)} busy={reading} onPick={(lib) => void take(lib, true)} />
+          <PhotoButton testID={`${testPrefix}-attach`} tone="ghost" icon="attach-outline" label={t("scan.attachOnly")} disabled={reading} onPick={(lib) => void take(lib, false)} />
         </View>
       ) : (
-        <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
-          <Button label={t(`${texts}.take`)} onPress={() => void scan(true)} testID={`${testPrefix}-camera`} />
-          <Button label={t(`${texts}.pick`)} tone="outline" onPress={() => void scan(false)} testID={`${testPrefix}-library`} />
-        </View>
+        <PhotoButton testID={`${testPrefix}-attach`} tone="outline" icon="attach-outline" label={t(photo ? `${texts}.replace` : `${texts}.attach`)} onPick={(lib) => void take(lib, false)} />
       )}
-      {status !== "idle" && status !== "reading" && (
-        <View accessibilityRole="alert" style={{ flexDirection: "row", gap: 8, alignItems: "flex-start" }}>
-          <Ionicons name={status === "filled" || status === "kept" ? "checkmark-circle-outline" : "alert-circle-outline"} size={18} color={tone} style={{ marginTop: 1 }} />
+      {status !== "idle" && (
+        <View accessibilityRole="alert" accessibilityLiveRegion="polite" style={{ flexDirection: "row", gap: 8, alignItems: "flex-start" }}>
+          <Ionicons name={status === "filled" || status === "kept" ? "checkmark-circle-outline" : status === "reading" ? "hourglass-outline" : "alert-circle-outline"} size={18} color={tone} style={{ marginTop: 1 }} />
           <Text testID={`${testPrefix}-status`} style={{ flex: 1, fontSize: 14.5, color: tone }}>
             {status === "failed" ? `${failure} ${t(`${texts}.failed`)}` : t(`${texts}.${status}`)}
           </Text>
